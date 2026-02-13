@@ -11,21 +11,14 @@
     <h1>Actividad 02</h1>
     <p class="alias">Análisis de servicios de seguridad (X.800 y RFC 4949)</p>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="#escenario1">Escenario 1</a></li>
-            <li><a href="#escenario2">Escenario 2</a></li>
-            <li><a href="#conclusion">Conclusión</a></li>
-        </ul>
-    </nav>
+    
 </header>
 
 <section>
     <h2>Información General</h2>
     <p><strong>Universidad:</strong> Universidad Politécnica de San Luis Potosí</p>
     <p><strong>Materia:</strong> Seguridad Informática</p>
-    <p><strong>Alumno:</strong> Miguel Ángel Aguilar Carrizales – 182318</p>
+    <p><strong>Alumno:</strong> Miguel Angel Aguilar Carrizales – 182318</p>
     <br>
 
     <a href="182318-act02.pdf" download>
@@ -33,10 +26,17 @@
     </a>
 </section>
 
-<!-- ESCENARIO 1 -->
+
 <section id="escenario1">
     <h2>Escenario 01 – LockBit</h2>
-
+<p> En múltiples incidentes atribuidos al grupo LockBit, organizaciones públicas y
+privadas han sufrido el cifrado masivo de servidores tras un acceso inicial no autorizado.
+Antes de ejecutar el ransomware, los atacantes exfiltraron información sensible y
+posteriormente amenazaron con su publicación, evidenciando un compromiso simultáneo
+de la confidencialidad, la integridad y la disponibilidad. Desde el enfoque del RFC 4949, el
+incidente se clasifica como un multi-stage attack con data breach y availability attack,
+donde la indisponibilidad del sistema es solo una fase final del daño. La ausencia de
+respaldos inmutables y de detección temprana permitió que el impacto fuera total.</p>
     <table>
         <tr>
             <th>Elemento</th>
@@ -69,10 +69,15 @@
     </table>
 </section>
 
-<!-- ESCENARIO 2 -->
 <section id="escenario2">
     <h2>Escenario 02 – Misconfiguration en la nube</h2>
-
+<p>En diversos casos documentados, bases de datos completas quedaron
+accesibles públicamente debido a errores de configuración en servicios de
+almacenamiento en la nube. No existió una explotación técnica sofisticada, sino una falla
+en el control de acceso, lo que derivó directamente en la pérdida de confidencialidad de
+los datos. El RFC 4949 describe este tipo de incidentes como misconfiguration y exposure,
+subrayando que la amenaza no siempre implica malware o intrusión activa. El impacto
+suele ser legal y reputacional, aun cuando no se pueda demostrar acceso malicioso</p>
     <table>
         <tr>
             <th>Elemento</th>
@@ -106,7 +111,13 @@
 </section>
 <section>
     <h2>Escenario 03 – Ataque DDoS</h2>
-
+<p>Un proveedor legítimo de software fue comprometido y distribuyó una
+actualización que incluía código malicioso, afectando a cientos de organizaciones que
+confiaban en él. Este escenario refleja una violación grave de la integridad de los sistemas
+y, en muchos casos, de la confidencialidad, al permitir accesos no autorizados posteriores.
+El RFC 4949 lo identifica como supply chain attack, destacando el abuso de relaciones de
+confianza. El daño es particularmente crítico porque rompe el supuesto de legitimidad del
+software firmado</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Disponibilidad</td></tr>
@@ -119,7 +130,13 @@
 </section>
 <section>
     <h2>Escenario 04 – Phishing Corporativo</h2>
-
+<p>Mediante campañas de phishing, atacantes obtuvieron credenciales válidas y
+accedieron a sistemas corporativos durante meses sin levantar alertas. Aunque la
+autenticación funcionó técnicamente, el servicio de autenticación fue comprometido al
+basarse en credenciales robadas, afectando también el control de acceso. Según el RFC
+4949, se trata de un credential compromise con authentication failure conceptual, no
+técnica. La falta de MFA y de monitoreo de comportamiento facilitó la persistencia del
+atacante.</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad</td></tr>
@@ -132,7 +149,12 @@
 </section>
 <section>
     <h2>Escenario 05 – Malware Interno</h2>
-
+<p>En ataques de ransomware avanzados, los atacantes eliminaron o cifraron
+los respaldos antes de afectar los sistemas productivos. Este hecho compromete
+directamente la disponibilidad y la integridad de la información, al impedir la
+recuperación. El RFC 4949 clasifica este comportamiento como data destruction y
+availability attack, evidenciando intención deliberada de maximizar el daño. La inexistencia
+de respaldos offline o inmutables convierte el incidente en catastrófico.</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Integridad y Disponibilidad</td></tr>
@@ -145,7 +167,12 @@
 </section>
 <section>
     <h2>Escenario 06 – Ataque Man-in-the-Middle</h2>
-
+<p>Un empleado con acceso legítimo extrajo bases de datos completas y las
+vendió a terceros, sin explotar vulnerabilidades técnicas. El servicio afectado fue
+principalmente la confidencialidad, junto con fallas en el control de acceso por exceso de
+privilegios. El RFC 4949 define este escenario como insider threat, destacando que el
+riesgo interno puede ser tan grave como el externo. La carencia de monitoreo y de
+políticas de mínimo privilegio fue determinante.</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad e Integridad</td></tr>
@@ -158,7 +185,11 @@
 </section>
 <section>
     <h2>Escenario 07 – Acceso no autorizado</h2>
-
+<p>Tras un ataque, los registros del sistema quedaron cifrados o alterados,
+impidiendo reconstruir la secuencia de eventos. Esto compromete la integridad de los
+datos y el no repudio, ya que no es posible demostrar qué ocurrió ni quién fue
+responsable. Desde el RFC 4949, se trata de una violación de evidentiary integrity y del
+audit trail. El impacto no solo es técnico, sino también probatorio y legal</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad</td></tr>
@@ -171,7 +202,11 @@
 </section>
 <section>
     <h2>Escenario 08 – Fuga de información</h2>
-
+<p> Una actualización mal ejecutada provocó la caída simultánea de múltiples
+servicios críticos a nivel global. Aunque no existió un atacante, el servicio de disponibilidad
+fue gravemente afectado. El RFC 4949 contempla estos eventos como operational failure,
+recordando que la seguridad también se ve afectada por errores internos. La falta de
+pruebas previas y planes de reversión amplificó el impacto</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad</td></tr>
@@ -184,7 +219,12 @@
 </section>
 <section>
     <h2>Escenario 09 – Vulnerabilidad sin parche</h2>
-
+<p> Atacantes replicaron sitios y correos oficiales para engañar a ciudadanos y
+obtener información sensible. Este escenario afecta la autenticación, al suplantar
+identidades legítimas, y la confidencialidad de los datos recolectados. El RFC 4949 lo
+clasifica como masquerade y phishing, subrayando el componente de ingeniería social. La
+ausencia de mecanismos de autenticación del dominio y de concientización facilitó el éxito
+del ataque</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Integridad y Disponibilidad</td></tr>
@@ -197,7 +237,12 @@
 </section>
 <section>
     <h2>Escenario 10 – Ingeniería Social Telefónica</h2>
-
+<p>En algunos incidentes, tras exfiltrar información, los atacantes ejecutaron
+acciones destructivas para borrar sistemas completos y eliminar rastros. Se produce un
+compromiso total de la confidencialidad, la integridad y la disponibilidad, configurando
+uno de los peores escenarios posibles. El RFC 4949 describe este patrón como destructive
+attack, donde el objetivo no es solo el lucro, sino el daño irreversible. La detección tardía
+impidió cualquier contención efectiva.</p>
     <table>
         <tr><th>Elemento</th><th>Respuesta</th></tr>
         <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad</td></tr>
@@ -212,15 +257,26 @@
     
 <section id="conclusion">
     <h2>Conclusión</h2>
+<p></p>
+    <p>Conclusión
+Existen muchos tipos de escenarios en los que problemas, ataques o errores pueden
+comprometer la información, reputación o legalidad de distintas formas, haciendo el
+reporte recordé lo fácil que cualquiera puede tener problemas de ciberseguridad.
+Al conocer más tipos de ataques se puede planear de manera más efectiva el evitar que
+ocurran o tener un plan de contingencia por si llegan a pasar.
 
-    <p>
-        Los distintos escenarios analizados demuestran que las amenazas pueden
-        comprometer la confidencialidad, integridad y disponibilidad de la información.
-        La correcta aplicación de los marcos X.800 y RFC 4949 permite clasificar y
-        comprender los incidentes desde una perspectiva estructurada.
     </p>
 </section>
-
+    <h2>Referencias</h2>
+    <p>
+        <ul>
+            <li>International Telecommunication Union. (1991). Security Architecture for Open
+Systems Interconnection for CCITT Applications (ITU-T Rec. X.800).</li>
+            <li>Shirey, R. W. (2007). Internet Security Glossary, Version 2 (RFC 4949, Informational). IETF.
+https://doi.org/10.17487/RFC4949
+</li>
+        </ul>
+    </p>
 <footer>
     <p>Portafolio – Seguridad Informática</p>
 </footer>
