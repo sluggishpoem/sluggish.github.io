@@ -112,3 +112,20 @@ footer {
     background-color: #020617;
     font-size: 0.9rem;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #334155;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #1e293b;
+    color: #38bdf8;
+}
+
