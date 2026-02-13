@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad 02 – X.800 y RFC 4949</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Actividad 02</h1>
+    <p class="alias">Análisis de servicios de seguridad (X.800 y RFC 4949)</p>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#escenario1">Escenario 1</a></li>
+            <li><a href="#escenario2">Escenario 2</a></li>
+            <li><a href="#conclusion">Conclusión</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>Información General</h2>
+    <p><strong>Universidad:</strong> Universidad Politécnica de San Luis Potosí</p>
+    <p><strong>Materia:</strong> Seguridad Informática</p>
+    <p><strong>Alumno:</strong> Miguel Ángel Aguilar Carrizales – 182318</p>
+    <br>
+
+    <a href="182318-act02.pdf" download>
+        <button>Descargar PDF Original</button>
+    </a>
+</section>
+
+<!-- ESCENARIO 1 -->
+<section id="escenario1">
+    <h2>Escenario 01 – LockBit</h2>
+
+    <table>
+        <tr>
+            <th>Elemento</th>
+            <th>Respuesta</th>
+        </tr>
+        <tr>
+            <td>Servicios X.800 comprometidos</td>
+            <td>Confidencialidad, Disponibilidad, Integridad de los datos</td>
+        </tr>
+        <tr>
+            <td>Definiciones RFC 4949</td>
+            <td>Availability Service, Backup</td>
+        </tr>
+        <tr>
+            <td>Tipo de amenaza</td>
+            <td>Externa</td>
+        </tr>
+        <tr>
+            <td>Vector de ataque</td>
+            <td>Exploit, credenciales robadas</td>
+        </tr>
+        <tr>
+            <td>Impacto técnico</td>
+            <td>Cifrado de servidores, pérdida de datos sensibles</td>
+        </tr>
+        <tr>
+            <td>Medida de control</td>
+            <td>Backups inmutables, segmentación de red</td>
+        </tr>
+    </table>
+</section>
+
+<!-- ESCENARIO 2 -->
+<section id="escenario2">
+    <h2>Escenario 02 – Misconfiguration en la nube</h2>
+
+    <table>
+        <tr>
+            <th>Elemento</th>
+            <th>Respuesta</th>
+        </tr>
+        <tr>
+            <td>Servicios X.800 comprometidos</td>
+            <td>Confidencialidad</td>
+        </tr>
+        <tr>
+            <td>Definiciones RFC 4949</td>
+            <td>Misconfiguration, Exposure</td>
+        </tr>
+        <tr>
+            <td>Tipo de amenaza</td>
+            <td>Interna</td>
+        </tr>
+        <tr>
+            <td>Vector de ataque</td>
+            <td>Acceso público sin autenticación</td>
+        </tr>
+        <tr>
+            <td>Impacto técnico</td>
+            <td>Exposición de datos sensibles</td>
+        </tr>
+        <tr>
+            <td>Medida de control</td>
+            <td>Mínimo privilegio, auditorías</td>
+        </tr>
+    </table>
+</section>
+
+<section id="conclusion">
+    <h2>Conclusión</h2>
+
+    <p>
+        Los distintos escenarios analizados demuestran que las amenazas pueden
+        comprometer la confidencialidad, integridad y disponibilidad de la información.
+        La correcta aplicación de los marcos X.800 y RFC 4949 permite clasificar y
+        comprender los incidentes desde una perspectiva estructurada.
+    </p>
+</section>
+
+<footer>
+    <p>Portafolio – Seguridad Informática</p>
+</footer>
+
+</body>
+</html>
