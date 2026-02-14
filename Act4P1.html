@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad 04 – Reglas iptables</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Actividad 04</h1>
+    <p class="alias">Configuración de reglas iptables</p>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#topologia">Topología</a></li>
+            <li><a href="#reglas">Reglas</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="topologia">
+    <h2>Topología de Red</h2>
+
+    <img src="1x4.png" alt="Topología de red"
+         style="width:100%; border-radius:8px; margin-top:15px;">
+</section>
+
+<section id="reglas">
+    <h2>Reglas iptables</h2>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Regla</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>iptables -A INPUT -j DROP</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>iptables -A OUTPUT -p tcp --sport 53 -j ACCEPT</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>iptables -A INPUT -p tcp -s 192.1.2.10 -j ACCEPT</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>iptables -A OUTPUT -p tcp -s 192.1.2.10 -j ACCEPT</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>iptables -A INPUT -p tcp --dport 80 -d 192.1.2.11 -j ACCEPT</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>iptables -A INPUT -p tcp -j ACCEPT</td>
+        </tr>
+    </table>
+
+    <br>
+
+    <a href="182318_Act04.pdf" download>
+        <button>Descargar PDF Original</button>
+    </a>
+
+</section>
+
+<footer>
+    <p>Portafolio – Seguridad Informática</p>
+</footer>
+
+</body>
+</html>
