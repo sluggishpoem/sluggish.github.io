@@ -143,4 +143,23 @@ th {
     border-radius: 8px;
 }
 
+/* IMÁGENES ACTIVIDADES */
+.img-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.img-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.img-container p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-top: 8px;
+}
+
 
