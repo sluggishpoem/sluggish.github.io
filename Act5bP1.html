@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad 05 – Pentesting</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Actividad 05 – Pentesting</h1>
+    <p class="alias">Tabla comparativa de metodologías de pruebas de penetración</p>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#tabla">Tabla Comparativa</a></li>
+            <li><a href="#conclusion">Conclusión</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>Información General</h2>
+    <p><strong>Universidad:</strong> Universidad Politécnica de San Luis Potosí</p>
+    <p><strong>Carrera:</strong> Ingeniería en Tecnologías de la Información</p>
+    <p><strong>Materia:</strong> Seguridad Informática</p>
+    <p><strong>Alumno:</strong> Miguel Ángel Aguilar Carrizales</p>
+    <p><strong>Matrícula:</strong> 182318</p>
+    <p><strong>Fecha de entrega:</strong> 16 de febrero de 2026</p>
+
+    <br>
+
+    <a href="182318-act05.pdf" download>
+        <button>Descargar PDF Original</button>
+    </a>
+</section>
+
+<section>
+    <h2>Introducción</h2>
+
+    <p>
+        La seguridad informática es un pilar fundamental en la protección de sistemas,
+        aplicaciones y datos frente a amenazas cada vez más sofisticadas. Para evaluar
+        el nivel de exposición y resiliencia de una organización, se emplean metodologías
+        de prueba de penetración y marcos de evaluación estandarizados.
+    </p>
+
+    <p>
+        En esta tabla comparativa se revisan las metodologías MITRE ATT&CK, OWASP WSTG,
+        NIST SP 800-115, OSSTMM, PTES e ISSAF, las cuales ofrecen un enfoque sistemático
+        y complementario para fortalecer la postura de seguridad organizacional.
+    </p>
+</section>
+
+<section id="tabla">
+    <h2>Tabla Comparativa de Metodologías</h2>
+
+    <table>
+        <tr>
+            <th>Metodología</th>
+            <th>Descripción</th>
+            <th>Fases</th>
+            <th>Objetivo</th>
+            <th>Escenarios</th>
+            <th>Orientación</th>
+            <th>Organismo</th>
+            <th>URL</th>
+            <th>Certificaciones</th>
+            <th>Vigencia</th>
+        </tr>
+
+        <tr>
+            <td><strong>MITRE ATT&CK</strong></td>
+            <td>Base de conocimiento que clasifica tácticas y técnicas usadas por atacantes reales.</td>
+            <td>
+                1. Reconocimiento<br>
+                2. Mapeo de técnicas<br>
+                3. Simulación / Red Team<br>
+                4. Evaluación defensiva
+            </td>
+            <td>Identificar y modelar técnicas reales de ataque.</td>
+            <td>SOC, Blue Team, Threat Hunting</td>
+            <td>Evaluación y defensa</td>
+            <td>MITRE Corporation</td>
+            <td><a href="https://attack.mitre.org" target="_blank">attack.mitre.org</a></td>
+            <td>ATT&CK Fundamentals</td>
+            <td>Actualización continua (2025)</td>
+        </tr>
+
+        <tr>
+            <td><strong>OWASP WSTG</strong></td>
+            <td>Guía práctica de pruebas de seguridad en aplicaciones web.</td>
+            <td>
+                Antes del desarrollo<br>
+                Diseño<br>
+                Desarrollo<br>
+                Implementación<br>
+                Mantenimiento
+            </td>
+            <td>Detectar vulnerabilidades web.</td>
+            <td>Web apps, APIs, fintech</td>
+            <td>Ataque y evaluación</td>
+            <td>OWASP Foundation</td>
+            <td><a href="https://owasp.org/www-project-web-security-testing-guide" target="_blank">OWASP WSTG</a></td>
+            <td>No directa</td>
+            <td>Versión 4.2</td>
+        </tr>
+
+        <tr>
+            <td><strong>NIST SP 800-115</strong></td>
+            <td>Guía técnica para evaluación de controles de seguridad.</td>
+            <td>Despliegue – Operaciones</td>
+            <td>Evaluar controles organizacionales.</td>
+            <td>Gobierno y corporativo</td>
+            <td>Evaluación y ataque</td>
+            <td>NIST</td>
+            <td><a href="https://csrc.nist.gov/publications/detail/sp/800-115/final" target="_blank">NIST SP 800-115</a></td>
+            <td>CISSP, CISA (alineadas)</td>
+            <td>Publicado 2008</td>
+        </tr>
+
+        <tr>
+            <td><strong>OSSTMM</strong></td>
+            <td>Metodología científica para medir seguridad operativa.</td>
+            <td>
+                Preparación<br>
+                Recolección<br>
+                Análisis<br>
+                Métricas
+            </td>
+            <td>Medición cuantificable de seguridad.</td>
+            <td>Infraestructura y redes</td>
+            <td>Evaluación</td>
+            <td>ISECOM</td>
+            <td><a href="https://www.isecom.org/OSSTMM.3.pdf" target="_blank">OSSTMM</a></td>
+            <td>OPSA, OPST</td>
+            <td>Versión 3.0.2</td>
+        </tr>
+
+        <tr>
+            <td><strong>PTES</strong></td>
+            <td>Marco estructurado para pentesting completo.</td>
+            <td>
+                Pre-engagement<br>
+                Inteligencia<br>
+                Modelado<br>
+                Explotación<br>
+                Reporte
+            </td>
+            <td>Estandarizar el proceso de pentesting.</td>
+            <td>Empresas privadas</td>
+            <td>Ataque y evaluación</td>
+            <td>PTES Guidelines</td>
+            <td><a href="http://www.pentest-standard.org" target="_blank">pentest-standard.org</a></td>
+            <td>No directa</td>
+            <td>2014</td>
+        </tr>
+
+        <tr>
+            <td><strong>ISSAF</strong></td>
+            <td>Marco técnico estructurado por dominios de seguridad.</td>
+            <td>Diseño – Despliegue – Mantenimiento</td>
+            <td>Evaluación multicapa.</td>
+            <td>Infraestructura TI</td>
+            <td>Ataque y evaluación</td>
+            <td>OISSG</td>
+            <td><a href="http://www.oissg.org/issaf" target="_blank">issaf</a></td>
+            <td>No directa</td>
+            <td>Última publicación 2006</td>
+        </tr>
+
+    </table>
+</section>
+
+<section>
+    <h2>Material Audiovisual</h2>
+
+    <h3>¿Qué es Pentesting?</h3>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/q2t91jLmh3k"></iframe>
+    </div>
+
+    <h3>Más sobre MITRE ATT&CK</h3>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/WmQPtk3Ybxs&t=59s"></iframe>
+    </div>
+
+</section>
+
+
+<section id="conclusion">
+    <h2>Conclusión</h2>
+
+    <p>
+        Las metodologías MITRE ATT&CK, OWASP WSTG, NIST SP 800-115,
+        OSSTMM, PTES e ISSAF representan enfoques complementarios que
+        permiten fortalecer la postura de seguridad organizacional.
+    </p>
+
+    <p>
+        Su aplicación integrada mejora la resiliencia, permite detectar
+        vulnerabilidades de forma estructurada y favorece una cultura
+        preventiva frente a ciberataques.
+    </p>
+</section>
+
+<footer>
+    <p>Portafolio – Seguridad Informática</p>
+</footer>
+
+</body>
+</html>
