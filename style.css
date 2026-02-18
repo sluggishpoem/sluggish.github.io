@@ -209,4 +209,24 @@ th {
     background-color: #0ea5e9;
 }
 
+/* CARDS CLICKEABLES */
+.clickable-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.clickable-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+}
+
+.clickable-card h3 {
+    color: #38bdf8;
+}
+
+.clickable-card:hover h3 {
+    color: #0ea5e9;
+}
 
