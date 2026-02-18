@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad 06 – Implementación IPsec VPN</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Actividad 06 – Implementación IPsec VPN</h1>
+    <p class="alias">Seguridad Informática – Parcial 1</p>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#introduccion">Introducción</a></li>
+            <li><a href="#desarrollo">Desarrollo</a></li>
+            <li><a href="#conclusion">Conclusión</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>Información General</h2>
+    <p><strong>Universidad:</strong> Universidad Politécnica de San Luis Potosí</p>
+    <p><strong>Carrera:</strong> Ingeniería en Tecnologías de la Información</p>
+    <p><strong>Materia:</strong> Seguridad Informática</p>
+    <p><strong>Trabajo:</strong> Implementación IPsec VPN</p>
+    <p><strong>Alumno:</strong> Miguel Ángel Aguilar Carrizales</p>
+    <p><strong>Matrícula:</strong> 182318</p>
+    <p><strong>Fecha de entrega:</strong> 16 de febrero de 2026</p>
+
+    <br>
+
+    <a href="182318-act06.pdf" download>
+        <button>Descargar PDF Original</button>
+    </a>
+</section>
+
+<section id="introduccion">
+    <h2>Introducción</h2>
+
+    <p>
+        IPsec (Internet Protocol Security) es un conjunto de protocolos de seguridad 
+        que opera en la capa de red del modelo OSI y permite proteger el tráfico IP 
+        mediante el uso de cifrado y mecanismos de autenticación.
+    </p>
+
+    <p>
+        Al implementarse como una VPN (Virtual Private Network), IPsec crea un 
+        túnel seguro entre dos puntos —como sucursales de una empresa o un 
+        usuario remoto y una red corporativa— asegurando que la información 
+        transmitida no pueda ser interceptada ni modificada por terceros.
+    </p>
+
+    <p>
+        IPsec funciona mediante dos protocolos principales:
+    </p>
+
+    <ul>
+        <li><strong>ESP (Encapsulating Security Payload):</strong> Proporciona cifrado y protección de datos.</li>
+        <li><strong>AH (Authentication Header):</strong> Garantiza autenticación e integridad.</li>
+        <li><strong>IKE (Internet Key Exchange):</strong> Negocia claves criptográficas y asociaciones de seguridad.</li>
+    </ul>
+
+    <p>
+        Gracias a su alto nivel de seguridad y compatibilidad con múltiples dispositivos,
+        IPsec VPN es ampliamente utilizada en entornos empresariales.
+    </p>
+</section>
+
+<section id="desarrollo">
+    <h2>Desarrollo</h2>
+
+    <h3>1) Configuración inicial del equipo</h3>
+    <p>Se creó la topología en Packet Tracer basada en el diseño solicitado.</p>
+
+    <div class="img-container">
+      <img src="imgAct06P1/topologia.png" alt="Topología IPsec VPN">
+      <p>Figura 1. Topología utilizada en Packet Tracer para la implementación de IPsec VPN.</p>
+    </div>
+  
+    <ul>
+        <li>Configuración de Router 1</li>
+      <div class="img-container">
+        <img src="imgAct06P1/router1.png" alt="Configuración Router 1">
+        <p>Figura 2. Configuración inicial del Router 1.</p>
+      </div>
+
+        <li>Asignación de direcciones privadas y públicas</li>
+        <li>Configuración de ruta predeterminada hacia el ISP</li>
+        <li>Cambio de hostname para mejor organización</li>
+        <li>Repetición del proceso para Router 3 e ISP</li>
+      <div class="img-container">
+        <img src="imgAct06P1/router2.png" alt="Configuración Router 1">
+        <p>Figura 3. Configuración inicial del Router 3.</p>
+      </div>
+      <div class="img-container">
+        <img src="imgAct06P1/isp.png" alt="Configuración Router 1">
+        <p>Figura 4. Configuración inicial ISP.</p>
+      </div>
+    </ul>
+
+    <h3>2) Activación del paquete de seguridad</h3>
+      <div class="img-container">
+        <img src="imgAct06P1/licencias.png" alt="Activación de licencia de seguridad">
+        <p>Figura 5. Instalación y activación del paquete de seguridad.</p>
+    </div>
+
+    <p>
+        Se instaló y activó la licencia de seguridad necesaria para habilitar
+        funciones de IPsec. Esta configuración es indispensable para continuar
+        con la implementación.
+    </p>
+
+    <h3>3) Implementación de ACL’s</h3>
+    <div class="img-container">
+      <img src="imgAct06P1/acls.png" alt="Configuración de ACL">
+      <p>Figura 6. Implementación de Access Control Lists.</p>
+    </div>
+
+    <p>
+        Se crearon Access Control Lists en ambos routers para permitir el tráfico
+        entre las redes privadas específicas.
+    </p>
+
+    <h3>4) Phase 01 – ISAKMP Policy</h3>
+    <div class="img-container">
+      <img src="imgAct06P1/isakmp.png" alt="Configuración ISAKMP Policy">
+      <p>Figura 7. Configuración Phase 01 – ISAKMP Policy.</p>
+    </div>
+
+    <ul>
+        <li>Política número 10</li>
+        <li>Encriptación AES 256 bits</li>
+        <li>Autenticación pre-share</li>
+        <li>Grupo 5 para intercambio de claves</li>
+    </ul>
+
+    <h3>5) Phase 02 – IPsec Transform Set</h3>
+  <div class="img-container">
+    <img src="imgAct06P1/transformset.png" alt="Transform Set IPsec">
+    <p>Figura 8. Configuración Phase 02 – Transform Set.</p>
+  </div>
+
+    <ul>
+        <li>Configuración de clave compartida</li>
+        <li>Transform set con cifrado AES</li>
+        <li>Autenticación SHA</li>
+    </ul>
+
+    <h3>6) Creación del Mapa Criptográfico</h3>
+  <div class="img-container">
+    <img src="imgAct06P1/crearMapa.png" alt="Mapa criptográfico">
+    <p>Figura 9. Creación del Crypto Map.</p>
+  </div>
+
+    <ul>
+        <li>Secuencia 10</li>
+        <li>Definición de IP pública del peer remoto</li>
+        <li>Lifetime de 24 horas</li>
+        <li>Match address 100 (ACL creada)</li>
+    </ul>
+
+    <h3>7) Aplicación del Mapa Criptográfico</h3>
+
+  <div class="img-container">
+    <img src="imgAct06P1/aplicarMapa.png" alt="Aplicación del crypto map">
+    <p>Figura 10. Aplicación del mapa criptográfico en la interfaz.</p>
+  </div>
+
+    <p>
+        Se aplicó el crypto map en las interfaces correspondientes
+        y se verificó que las interfaces estuvieran activas.
+    </p>
+
+</section>
+
+<section>
+    <h2>Material Audiovisual</h2>
+
+    <h3>Que es IPsec</h3>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/XASX_ZIM4gs"></iframe>
+    </div>
+
+    <h3>Como funciona una VPN con IPSEC Site to Site</h3>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/7IBu0XC8rSg"></iframe>
+    </div>
+
+</section>
+  
+<section id="conclusion">
+    <h2>Conclusión</h2>
+
+    <p>
+        Los pasos realizados fueron fundamentales para lograr una correcta
+        implementación de una IPsec VPN en un entorno simulado.
+    </p>
+
+    <p>
+        La práctica en Packet Tracer permitió validar la configuración,
+        reforzar los conceptos teóricos y comprender cómo IPsec protege
+        la comunicación entre sedes empresariales.
+    </p>
+</section>
+
+<footer>
+    <p>Portafolio – Seguridad Informática</p>
+</footer>
+
+</body>
+</html>
