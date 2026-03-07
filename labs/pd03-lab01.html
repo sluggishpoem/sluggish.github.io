@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 01 </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 01</h1>
+       
+        <nav>
+            <ul>
+                <li><a href="pd03-intro.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 01 -->
+    <section id="lab">
+        <h2>Lab01: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Apprentice (Aprendiz)</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>SQLi clásica en la cláusula WHERE (Manipulación de lógica booleana)</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Modificar la consulta SQL para que la aplicación muestre todos los productos de una categoría específica, incluyendo aquellos que aún no han sido lanzados (released = 0).</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La vulnerabilidad ocurre porque la aplicación concatena directamente la entrada del usuario (el nombre de la categoría) en una consulta SQL sin sanitizarla ni usar consultas preparadas.</p>
+        
+        <p>La consulta original es:</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; overflow-x: auto;">SELECT * FROM products WHERE category = '[CATEGORÍA]' AND released = 1</pre>
+        
+        <p>Al no haber validación, un atacante puede cerrar la comilla simple del string de la categoría y añadir operadores lógicos (OR) que alteren la condición de la cláusula WHERE, haciendo que siempre devuelva "verdadero" (TRUE) y comentando el resto de la consulta original.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Acceder al laboratorio</strong> e interactuar con el filtro al seleccionar cualquier categoría de la lista (por ejemplo, "Gifts").
+            </li>
+            <li>
+                <strong>Abrir Burp Suite</strong>, asegurándose de que el Proxy esté activado e interceptar la petición que se ve así: 
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">GET /filter?category=Gifts</pre>
+            </li>
+            <li>
+                <strong>Modificar el parámetro</strong> enviando la petición al Repeater, cambiando el valor de category (Gifts) por el payload:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' OR 1=1--</pre>
+            </li>
+            <li>
+                <strong>Enviar y verificar</strong> que la respuesta HTTP 200 contiene muchos más productos de los que se veían originalmente, comprobándose al actualizarse la página.
+            </li>
+        </ol>
+
+        <h3>Payload utilizado</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">' OR 1=1--</pre>
+        
+        <h4>Explicación del payload</h4>
+        <ul>
+            <li><strong>'</strong> (Comilla simple): Rompe la cadena de texto (string) original en la consulta SQL.</li>
+            <li><strong>OR 1=1</strong>: Es una condición que siempre es verdadera. Como se usa el operador OR, no importa si la categoría existe o si released es 1; basta con que 1=1 sea cierto para que la base de datos devuelva todas las filas.</li>
+            <li><strong>--</strong> (Guion guion): Es el carácter de comentario en SQL (específicamente para bases de datos como PostgreSQL o MySQL). Esto hace que el resto de la consulta original (' AND released = 1) sea ignorado por el motor de base de datos.</li>
+        </ul>
+
+        <h3>Consulta final ejecutada</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE category = '' OR 1=1--' AND released = 1</pre>
+        <p>Todo lo que sigue a <strong>--</strong> se convierte en comentario, por lo que la condición <code>AND released = 1</code> es ignorada.</p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+        
+
+        <h3>Verificación del ataque</h3>
+        <p>Al enviar el payload <code>' OR 1=1--</code>, la aplicación muestra productos adicionales que antes estaban ocultos (aquellos con released = 0). Esto confirma que la inyección SQL fue exitosa y que la condición <code>AND released = 1</code> fue neutralizada.</p>
+        
+        <p>La respuesta HTTP 200 contiene un número significativamente mayor de productos en comparación con la solicitud original sin modificar, demostrando que la consulta SQL fue alterada exitosamente.</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        <p>La forma más efectiva de prevenir este ataque es dejar de concatenar strings y utilizar <strong>Consultas Preparadas (Parameterized Queries)</strong>.</p>
+        
+        <p>En lugar de construir la query manualmente, se define una estructura fija:</p>
+        
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE category = ? AND released = 1</pre>
+        
+        <p>El valor del usuario se pasa como un parámetro aislado, lo que impide que el motor de base de datos interprete caracteres especiales como <code>'</code> o <code>--</code> como parte de la lógica de ejecución.</p>
+        
+        <h4>Otras medidas de defensa:</h4>
+        <ul>
+            <li><strong>Validación de entradas:</strong> Permitir solo caracteres y formatos esperados (lista blanca).</li>
+            <li><strong>Principio de menor privilegio:</strong> La cuenta de base de datos debe tener permisos mínimos.</li>
+            <li><strong>Escapado de caracteres especiales:</strong> Aunque menos recomendado que las consultas preparadas, puede servir como defensa adicional.</li>
+            <li><strong>Uso de procedimientos almacenados:</strong> Implementados de forma segura, sin concatenación interna.</li>
+        </ul>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+        <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-intro.html" class="btn-blog">← Volver al roadmap</a>
+        <a href="pd03-lab02.html" class="btn-blog">Siguiente laboratorio (Lab 02) →</a>
+    </section>
+
+   <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+    </footer>
+</body>
+</html>
