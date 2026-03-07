@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR02 · Simulación Educativa de Phishing</title>
+    <title>PR02 · Punto 1: Análisis comparativo de plataformas anti-phishing</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Portafolio · Ciberseguridad</h1>
-        <p class="alias">I.A. · PR02: Simulación educativa de phishing</p>
+      
         <nav>
             <ul>
                 <li><a href="#marco">Marco teórico</a></li>
+                <li><a href="#fichas">Fichas descriptivas</a></li>
                 <li><a href="#tabla">Tabla comparativa</a></li>
-                <li><a href="#analisis">Análisis</a></li>
-                <li><a href="#quiz">Phishing Quiz</a></li>
-                <li><a href="#score">Score global</a></li>
+                <li><a href="#conclusion">Conclusiones</a></li>
             </ul>
         </nav>
     </header>
@@ -24,8 +22,9 @@
     <!-- MARCO TEÓRICO Y FUNDAMENTACIÓN TÉCNICA -->
     <section id="marco">
         <h2>01. Marco teórico y fundamentación técnica</h2>
-        <p>La ingeniería social constituye una de las amenazas más críticas en ciberseguridad, siendo el phishing el vector más frecuente. Plataformas como Hoxhunt, Proofpoint, KnowBe4, Cofense, Phished, NINJIO, Mimecast e Infosec IQ han desarrollado soluciones de simulación para medir y mejorar la resiliencia humana. A continuación se describen las principales métricas y enfoques:</p>
-        
+      <!--<p>La ingeniería social constituye una de las amenazas más críticas en ciberseguridad, siendo el phishing el vector más frecuente. Plataformas como Hoxhunt, Proofpoint, KnowBe4, Cofense, Phished, NINJIO, Mimecast e Infosec IQ han desarrollado soluciones de simulación para medir y mejorar la resiliencia humana. A continuación se describen las principales métricas y enfoques:</p>-->
+      <p>La seguridad informática ha evolucionado más allá de la protección perimetral y tecnológica, reconociendo al factor humano como un eslabón crítico en la cadena de defensa. En este contexto, la ingeniería social, y particularmente el phishing, se posiciona como una de las amenazas más efectivas y difíciles de mitigar, ya que explota la confianza, la curiosidad o el miedo de las personas para vulnerar sistemas.
+        A continuación se describen las principales métricas y enfoques:</p>
         <h3>Métricas clave en simulación de phishing</h3>
         <ul>
             <li><strong>Click rate:</strong> porcentaje de usuarios que hacen clic en un enlace malicioso simulado. Indica vulnerabilidad inmediata.</li>
@@ -45,9 +44,80 @@
         <p><strong>Ética y privacidad:</strong> todas las plataformas incorporan consentimiento informado, anonimización de datos y no captura de credenciales reales en simulaciones, alineándose con el objetivo de gestión responsable del riesgo humano.</p>
     </section>
 
+    <!-- FICHAS DESCRIPTIVAS DE LAS 8 PLATAFORMAS -->
+    <section id="fichas">
+        <h2>02. Fichas descriptivas de las plataformas</h2>
+        
+        <div class="blog-container">
+            <!-- Hoxhunt -->
+            <div class="blog-card">
+                <h3>Hoxhunt</h3>
+                <p><strong>Capacidades:</strong> Simulaciones gamificadas, micro-entrenamiento, reporting rate, risk score individual. Integración con Slack/Teams. Énfasis en cambiar comportamiento mediante refuerzo positivo.</p>
+                <p><strong>Métricas:</strong> Click rate, reporting rate, riesgo por usuario.</p>
+                <p><strong>Enfoque ético:</strong> Consentimiento explícito, datos anonimizados, no captura de credenciales.</p>
+            </div>
+            
+            <!-- Proofpoint -->
+            <div class="blog-card">
+                <h3>Proofpoint</h3>
+                <p><strong>Capacidades:</strong> Plataforma enterprise con Threat Response Engine (TRE), VAP (Very Attacked Persons), integración nativa con SEG y SIEM.</p>
+                <p><strong>Métricas:</strong> Click tracking, VAP score, reporting rate.</p>
+                <p><strong>Enfoque ético:</strong> Pseudonimización, opt-out, cumplimiento GDPR.</p>
+            </div>
+            
+            <!-- KnowBe4 -->
+            <div class="blog-card">
+                <h3>KnowBe4</h3>
+                <p><strong>Capacidades:</strong> Mayor biblioteca formativa del mercado, simulaciones personalizables, training compliance, risk score.</p>
+                <p><strong>Métricas:</strong> Phish-prone percentage, risk score, training compliance.</p>
+                <p><strong>Enfoque ético:</strong> Políticas de privacidad estrictas, anonimización.</p>
+            </div>
+            
+            <!-- Cofense -->
+            <div class="blog-card">
+                <h3>Cofense</h3>
+                <p><strong>Capacidades:</strong> Red global de reportes de usuarios, PhishAlarm, inteligencia colectiva, detección temprana.</p>
+                <p><strong>Métricas:</strong> Phish detection rate, Time to Report (TTR), reporter reputation.</p>
+                <p><strong>Enfoque ético:</strong> Doble opt-in, datos agregados, transparencia.</p>
+            </div>
+            
+            <!-- Phished -->
+            <div class="blog-card">
+                <h3>Phished</h3>
+                <p><strong>Capacidades:</strong> Campañas automáticas basadas en IA, evaluación continua, risk score individual, entrenamiento personalizado.</p>
+                <p><strong>Métricas:</strong> Risk score, click rate, reporting rate.</p>
+                <p><strong>Enfoque ético:</strong> GDPR nativo, consentimiento granular, minimalidad de datos.</p>
+            </div>
+            
+            <!-- NINJIO -->
+            <div class="blog-card">
+                <h3>NINJIO</h3>
+                <p><strong>Capacidades:</strong> Storytelling mediante vídeos atractivos, conexión emocional, quizzes interactivos.</p>
+                <p><strong>Métricas:</strong> Visualización de episodios, quiz scores.</p>
+                <p><strong>Enfoque ético:</strong> Privacidad en producción de contenido, anonimización.</p>
+            </div>
+            
+            <!-- Mimecast -->
+            <div class="blog-card">
+                <h3>Mimecast</h3>
+                <p><strong>Capacidades:</strong> Simulación integrada en gateway de correo, threat intelligence, user risk rating.</p>
+                <p><strong>Métricas:</strong> User risk rating, click rate, reporting rate.</p>
+                <p><strong>Enfoque ético:</strong> Encriptación, políticas de retención, consentimiento.</p>
+            </div>
+            
+            <!-- Infosec IQ -->
+            <div class="blog-card">
+                <h3>Infosec IQ</h3>
+                <p><strong>Capacidades:</strong> Aprendizaje adaptativo, role-playing, phishing predictions, biblioteca extensa.</p>
+                <p><strong>Métricas:</strong> Risk rating, learning progress, phishing predictions.</p>
+                <p><strong>Enfoque ético:</strong> Certificaciones de privacidad, transparencia algorítmica.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- TABLA TÉCNICA COMPARATIVA -->
     <section id="tabla">
-        <h2>02. Tabla técnica comparativa</h2>
+        <h2>03. Tabla técnica comparativa</h2>
         <table>
             <thead>
                 <tr>
@@ -71,23 +141,7 @@
         </table>
     </section>
 
-    
-
-    <!-- REFERENCIAS APA 7 -->
-    <section>
-        <h2>Referencias bibliográficas (APA 7)</h2>
-        <ul>
-            <li>Cofense. (2023). <em>Phishing defense and threat intelligence</em>. https://www.cofense.com</li>
-            <li>Hoxhunt. (2024). <em>Human risk management platform</em>. https://www.hoxhunt.com</li>
-            <li>Infosec. (2023). <em>Infosec IQ adaptive learning</em>. https://www.infosecinstitute.com</li>
-            <li>KnowBe4. (2024). <em>Security awareness training & simulated phishing</em>. https://www.knowbe4.com</li>
-            <li>Mimecast. (2023). <em>Email security and awareness</em>. https://www.mimecast.com</li>
-            <li>NINJIO. (2024). <em>Cybersecurity awareness through storytelling</em>. https://www.ninjio.com</li>
-            <li>Phished. (2023). <em>AI-driven phishing simulations</em>. https://www.phished.io</li>
-            <li>Proofpoint. (2024). <em>People-centric security</em>. https://www.proofpoint.com</li>
-        </ul>
-    </section>
-   <!-- CONCLUSIONES DEL ANÁLISIS COMPARATIVO -->
+    <!-- CONCLUSIONES DEL ANÁLISIS COMPARATIVO -->
     <section id="conclusion">
         <h2>04. Conclusiones del análisis comparativo</h2>
         <p>Tras analizar en profundidad las ocho plataformas líderes en simulación de phishing, se pueden extraer las siguientes conclusiones:</p>
@@ -122,6 +176,22 @@
 
         <p>En todos los casos, los controles éticos como el consentimiento informado, la anonimización de datos y la no captura de credenciales reales son elementos fundamentales que todas las plataformas cumplen, permitiendo una gestión responsable del riesgo humano sin vulnerar la privacidad de los participantes.</p>
     </section>
-    
+
+    <!-- REFERENCIAS APA 7 -->
+    <section>
+        <h2>Referencias bibliográficas (APA 7)</h2>
+        <ul>
+            <li>Cofense. (2023). <em>Phishing defense and threat intelligence</em>. https://www.cofense.com</li>
+            <li>Hoxhunt. (2024). <em>Human risk management platform</em>. https://www.hoxhunt.com</li>
+            <li>Infosec. (2023). <em>Infosec IQ adaptive learning</em>. https://www.infosecinstitute.com</li>
+            <li>KnowBe4. (2024). <em>Security awareness training & simulated phishing</em>. https://www.knowbe4.com</li>
+            <li>Mimecast. (2023). <em>Email security and awareness</em>. https://www.mimecast.com</li>
+            <li>NINJIO. (2024). <em>Cybersecurity awareness through storytelling</em>. https://www.ninjio.com</li>
+            <li>Phished. (2023). <em>AI-driven phishing simulations</em>. https://www.phished.io</li>
+            <li>Proofpoint. (2024). <em>People-centric security</em>. https://www.proofpoint.com</li>
+        </ul>
+    </section>
+
+  
 </body>
 </html>
