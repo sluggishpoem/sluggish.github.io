@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 04 t</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab04</h1>
+     
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 04 -->
+    <section id="lab">
+        <h2>Lab04: SQL injection attack, querying the database type and version on MySQL and Microsoft</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>SQL Injection basado en UNION</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Mostrar la cadena con la versión de la base de datos para resolver el laboratorio.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>El filtro de categoría de productos es vulnerable a inyecciones SQL. La aplicación no valida ni maneja la entrada del usuario en el parámetro category, lo que permite al atacante modificar la consulta SQL original.</p>
+        
+        <p>Para MySQL y Microsoft SQL Server, la función que devuelve la versión es <strong>@@version</strong>.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Iniciar Burp Suite</strong> y activar la interceptación en la pestaña Proxy. Seleccionar una categoría (por ejemplo, "Accessories") y enviar la petición al Repeater.
+            </li>
+            <li>
+                <strong>Determinar el número de columnas</strong> probando payloads de UNION SELECT:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">' UNION SELECT NULL--</pre>
+                <p>Si da error, se añaden más NULL hasta que la página cargue normalmente:</p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT NULL,NULL--</pre>
+                <p>Cuando la página carga sin errores, se ha determinado que la consulta original devuelve 2 columnas.</p>
+            </li>
+            <li>
+                <strong>Confirmar que podemos observar resultados</strong> usando valores de prueba:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT 'abc','def'#</pre>
+                <p>En MySQL, el carácter de comentario puede ser <strong>#</strong> además de <strong>--</strong>.</p>
+            </li>
+            <li>
+                <strong>Extraer la versión</strong> utilizando la función @@version:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT @@version, NULL#</pre>
+                <p>La función <strong>@@version</strong> devuelve la versión completa de MySQL o Microsoft SQL Server.</p>
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload 1 (prueba de columnas)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT 'abc','def'#</pre>
+        
+        <h4>Payload 2 (extracción de versión)</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">' UNION SELECT @@version, NULL#</pre>
+        
+        <h4>Explicación del payload</h4>
+        <ul>
+            <li><strong>'</strong>: Cierra la cadena de la categoría original.</li>
+            <li><strong>UNION SELECT</strong>: Combina los resultados de la consulta legítima con los de la consulta maliciosa.</li>
+            <li><strong>@@version</strong>: Variable global en MySQL y Microsoft SQL Server que contiene la información de la versión.</li>
+            <li><strong>NULL</strong>: Completa el número de columnas requerido (2 columnas en total).</li>
+            <li><strong>#</strong>: Carácter de comentario en MySQL. Anula el resto de la consulta original.</li>
+        </ul>
+
+        <h4>Explicación detallada del payload de prueba</h4>
+        <ul>
+            <li><strong>' UNION SELECT 'abc','def'#</strong>: Las cadenas 'abc' y 'def' se usan para confirmar qué columnas aceptan texto y se muestran en la respuesta. Si vemos estas cadenas en la página, sabemos que podemos inyectar datos alfanuméricos en esas posiciones.</li>
+        </ul>
+
+        <h3>Consulta final ejecutada</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE category = '' UNION SELECT @@version, NULL#' AND released = 1</pre>
+        <p>La consulta devuelve los productos de la categoría original más el resultado de @@version, mostrando la versión de la base de datos en la respuesta HTTP.</p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+      
+
+        <h3>Verificación del ataque</h3>
+        <p>Al enviar el payload <code>' UNION SELECT @@version, NULL#</code>, la respuesta HTTP muestra, junto a los productos de la categoría, la información de la versión de MySQL, típicamente con un formato como:</p>
+        
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">8.0.27-0ubuntu0.20.04.1</pre>
+        
+        <p>Esto confirma que la inyección SQL fue exitosa y que se ha podido enumerar información del sistema de la base de datos.</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los comandos SQL inyectados se tratan como simples datos de texto y no como código ejecutable.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE category = ? AND released = 1</pre>
+        
+        <h4>Validación de entrada</h4>
+        <p>Permitir solo caracteres esperados para el parámetro de categoría (lista blanca).</p>
+        
+        <h4>Ocultar errores de base de datos</h4>
+        <p>No mostrar detalles de errores al usuario. Configurar mensajes genéricos y guardar los detalles en logs internos.</p>
+        
+        <h4>Mínimos privilegios</h4>
+        <p>La cuenta de base de datos debe tener permisos estrictamente necesarios, limitando el acceso a tablas del sistema.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+         <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab03.html" class="btn-blog">← Laboratorio anterior (Lab 03)</a>
+        <a href="pd03-lab05.html" class="btn-blog">Siguiente laboratorio (Lab 05) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
