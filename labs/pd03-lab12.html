@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 12</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 12</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 12 -->
+    <section id="lab">
+        <h2>Lab12: Blind SQL injection with conditional responses (data extraction)</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Blind SQL Injection Boolean-based con extracción de información</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Extraer la contraseña del usuario <strong>administrator</strong> utilizando una técnica de SQL Injection ciega basada en respuestas condicionales (aparición del mensaje "Welcome back" en la página).</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La cookie <strong>TrackingId</strong> es vulnerable a inyección SQL. La aplicación no muestra directamente los resultados de las consultas, pero cambia el contenido de la página dependiendo de si la condición SQL es verdadera o falsa, mostrando el mensaje <strong>"Welcome back"</strong> cuando la condición es verdadera.</p>
+        
+        <p>Esto permite a un atacante realizar múltiples consultas booleanas para descubrir la contraseña del usuario administrador carácter por carácter, mediante un proceso de inferencia.</p>
+        
+        <p>A diferencia del laboratorio anterior, aquí se realiza la extracción completa de la contraseña utilizando herramientas como Burp Intruder para automatizar el proceso.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Interceptar la petición</strong> con Burp Suite Proxy y enviarla al Repeater.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET / HTTP/1.1
+Cookie: TrackingId=xyz123</pre>
+            </li>
+            <li>
+                <strong>Identificar la cookie vulnerable</strong> TrackingId como punto de inyección.
+            </li>
+            <li>
+                <strong>Confirmar la vulnerabilidad</strong> probando condiciones booleanas:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND '1'='1</pre>
+                <p>Se observa el mensaje "Welcome back".</p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND '1'='2</pre>
+                <p>El mensaje "Welcome back" desaparece, confirmando la vulnerabilidad.</p>
+            </li>
+            <li>
+                <strong>Determinar la longitud de la contraseña</strong> del usuario administrator utilizando consultas SQL:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)=1)='a</pre>
+                <p>Se incrementa el número (2, 3, 4, etc.) hasta que el mensaje "Welcome back" aparece. Cuando aparece, se ha encontrado la longitud exacta.</p>
+                <p>Para este laboratorio, la contraseña tiene <strong>20 caracteres</strong>.</p>
+            </li>
+            <li>
+                <strong>Utilizar la función SUBSTRING()</strong> para comparar cada carácter de la contraseña:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a</pre>
+            </li>
+            <li>
+                <strong>Automatizar el proceso mediante Burp Intruder</strong>:
+                <ul>
+                    <li>Enviar la petición al Intruder.</li>
+                    <li>Marcar como payload la posición del carácter (por ejemplo, 1,1) y el carácter a probar.</li>
+                    <li>Configurar el tipo de payload: números para la posición y caracteres para el valor.</li>
+                    <li>Probar caracteres alfanuméricos (a-z, 0-9).</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Identificar los caracteres correctos</strong>: Cuando la respuesta del servidor muestre el mensaje "Welcome back", se confirma que el carácter probado es correcto.
+            </li>
+            <li>
+                <strong>Repetir el proceso para cada posición</strong> (1 a 20) hasta obtener la contraseña completa.
+            </li>
+            <li>
+                <strong>Iniciar sesión</strong> con las credenciales obtenidas del usuario administrator.
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload para determinar longitud</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)=20)='a</pre>
+        
+        <h4>Payload para extraer caracteres</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a</pre>
+        
+        <h4>Explicación de los payloads</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>AND</strong>: Permite agregar una condición adicional a la consulta SQL.</li>
+            <li><strong>(SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)=20)</strong>: Subconsulta que devuelve 'a' solo si existe el usuario administrator y su contraseña tiene longitud 20.</li>
+            <li><strong>='a'</strong>: Compara el resultado de la subconsulta con 'a'. Si la subconsulta devuelve 'a', la condición es verdadera y aparece "Welcome back".</li>
+            <li><strong>SUBSTRING(password,1,1)</strong>: Extrae el primer carácter de la contraseña. Se cambia el primer número para cada posición (2,1; 3,1; etc.).</li>
+            <li><strong>='a'</strong>: Compara el carácter extraído con el carácter que se está probando.</li>
+        </ul>
+
+        <h4>Proceso con Burp Intruder</h4>
+        <ul>
+            <li><strong>Payload position 1:</strong> Número de posición (1-20).</li>
+            <li><strong>Payload position 2:</strong> Carácter a probar (a-z, 0-9).</li>
+            <li><strong>Resource pool:</strong> Configurar con 1 hilo para evitar interferencias por delays.</li>
+            <li><strong>Filtro de resultados:</strong> Buscar respuestas que contengan "Welcome back".</li>
+        </ul>
+        
+        <p>Ejemplo de contraseña extraída: <strong>8fg5h2j1k4m9p3q7r2s5</strong></p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+    
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirma cuando se logra reconstruir la contraseña completa del usuario administrator mediante las respuestas condicionales.</p>
+        
+        <p>Una vez obtenida la contraseña (por ejemplo, "8fg5h2j1k4m9p3q7r2s5"), se introduce en el formulario de login junto con el usuario "administrator" y se accede al panel de administración, demostrando que:</p>
+        <ul>
+            <li>La inyección SQL ciega permite extraer información sensible sin ver resultados directos.</li>
+            <li>La técnica booleana es efectiva incluso cuando la aplicación no muestra datos.</li>
+            <li>Herramientas como Burp Intruder automatizan eficientemente el proceso de extracción.</li>
+        </ul>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al iniciar sesión como administrator y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte de la estructura SQL, bloqueando cualquier intento de inyección.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible (alfanumérico de longitud fija), rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Eliminar Respuestas Condicionales</h4>
+        <p>Modificar la aplicación para que no muestre contenido diferente basado en resultados de consultas a la base de datos. El mensaje "Welcome back" debería mostrarse de forma consistente o no mostrarse en absoluto, independientemente del TrackingId.</p>
+        
+        <h4>Límite de Intentos</h4>
+        <p>Implementar mecanismos de rate limiting que detecten y bloqueen múltiples peticiones con diferentes TrackingId en un corto período de tiempo, dificultando ataques de fuerza bruta como los realizados con Intruder.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de manipulación de cookies y subconsultas condicionales.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos utilizada por la aplicación debe tener permisos mínimos, limitando el acceso a las tablas necesarias.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+        <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab11.html" class="btn-blog">← Laboratorio anterior (Lab 11)</a>
+        <a href="pd03-lab13.html" class="btn-blog">Siguiente laboratorio (Lab 13) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+    </footer>
+</body>
+</html>
