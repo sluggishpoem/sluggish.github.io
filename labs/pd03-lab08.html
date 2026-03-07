@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 08</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 08</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 08 -->
+    <section id="lab">
+        <h2>Lab08: SQL injection UNION attack, finding a column containing text</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>SQL Injection UNION-based (con prueba de tipo de datos)</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Descubrir qué columna(s) son compatibles con datos de tipo string (texto). El laboratorio proporciona un valor específico que debe aparecer en la respuesta, por ejemplo: <strong>'nB5HqL'</strong>.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>El parámetro de categoría de productos se concatena directamente en la consulta SQL sin validación ni sanitización. La aplicación devuelve los resultados directamente en la respuesta HTTP, lo que permite realizar ataques UNION para identificar los tipos de datos de cada columna.</p>
+        
+        <p>Una vez conocido el número de columnas (determinado en el laboratorio anterior), es necesario identificar qué columna(s) aceptan datos de tipo texto, ya que será a través de esas columnas donde se puedan visualizar los datos extraídos en ataques posteriores.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Partir del número de columnas conocido</strong>. Del laboratorio anterior sabemos que la consulta original devuelve 2 columnas.
+            </li>
+            <li>
+                <strong>Interceptar la petición</strong> con Burp Suite y enviarla al Repeater.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET /filter?category=Gifts HTTP/1.1</pre>
+            </li>
+            <li>
+                <strong>Probar con un payload que coloque un string en la primera columna</strong> y NULL en las demás:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT 'abcdef', NULL--</pre>
+                <p>Si la primera columna acepta texto, veremos la cadena 'abcdef' en algún lugar de la respuesta.</p>
+            </li>
+            <li>
+                <strong>Si no aparece, probar con el string en la segunda columna</strong>:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT NULL, 'abcdef'--</pre>
+            </li>
+            <li>
+                <strong>Identificar la columna que muestra el texto</strong>. Para este laboratorio, se encuentra que la segunda columna es la que acepta texto y muestra el valor inyectado.
+            </li>
+            <li>
+                <strong>Reemplazar 'abcdef' por el valor proporcionado en el laboratorio</strong> (por ejemplo, 'nB5HqL'):
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT NULL, 'nB5HqL'--</pre>
+            </li>
+            <li>
+                <strong>Verificar</strong> que el valor aparece en la respuesta, resolviendo así el laboratorio.
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload de prueba (primera columna)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT 'abcdef', NULL--</pre>
+        
+        <h4>Payload de prueba (segunda columna)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">' UNION SELECT NULL, 'abcdef'--</pre>
+        
+        <h4>Payload final con el valor del laboratorio</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">' UNION SELECT NULL, 'nB5HqL'--</pre>
+        
+        <h4>Explicación de los payloads</h4>
+        <ul>
+            <li><strong>'</strong>: Cierra la cadena de la categoría original.</li>
+            <li><strong>UNION SELECT</strong>: Combina los resultados de la consulta legítima con los de nuestra consulta maliciosa.</li>
+            <li><strong>'abcdef'</strong>: Cadena de texto de prueba que colocamos en diferentes posiciones para identificar qué columna acepta strings.</li>
+            <li><strong>NULL</strong>: Se usa en las columnas que no estamos probando para mantener el número correcto de columnas sin generar errores de tipo.</li>
+            <li><strong>'nB5HqL'</strong>: Valor específico proporcionado por el laboratorio que debe aparecer en la respuesta.</li>
+            <li><strong>--</strong>: Comenta el resto de la consulta original para evitar errores de sintaxis.</li>
+        </ul>
+
+        <h4>Proceso de identificación</h4>
+        <ul>
+            <li><strong>Primera prueba</strong>: ' UNION SELECT 'abcdef', NULL-- → El texto no aparece en la respuesta (la columna 1 probablemente es numérica).</li>
+            <li><strong>Segunda prueba</strong>: ' UNION SELECT NULL, 'abcdef'-- → El texto 'abcdef' aparece en la respuesta (la columna 2 acepta texto).</li>
+            <li><strong>Conclusión</strong>: La columna 2 es compatible con strings.</li>
+        </ul>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+     
+
+        <h3>Verificación del ataque</h3>
+        <p>Al enviar el payload con el valor proporcionado en la columna correcta, la respuesta HTTP muestra ese valor específico en la página, típicamente en la sección donde se renderizan los productos o en algún elemento de la interfaz.</p>
+        
+        <p>Por ejemplo, si el laboratorio proporciona el valor <strong>'nB5HqL'</strong>, al inyectar <code>' UNION SELECT NULL, 'nB5HqL'--</code> veremos ese texto aparecer en la respuesta, confirmando que:</p>
+        <ul>
+            <li>La columna 2 acepta datos de tipo texto.</li>
+            <li>Podemos inyectar y visualizar strings arbitrarios en esa posición.</li>
+            <li>El laboratorio se resuelve porque el valor requerido aparece en la respuesta.</li>
+        </ul>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte de la estructura SQL.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM products WHERE category = ? AND released = 1</pre>
+        
+        <h4>Validación Estricta de Entradas</h4>
+        <p>El parámetro de categoría debe aceptar únicamente valores válidos predefinidos (lista blanca). Por ejemplo, solo permitir las categorías existentes: 'Gifts', 'Lifestyle', 'Accessories', etc.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos utilizada por la aplicación debe tener permisos mínimos. Solo debe acceder a las tablas necesarias para mostrar productos y categorías, limitando el acceso a información sensible.</p>
+        
+        <h4>Gestión de Errores Controlada</h4>
+        <p>Configurar la aplicación para que no muestre mensajes de error detallados al usuario. Los errores deben registrarse internamente.</p>
+        
+        <h4>Tipado Fuerte en la Aplicación</h4>
+        <p>En el código de la aplicación, forzar que los parámetros de entrada tengan el tipo esperado (por ejemplo, enteros para IDs, strings con validación de formato).</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+         <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab07.html" class="btn-blog">← Laboratorio anterior (Lab 07)</a>
+        <a href="pd03-lab09.html" class="btn-blog">Siguiente laboratorio (Lab 09) →</a>
+    </section>
+
+    <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+        <p>GitHub: <a href="https://github.com/sluggishpoem" target="_blank">github.com/sluggishpoem</a></p>
+    </footer>
+</body>
+</html>
