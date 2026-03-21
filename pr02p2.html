@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>📧 Phishing Quiz Educativo</h1>
+        <h1>Phishing Quiz Educativo</h1>
         <p class="alias">Simulación de Ingeniería Social · Aprende a detectar amenazas</p>
         <nav>
             <ul>
@@ -23,20 +23,20 @@
         <!-- Pantalla de consentimiento informado y advertencia ética -->
         <div id="consentScreen">
             <div class="ethics-card">
-                <h1>🎓 Simulación Educativa de Phishing</h1>
-                <div class="ethics-badge">⚖️ Entorno Ético · Sin captura de credenciales reales</div>
+                <h1>Simulación Educativa de Phishing</h1>
+                <div class="ethics-badge">Entorno Ético · Sin captura de credenciales reales</div>
                 <p>Este <strong>Phishing Quiz</strong> tiene fines exclusivamente educativos y forma parte de un proyecto de ciberseguridad para medir el reconocimiento de amenazas de ingeniería social.</p>
                 <ul class="ethics-list">
-                    <li>✅ <strong>No se capturan ni almacenan credenciales reales</strong> — todas las interacciones son simuladas.</li>
-                    <li>✅ <strong>Consentimiento informado:</strong> tu participación es voluntaria y los resultados son anónimos agregados.</li>
-                    <li>✅ <strong>Retroalimentación formativa:</strong> cada respuesta te ayudará a reconocer amenazas de ingeniería social.</li>
-                    <li>✅ <strong>Privacidad:</strong> solo se registra un alias/nombre de participante y la puntuación para el ranking.</li>
+                    <li>No se capturan ni almacenan credenciales reales — todas las interacciones son simuladas.</li>
+                    <li>Consentimiento informado: tu participación es voluntaria y los resultados son anónimos agregados.</li>
+                    <li>Retroalimentación formativa: cada respuesta te ayudará a reconocer amenazas de ingeniería social.</li>
+                    <li>Privacidad: solo se registra un alias/nombre de participante y la puntuación para el ranking.</li>
                 </ul>
                 <div class="form-group">
                     <label for="participantName">Tu nombre o alias (para ranking y score global):</label>
                     <input type="text" id="participantName" placeholder="Ej: Ana Torres, CiberSafe23" maxlength="40">
                 </div>
-                <button id="startQuizBtn" class="btn-primary">✓ Aceptar y comenzar quiz</button>
+                <button id="startQuizBtn" class="btn-primary">Aceptar y comenzar quiz</button>
                 <p class="small-note">Al hacer clic aceptas participar en esta simulación ética sin proporcionar información sensible real.</p>
             </div>
         </div>
@@ -50,7 +50,7 @@
                         <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                     </div>
                 </div>
-                <div class="score-header">🎯 Puntaje: <span id="currentScore">0</span> / <span id="maxScore">100</span></div>
+                <div class="score-header">Puntaje: <span id="currentScore">0</span> / <span id="maxScore">100</span></div>
             </div>
 
             <div id="questionContainer">
@@ -58,30 +58,29 @@
             </div>
 
             <div class="quiz-footer">
-                <button id="nextBtn" class="btn-next" disabled>Siguiente escenario →</button>
+                <button id="nextBtn" class="btn-next" disabled>Siguiente escenario</button>
             </div>
         </div>
 
         <!-- Pantalla de resultados finales -->
         <div id="resultsScreen" style="display: none;">
             <div class="results-card">
-                <h2>📊 Resultados del Phishing Quiz</h2>
+                <h2>Resultados del Phishing Quiz</h2>
                 <div id="individualResult" class="individual-score"></div>
                 
                 <div class="global-ranking">
-                    <h3>🏆 Score Global · Ranking de participantes</h3>
+                    <h3>Score Global · Ranking de participantes</h3>
                     <div id="rankingTable" class="ranking-table-container"></div>
                     <p class="ranking-note">* Solo se almacena el alias y puntuación final. Sin datos sensibles.</p>
                 </div>
 
                 <div class="performance-analysis">
-                    <h4>📈 Análisis de desempeño y vulnerabilidades</h4>
+                    <h4>Análisis de desempeño y vulnerabilidades</h4>
                     <div id="analysisText" class="analysis-text"></div>
                     <div id="slowestScenario" class="slow-scenario"></div>
                 </div>
 
-                <button id="restartQuizBtn" class="btn-restart">🔄 Realizar nuevo intento</button>
-                <button id="downloadReportBtn" class="btn-secondary">📄 Descargar mi reporte</button>
+                <button id="restartQuizBtn" class="btn-restart">Realizar nuevo intento</button>
             </div>
         </div>
     </section>
@@ -95,72 +94,72 @@
         const scenarios = [
             { 
                 id: 1,
-                text: "Recibes un correo del 'Departamento de TI' con asunto: '⚠️ Acceso restringido: verifica tu cuenta ahora'. El remitente es 'soporte@tuempresa-seguridad.com' y el mensaje incluye un botón que dice 'Verificar identidad' pidiendo tu contraseña corporativa. ¿Esto es phishing?",
+                text: "Recibes un correo del 'Departamento de TI' con asunto: 'Acceso restringido: verifica tu cuenta ahora'. El remitente es 'soporte@tuempresa-seguridad.com' y el mensaje incluye un botón que dice 'Verificar identidad' pidiendo tu contraseña corporativa. ¿Esto es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es phishing. Los departamentos de TI legítimos nunca solicitan contraseñas por correo electrónico. El dominio es sospechoso y la urgencia es una táctica común de ingeniería social.",
+                feedback: "Correcto. Es phishing. Los departamentos de TI legítimos nunca solicitan contraseñas por correo electrónico. El dominio es sospechoso y la urgencia es una táctica común de ingeniería social.",
                 vector: "Suplantación de identidad + urgencia"
             },
             { 
                 id: 2,
                 text: "Recibes un SMS que dice: 'Banco Nación: Tu tarjeta fue bloqueada por un intento de compra sospechosa. Ingresa aquí: https://banc0-seguro.xyz/verificar para restaurar acceso.' ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es smishing (phishing por SMS). Los bancos no envían enlaces de verificación por mensajes de texto no solicitados. El dominio es falso.",
+                feedback: "Correcto. Es smishing (phishing por SMS). Los bancos no envían enlaces de verificación por mensajes de texto no solicitados. El dominio es falso.",
                 vector: "Smishing + urgencia financiera"
             },
             {
                 id: 3,
-                text: "Correo de 'Recursos Humanos' con asunto: '¡Bono especial fin de año!' Adjunto llamado 'Bono_2025.pdf.exe'. El mensaje dice que abras el archivo para ver los detalles de tu bono. ¿Es phishing?",
+                text: "Correo de 'Recursos Humanos' con asunto: 'Bono especial fin de año' Adjunto llamado 'Bono_2025.pdf.exe'. El mensaje dice que abras el archivo para ver los detalles de tu bono. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es phishing. El adjunto es un ejecutable malicioso disfrazado de PDF. Los archivos legítimos de RRHH son PDF reales, no archivos .exe.",
+                feedback: "Correcto. Es phishing. El adjunto es un ejecutable malicioso disfrazado de PDF. Los archivos legítimos de RRHH son PDF reales, no archivos .exe.",
                 vector: "Adjunto malicioso (ejecutable disfrazado)"
             },
             {
                 id: 4,
                 text: "Te llega un mensaje por Teams de tu jefe directo diciendo: 'Hola, ¿me ayudas? Estoy en una reunión importante y necesito que compres una tarjeta de regalo de $500, te reembolso luego. Aquí está el enlace: https://giftcards-fake.com/urgent' ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es spear phishing. Los atacantes pueden suplantar cuentas de colaboradores. Las solicitudes de compras urgentes de tarjetas de regalo son una estafa clásica.",
+                feedback: "Correcto. Es spear phishing. Los atacantes pueden suplantar cuentas de colaboradores. Las solicitudes de compras urgentes de tarjetas de regalo son una estafa clásica.",
                 vector: "Spear phishing + suplantación de identidad"
             },
             {
                 id: 5,
                 text: "Correo de 'Soporte Microsoft' con logotipos oficiales: 'Su contraseña expirará en 24 horas. Mantenga su acceso actualizándola aquí.' El enlace es https://login.microsoftonline.com.secure-verify.com. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es phishing. El dominio real es 'secure-verify.com', no Microsoft. Los atacantes usan subdominios para engañar.",
+                feedback: "Correcto. Es phishing. El dominio real es 'secure-verify.com', no Microsoft. Los atacantes usan subdominios para engañar.",
                 vector: "Suplantación de marca + dominio engañoso"
             },
             {
                 id: 6,
                 text: "Recibes un correo de un proveedor habitual con quien trabajas: 'Adjunto factura del mes. Saludos.' El archivo adjunto es 'Factura_1234.pdf' y la dirección del remitente coincide exactamente con la que usan siempre. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "✅ Correcto. No es phishing aparentemente. Si el remitente es el habitual, el dominio coincide y el adjunto es un PDF legítimo, probablemente es un correo real. Siempre verifica con el proveedor si hay algo inusual.",
+                feedback: "Correcto. No es phishing aparentemente. Si el remitente es el habitual, el dominio coincide y el adjunto es un PDF legítimo, probablemente es un correo real. Siempre verifica con el proveedor si hay algo inusual.",
                 vector: "Correo legítimo (contexto normal)"
             },
             {
                 id: 7,
                 text: "Recibes una llamada telefónica que dice ser del 'departamento de soporte técnico de Microsoft': 'Detectamos un virus en tu computadora. Necesitamos que instales este programa para ayudarte a eliminarlo.' Te piden acceso remoto. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es vishing (phishing por voz). Microsoft no realiza llamadas no solicitadas para 'eliminar virus'. Es una estafa de soporte técnico falso.",
+                feedback: "Correcto. Es vishing (phishing por voz). Microsoft no realiza llamadas no solicitadas para 'eliminar virus'. Es una estafa de soporte técnico falso.",
                 vector: "Vishing + soporte técnico falso"
             },
             {
                 id: 8,
                 text: "Correo con asunto 'Tu paquete está en camino' de una empresa de mensajería con la que realmente hiciste un pedido hace 2 días. El correo muestra el número de seguimiento correcto y te pide hacer clic para ver la ruta de entrega. El enlace va a la página oficial de la mensajería. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "✅ Correcto. No es phishing. Coincide con una compra real, el número de seguimiento es correcto y el enlace lleva al sitio oficial. Siempre verifica que el dominio sea el auténtico.",
+                feedback: "Correcto. No es phishing. Coincide con una compra real, el número de seguimiento es correcto y el enlace lleva al sitio oficial. Siempre verifica que el dominio sea el auténtico.",
                 vector: "Correo legítimo de mensajería"
             },
             {
                 id: 9,
-                text: "Te aparece un pop-up en tu navegador mientras trabajas: '⚠️ Su sistema ha sido comprometido. Llame a soporte técnico al 800-XXX-XXXX para evitar pérdida de datos inmediata.' El mensaje tiene sonidos de alarma y no puedes cerrarlo fácilmente. ¿Es phishing?",
+                text: "Te aparece un pop-up en tu navegador mientras trabajas: 'Su sistema ha sido comprometido. Llame a soporte técnico al 800-XXX-XXXX para evitar pérdida de datos inmediata.' El mensaje tiene sonidos de alarma y no puedes cerrarlo fácilmente. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "✅ Correcto. Es scareware. Es una táctica de miedo para que llames y te estafen con soporte técnico falso o instales malware.",
+                feedback: "Correcto. Es scareware. Es una táctica de miedo para que llames y te estafen con soporte técnico falso o instales malware.",
                 vector: "Scareware + soporte técnico falso"
             },
             {
                 id: 10,
                 text: "Un contacto de LinkedIn (perfil con 500+ conexiones, experiencia verificada) te escribe ofreciéndote una oportunidad laboral. Te pide que descargues el archivo 'Descripción_puesto.pdf' para ver los detalles. El PDF abre normalmente y muestra información de la empresa. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "✅ Correcto. No es phishing aparentemente. Aunque siempre hay que tener precaución, un PDF legítimo de una oportunidad laboral de un perfil verificado suele ser seguro. Verifica que el remitente sea quien dice ser.",
+                feedback: "Correcto. No es phishing aparentemente. Aunque siempre hay que tener precaución, un PDF legítimo de una oportunidad laboral de un perfil verificado suele ser seguro. Verifica que el remitente sea quien dice ser.",
                 vector: "Contacto legítimo (contexto profesional)"
             }
         ];
@@ -190,7 +189,7 @@
         }
 
         function updateRanking(alias, score) {
-            if(!alias || alias.trim() === "") alias = "Anónimo";
+            if(!alias || alias.trim() === "") alias = "Anonimo";
             const existingIdx = globalRanking.findIndex(p => p.alias.toLowerCase() === alias.toLowerCase());
             if(existingIdx !== -1) {
                 if(globalRanking[existingIdx].score < score) {
@@ -209,7 +208,7 @@
             const container = document.getElementById("rankingTable");
             if(!container) return;
             if(globalRanking.length === 0) {
-                container.innerHTML = "<p>Aún no hay puntuaciones registradas. ¡Sé el primero!</p>";
+                container.innerHTML = "<p>Aún no hay puntuaciones registradas. Sé el primero.</p>";
                 return;
             }
             let html = `<table class="ranking-table">
@@ -223,9 +222,10 @@
                             <td>${escapeHtml(entry.alias)}</td>
                             <td><strong>${entry.score}</strong></td>
                             <td>${new Date(entry.date).toLocaleDateString()}</td>
-                         </tr>`;
+                          </tr>`;
             });
-            html += `</tbody></table>`;
+            html += `</tbody>
+                    </table>`;
             container.innerHTML = html;
         }
 
@@ -257,11 +257,11 @@
             
             container.innerHTML = `
                 <div class="scenario-card">
-                    <div class="vector-badge">🎭 Vector: ${escapeHtml(q.vector)}</div>
+                    <div class="vector-badge">Vector: ${escapeHtml(q.vector)}</div>
                     <div class="scenario-text">${escapeHtml(q.text)}</div>
                     <div class="options-list">
-                        <button class="option-btn" data-value="phishing">🎣 Es phishing</button>
-                        <button class="option-btn" data-value="legitimo">✅ No es phishing</button>
+                        <button class="option-btn" data-value="phishing">Es phishing</button>
+                        <button class="option-btn" data-value="legitimo">No es phishing</button>
                     </div>
                     <div id="feedbackArea" class="feedback-area" style="display:none;"></div>
                 </div>
@@ -291,18 +291,16 @@
                         document.getElementById("currentScore").innerText = userScore;
                     }
 
-                    // Marcar botón seleccionado y deshabilitar todos
                     optionBtns.forEach(b => {
                         b.classList.add('disabled');
                         if(b === btn) b.classList.add('selected');
                     });
 
-                    // Mostrar feedback
                     const feedbackDiv = document.getElementById("feedbackArea");
                     if(feedbackDiv) {
                         feedbackDiv.style.display = "block";
                         const feedbackClass = isCorrect ? 'alert-success' : 'alert-danger';
-                        const feedbackMsg = isCorrect ? q.feedback : `❌ Incorrecto. ${q.isPhishing ? 'Esto SÍ es phishing.' : 'Esto NO es phishing.'} ${q.feedback.replace('✅ Correcto. ', '')}`;
+                        const feedbackMsg = isCorrect ? q.feedback : `Incorrecto. ${q.isPhishing ? 'Esto SÍ es phishing.' : 'Esto NO es phishing.'} ${q.feedback.replace('Correcto. ', '')}`;
                         feedbackDiv.innerHTML = `<div class="${feedbackClass}">${feedbackMsg}</div>`;
                     }
 
@@ -329,9 +327,9 @@
             
             const correctCount = answersRecord.filter(a => a && a.isCorrect).length;
             let levelText = "";
-            if(userScore >= 80) levelText = "🛡️ Avanzado · Muy consciente";
-            else if(userScore >= 60) levelText = "⚠️ Intermedio · Mejorable";
-            else levelText = "🔴 Vulnerable · Se recomienda entrenamiento";
+            if(userScore >= 80) levelText = "Avanzado · Muy consciente";
+            else if(userScore >= 60) levelText = "Intermedio · Mejorable";
+            else levelText = "Vulnerable · Se recomienda entrenamiento";
             
             document.getElementById("individualResult").innerHTML = `
                 <div class="score-circle">${userScore} / 100</div>
@@ -342,16 +340,16 @@
             renderRanking();
             
             const weakVectors = scenarios.filter((s, idx) => answersRecord[idx] && !answersRecord[idx].isCorrect).map(s => s.vector);
-            let analysisMsg = `✅ Aciertos: ${correctCount}/10. `;
+            let analysisMsg = `Aciertos: ${correctCount}/10. `;
             if(weakVectors.length > 0) {
-                analysisMsg += `⚠️ Debes reforzar: ${weakVectors.slice(0,3).join(", ")}. `;
+                analysisMsg += `Debes reforzar: ${weakVectors.slice(0,3).join(", ")}. `;
             } else {
-                analysisMsg += "¡Excelente! Reconoces muy bien las técnicas de ingeniería social.";
+                analysisMsg += "Excelente. Reconoces muy bien las técnicas de ingeniería social.";
             }
             document.getElementById("analysisText").innerHTML = analysisMsg;
             
             const slowestMsg = (slowestIdx !== -1) ? `Escenario ${slowestIdx+1}: ${scenarios[slowestIdx].vector} (${Math.round(maxTime)} segundos)` : "No registrado";
-            document.getElementById("slowestScenario").innerHTML = `<strong>⏱️ Escenario con mayor tiempo de decisión:</strong> ${slowestMsg}`;
+            document.getElementById("slowestScenario").innerHTML = `<strong>Escenario con mayor tiempo de decisión:</strong> ${slowestMsg}`;
         }
 
         // Inicialización
@@ -392,26 +390,6 @@
             document.getElementById("resultsScreen").style.display = "none";
             document.getElementById("consentScreen").style.display = "block";
             document.getElementById("participantName").value = "";
-        });
-
-        document.getElementById("downloadReportBtn")?.addEventListener("click", () => {
-            const correctCount = answersRecord.filter(a => a && a.isCorrect).length;
-            const report = `=== REPORTE PHISHING QUIZ ===
-Participante: ${participantAlias}
-Fecha: ${new Date().toLocaleString()}
-Puntaje total: ${userScore}/100
-Aciertos: ${correctCount}/${scenarios.length}
-
-Detalle por escenario:
-${scenarios.map((s, idx) => `${idx+1}. ${s.vector} - ${answersRecord[idx]?.isCorrect ? "✅ ACERTASTE" : "❌ FALLISTE"} (${answersRecord[idx]?.isCorrect ? "Identificaste correctamente" : s.isPhishing ? "Era phishing pero no lo detectaste" : "No era phishing pero lo marcaste como phishing"})`).join("\n")}
-
-Recomendación: ${userScore >= 80 ? "Excelente nivel de concienciación." : userScore >= 60 ? "Buen desempeño, pero refuerza vectores de ataque." : "Se recomienda realizar entrenamiento en seguridad."}`;
-            const blob = new Blob([report], {type: "text/plain"});
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = `phishing_report_${participantAlias.replace(/\s/g, "_")}.txt`;
-            a.click();
-            URL.revokeObjectURL(a.href);
         });
 
         loadRanking();
