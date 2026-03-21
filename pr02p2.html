@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Phishing Quiz </h1>
+        <h1>Phishing Quiz</h1>
         <p class="alias">Quiz Phishing</p>
         <nav>
             <ul>
@@ -95,71 +95,61 @@
                 id: 1,
                 text: "Recibes un correo del 'Departamento de TI' con asunto: 'Acceso restringido: verifica tu cuenta ahora'. El remitente es 'soporte@tuempresa-seguridad.com' y el mensaje incluye un botón que dice 'Verificar identidad' pidiendo tu contraseña corporativa. ¿Esto es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es phishing. Los departamentos de TI legítimos nunca solicitan contraseñas por correo electrónico. El dominio es sospechoso y la urgencia es una táctica común de ingeniería social.",
-                vector: "Suplantación de identidad + urgencia"
+                feedback: "Correcto. Es phishing. Los departamentos de TI legítimos nunca solicitan contraseñas por correo electrónico. El dominio es sospechoso y la urgencia es una táctica común de ingeniería social."
             },
             { 
                 id: 2,
                 text: "Recibes un SMS que dice: 'Banco Nación: Tu tarjeta fue bloqueada por un intento de compra sospechosa. Ingresa aquí: https://banc0-seguro.xyz/verificar para restaurar acceso.' ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es smishing (phishing por SMS). Los bancos no envían enlaces de verificación por mensajes de texto no solicitados. El dominio es falso.",
-                vector: "Smishing + urgencia financiera"
+                feedback: "Correcto. Es smishing (phishing por SMS). Los bancos no envían enlaces de verificación por mensajes de texto no solicitados. El dominio es falso."
             },
             {
                 id: 3,
                 text: "Correo de 'Recursos Humanos' con asunto: 'Bono especial fin de año' Adjunto llamado 'Bono_2025.pdf.exe'. El mensaje dice que abras el archivo para ver los detalles de tu bono. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es phishing. El adjunto es un ejecutable malicioso disfrazado de PDF. Los archivos legítimos de RRHH son PDF reales, no archivos .exe.",
-                vector: "Adjunto malicioso (ejecutable disfrazado)"
+                feedback: "Correcto. Es phishing. El adjunto es un ejecutable malicioso disfrazado de PDF. Los archivos legítimos de RRHH son PDF reales, no archivos .exe."
             },
             {
                 id: 4,
                 text: "Te llega un mensaje por Teams de tu jefe directo diciendo: 'Hola, ¿me ayudas? Estoy en una reunión importante y necesito que compres una tarjeta de regalo de $500, te reembolso luego. Aquí está el enlace: https://giftcards-fake.com/urgent' ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es spear phishing. Los atacantes pueden suplantar cuentas de colaboradores. Las solicitudes de compras urgentes de tarjetas de regalo son una estafa clásica.",
-                vector: "Spear phishing + suplantación de identidad"
+                feedback: "Correcto. Es spear phishing. Los atacantes pueden suplantar cuentas de colaboradores. Las solicitudes de compras urgentes de tarjetas de regalo son una estafa clásica."
             },
             {
                 id: 5,
                 text: "Correo de 'Soporte Microsoft' con logotipos oficiales: 'Su contraseña expirará en 24 horas. Mantenga su acceso actualizándola aquí.' El enlace es https://login.microsoftonline.com.secure-verify.com. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es phishing. El dominio real es 'secure-verify.com', no Microsoft. Los atacantes usan subdominios para engañar.",
-                vector: "Suplantación de marca + dominio engañoso"
+                feedback: "Correcto. Es phishing. El dominio real es 'secure-verify.com', no Microsoft. Los atacantes usan subdominios para engañar."
             },
             {
                 id: 6,
                 text: "Recibes un correo de un proveedor habitual con quien trabajas: 'Adjunto factura del mes. Saludos.' El archivo adjunto es 'Factura_1234.pdf' y la dirección del remitente coincide exactamente con la que usan siempre. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "Correcto. No es phishing aparentemente. Si el remitente es el habitual, el dominio coincide y el adjunto es un PDF legítimo, probablemente es un correo real. Siempre verifica con el proveedor si hay algo inusual.",
-                vector: "Correo legítimo (contexto normal)"
+                feedback: "Correcto. No es phishing aparentemente. Si el remitente es el habitual, el dominio coincide y el adjunto es un PDF legítimo, probablemente es un correo real. Siempre verifica con el proveedor si hay algo inusual."
             },
             {
                 id: 7,
                 text: "Recibes una llamada telefónica que dice ser del 'departamento de soporte técnico de Microsoft': 'Detectamos un virus en tu computadora. Necesitamos que instales este programa para ayudarte a eliminarlo.' Te piden acceso remoto. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es vishing (phishing por voz). Microsoft no realiza llamadas no solicitadas para 'eliminar virus'. Es una estafa de soporte técnico falso.",
-                vector: "Vishing + soporte técnico falso"
+                feedback: "Correcto. Es vishing (phishing por voz). Microsoft no realiza llamadas no solicitadas para 'eliminar virus'. Es una estafa de soporte técnico falso."
             },
             {
                 id: 8,
                 text: "Correo con asunto 'Tu paquete está en camino' de una empresa de mensajería con la que realmente hiciste un pedido hace 2 días. El correo muestra el número de seguimiento correcto y te pide hacer clic para ver la ruta de entrega. El enlace va a la página oficial de la mensajería. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "Correcto. No es phishing. Coincide con una compra real, el número de seguimiento es correcto y el enlace lleva al sitio oficial. Siempre verifica que el dominio sea el auténtico.",
-                vector: "Correo legítimo de mensajería"
+                feedback: "Correcto. No es phishing. Coincide con una compra real, el número de seguimiento es correcto y el enlace lleva al sitio oficial. Siempre verifica que el dominio sea el auténtico."
             },
             {
                 id: 9,
                 text: "Te aparece un pop-up en tu navegador mientras trabajas: 'Su sistema ha sido comprometido. Llame a soporte técnico al 800-XXX-XXXX para evitar pérdida de datos inmediata.' El mensaje tiene sonidos de alarma y no puedes cerrarlo fácilmente. ¿Es phishing?",
                 isPhishing: true,
-                feedback: "Correcto. Es scareware. Es una táctica de miedo para que llames y te estafen con soporte técnico falso o instales malware.",
-                vector: "Scareware + soporte técnico falso"
+                feedback: "Correcto. Es scareware. Es una táctica de miedo para que llames y te estafen con soporte técnico falso o instales malware."
             },
             {
                 id: 10,
                 text: "Un contacto de LinkedIn (perfil con 500+ conexiones, experiencia verificada) te escribe ofreciéndote una oportunidad laboral. Te pide que descargues el archivo 'Descripción_puesto.pdf' para ver los detalles. El PDF abre normalmente y muestra información de la empresa. ¿Es phishing?",
                 isPhishing: false,
-                feedback: "Correcto. No es phishing aparentemente. Aunque siempre hay que tener precaución, un PDF legítimo de una oportunidad laboral de un perfil verificado suele ser seguro. Verifica que el remitente sea quien dice ser.",
-                vector: "Contacto legítimo (contexto profesional)"
+                feedback: "Correcto. No es phishing aparentemente. Aunque siempre hay que tener precaución, un PDF legítimo de una oportunidad laboral de un perfil verificado suele ser seguro. Verifica que el remitente sea quien dice ser."
             }
         ];
 
@@ -216,15 +206,16 @@
                             </thead>
                             <tbody>`;
             globalRanking.forEach((entry, idx) => {
-                html += `<tr>
-                            <td>${idx+1}º</td>
-                            <td>${escapeHtml(entry.alias)}</td>
-                            <td><strong>${entry.score}</strong></td>
-                            <td>${new Date(entry.date).toLocaleDateString()}</td>
-                          </tr>`;
+                html += `\
+                    <tr>\
+                        <td>${idx+1}º</td>\
+                        <td>${escapeHtml(entry.alias)}</td>\
+                        <td><strong>${entry.score}</strong></td>\
+                        <td>${new Date(entry.date).toLocaleDateString()}</td>\
+                    </tr>`;
             });
             html += `</tbody>
-                    </table>`;
+                     </table>`;
             container.innerHTML = html;
         }
 
@@ -256,7 +247,6 @@
             
             container.innerHTML = `
                 <div class="scenario-card">
-                    <div class="vector-badge">Vector: ${escapeHtml(q.vector)}</div>
                     <div class="scenario-text">${escapeHtml(q.text)}</div>
                     <div class="options-list">
                         <button class="option-btn" data-value="phishing">Es phishing</button>
@@ -338,16 +328,19 @@
             
             renderRanking();
             
-            const weakVectors = scenarios.filter((s, idx) => answersRecord[idx] && !answersRecord[idx].isCorrect).map(s => s.vector);
+            const weakVectors = scenarios.filter((s, idx) => answersRecord[idx] && !answersRecord[idx].isCorrect).map(s => {
+                const textPreview = s.text.substring(0, 60);
+                return textPreview + "...";
+            });
             let analysisMsg = `Aciertos: ${correctCount}/10. `;
             if(weakVectors.length > 0) {
-                analysisMsg += `Debes reforzar: ${weakVectors.slice(0,3).join(", ")}. `;
+                analysisMsg += `Escenarios donde fallaste: ${weakVectors.slice(0,3).join(", ")}. `;
             } else {
                 analysisMsg += "Excelente. Reconoces muy bien las técnicas de ingeniería social.";
             }
             document.getElementById("analysisText").innerHTML = analysisMsg;
             
-            const slowestMsg = (slowestIdx !== -1) ? `Escenario ${slowestIdx+1}: ${scenarios[slowestIdx].vector} (${Math.round(maxTime)} segundos)` : "No registrado";
+            const slowestMsg = (slowestIdx !== -1) ? `Escenario ${slowestIdx+1}: ${scenarios[slowestIdx].text.substring(0, 80)}... (${Math.round(maxTime)} segundos)` : "No registrado";
             document.getElementById("slowestScenario").innerHTML = `<strong>Escenario con mayor tiempo de decisión:</strong> ${slowestMsg}`;
         }
 
