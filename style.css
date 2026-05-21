@@ -286,7 +286,7 @@ th {
 
 .modal-badge img {
     max-width: 200px;
-    background-color: white;
+    background-color: transparent;
     border-radius: 8px;
     padding: 10px;
 }
