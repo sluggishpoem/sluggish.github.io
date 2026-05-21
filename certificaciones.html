@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificaciones - Portafolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Certificaciones</h1>
+        <p class="alias">Mis credenciales y formación profesional</p>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Proyectos</a></li>
+                <li><a href="#">Certificaciones</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="certificaciones-container">
+        <div class="tabs-menu">
+            <button class="tab-btn active" data-tab="tab1">CCNA</button>
+            <button class="tab-btn" data-tab="tab2">CCNP</button>
+            <button class="tab-btn" data-tab="tab3">CyberOps</button>
+            <button class="tab-btn" data-tab="tab4">DevNet</button>
+            <button class="tab-btn" data-tab="tab5">Security+</button>
+            <button class="tab-btn" data-tab="tab6">CEH</button>
+            <button class="tab-btn" data-tab="tab7">CISSP</button>
+        </div>
+
+        <div id="tab1" class="tab-content active">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/ccna_badge.png" alt="CCNA Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CCNA - Cisco Certified Network Associate</h2>
+                    <p>Certificación fundamental en redes que valida la capacidad de instalar, configurar, operar y solucionar problemas de redes de tamaño medio. Cubre fundamentos de redes, acceso IP, servicios IP, seguridad básica y automatización.</p>
+                    <p><strong>Fecha de obtención:</strong> 15 de marzo, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/ccna_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab2" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/ccnp_badge.png" alt="CCNP Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CCNP - Cisco Certified Network Professional</h2>
+                    <p>Certificación avanzada para profesionales de redes que demuestra habilidades en la implementación y solución de problemas de redes empresariales. Incluye routing avanzado, switching, redes inalámbricas y seguridad.</p>
+                    <p><strong>Fecha de obtención:</strong> 10 de agosto, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/ccnp_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab3" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/cyberops_badge.png" alt="CyberOps Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CyberOps Associate - Cisco</h2>
+                    <p>Certificación enfocada en ciberseguridad que valida conocimientos sobre monitoreo de seguridad, análisis de amenazas, respuesta a incidentes y operaciones en centros de seguridad (SOC).</p>
+                    <p><strong>Fecha de obtención:</strong> 5 de enero, 2025</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/cyberops_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab4" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/devnet_badge.png" alt="DevNet Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>DevNet Associate - Cisco</h2>
+                    <p>Certificación para desarrolladores y profesionales de operaciones de red que demuestra habilidades en automatización, APIs, desarrollo de aplicaciones y DevOps en infraestructura de red.</p>
+                    <p><strong>Fecha de obtención:</strong> 20 de noviembre, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/devnet_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab5" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/securityplus_badge.png" alt="Security+ Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CompTIA Security+</h2>
+                    <p>Certificación global en ciberseguridad que cubre amenazas, ataques, vulnerabilidades, arquitectura de seguridad, gestión de identidades, criptografía y respuesta a incidentes.</p>
+                    <p><strong>Fecha de obtención:</strong> 12 de febrero, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/securityplus_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab6" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/ceh_badge.png" alt="CEH Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CEH - Certified Ethical Hacker</h2>
+                    <p>Certificación que valida habilidades en pruebas de penetración, identificación de vulnerabilidades y técnicas de hacking ético para fortalecer la seguridad de sistemas.</p>
+                    <p><strong>Fecha de obtención:</strong> 3 de junio, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/ceh_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab7" class="tab-content">
+            <div class="certificacion-wrapper">
+                <div class="badge-area">
+                    <img src="certCisco/cissp_badge.png" alt="CISSP Badge" class="badge-img" onerror="this.src='certCisco/placeholder.png'; this.onerror=null;">
+                </div>
+                <div class="info-area">
+                    <h2>CISSP - Certified Information Systems Security Professional</h2>
+                    <p>Certificación avanzada en seguridad de la información que cubre ocho dominios incluyendo gestión de riesgos, seguridad de activos, ingeniería de seguridad y operaciones.</p>
+                    <p><strong>Fecha de obtención:</strong> 18 de septiembre, 2024</p>
+                    <p><strong>Vigencia:</strong> 3 años</p>
+                    <button class="btn-download" data-pdf="certCisco/cissp_certificado.pdf">Descargar certificado PDF</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Portafolio - Certificaciones profesionales</p>
+    </footer>
+
+    <script>
+        // Funcionalidad de pestañas
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Funcionalidad de descarga de PDFs
+        const downloadBtns = document.querySelectorAll('.btn-download');
+        
+        downloadBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pdfPath = btn.getAttribute('data-pdf');
+                
+                fetch(pdfPath, { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            const link = document.createElement('a');
+                            link.href = pdfPath;
+                            link.download = pdfPath.split('/').pop();
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        } else {
+                            alert('El archivo PDF no está disponible en este momento. Por favor, intenta más tarde.');
+                        }
+                    })
+                    .catch(() => {
+                        alert('No se pudo acceder al archivo. Verifica que el PDF exista en la carpeta certCisco.');
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
