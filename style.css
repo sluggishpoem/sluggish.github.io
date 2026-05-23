@@ -558,23 +558,3 @@ th {
 .placeholder-space p {
     margin: 0;
 }
-.report-image {
-    width: 100%;
-    max-width: 700px;
-    height: auto;
-    display: block;
-    margin: 20px auto;
-    border-radius: 12px;
-    object-fit: contain;
-}
-
-.img-placeholder {
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
-}
-
-.img-placeholder img {
-    max-width: 100%;
-    height: auto;
-}
