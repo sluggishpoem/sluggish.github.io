@@ -87,19 +87,24 @@
             </div>
         </div>
 
-        <div class="scenario-card">
+         <div class="scenario-card">
             <div class="scenario-header">
                 <h2>SECCION III: Terminos y definiciones</h2>
-                <div class="scenario-tag">Conceptos clave del SGSI</div>
+                <div class="scenario-tag">Definiciones clave del SGSI</div>
             </div>
             <div class="scenario-body">
+                <p>Para los fines de este documento y de acuerdo con la norma ISO/IEC 27001:2022, se aplican los terminos definidos en la norma ISO/IEC 27000.</p>
                 <div class="ethics-grid">
-                    <div class="ethics-item"><strong>Activo</strong><br>Informacion, sistema, documento, persona o recurso que tiene valor para la organizacion.</div>
+                    <div class="ethics-item"><strong>Accion preventiva</strong><br>Medida de tipo pro-activo orientada a prevenir potenciales no conformidades. En ISO 27001:2013 ya no se emplea como concepto independiente, ya que queda englobada dentro de riesgos y oportunidades.</div>
+                    <div class="ethics-item"><strong>Activo</strong><br>En seguridad de la informacion, se refiere a cualquier informacion o elemento relacionado con su tratamiento, como sistemas, soportes, edificios, personas o documentos, que tenga valor para la organizacion.</div>
                     <div class="ethics-item"><strong>Amenaza</strong><br>Causa potencial de un incidente no deseado que puede provocar danos a un sistema o a la organizacion.</div>
-                    <div class="ethics-item"><strong>Analisis de riesgos</strong><br>Proceso para comprender la naturaleza del riesgo y determinar su nivel.</div>
-                    <div class="ethics-item"><strong>Confidencialidad</strong><br>Propiedad de la informacion de no ser revelada a individuos, entidades o procesos no autorizados.</div>
-                    <div class="ethics-item"><strong>Control de acceso</strong><br>Garantiza que el acceso a los activos este autorizado y restringido segun los requisitos de seguridad.</div>
-                    <div class="ethics-item"><strong>Inventario de activos</strong><br>Lista de recursos fisicos, digitales, documentales y humanos que deben protegerse dentro del alcance del SGSI.</div>
+                    <div class="ethics-item"><strong>Analisis de riesgos</strong><br>Proceso para comprender la naturaleza del riesgo y determinar su nivel. Proporciona la base para la estimacion de riesgos y las decisiones sobre su tratamiento.</div>
+                    <div class="ethics-item"><strong>Checklist</strong><br>Lista de apoyo para el auditor con los puntos a auditar. Ayuda a mantener claros los objetivos, sirve como evidencia del plan de auditoria y reduce omisiones durante la revision del SGSI.</div>
+                    <div class="ethics-item"><strong>Confidencialidad</strong><br>Propiedad de la informacion de no ponerse a disposicion ni ser revelada a individuos, entidades o procesos no autorizados.</div>
+                    <div class="ethics-item"><strong>Control de acceso</strong><br>Consiste en garantizar que el acceso a los activos este autorizado y restringido segun los requisitos comerciales y de seguridad.</div>
+                    <div class="ethics-item"><strong>Declaracion de aplicabilidad (SOA)</strong><br>Documento que enumera los controles aplicados por el SGSI, su justificacion y las exclusiones de controles del anexo A de ISO 27001.</div>
+                    <div class="ethics-item"><strong>Identificacion de riesgos</strong><br>Proceso de encontrar, reconocer y describir riesgos, incluyendo fuentes, eventos, causas y posibles consecuencias.</div>
+                    <div class="ethics-item"><strong>Inventario de activos</strong><br>Lista de recursos fisicos, de informacion, software, documentos, servicios, personas e intangibles dentro del alcance del SGSI que tienen valor para la organizacion.</div>
                 </div>
             </div>
         </div>
@@ -107,36 +112,57 @@
         <div class="scenario-card">
             <div class="scenario-header">
                 <h2>SECCION IV: Contexto de la organizacion</h2>
-                <div class="scenario-tag">Inventario de activos criticos</div>
+                <div class="scenario-tag">Inventario de 40 activos criticos</div>
             </div>
             <div class="scenario-body">
-                <p>Se identificaron 40 activos criticos relacionados con el proceso de Recursos Humanos, clasificados en activos internos y externos.</p>
-                <h3>Activos internos principales</h3>
+                <p>Se ha ampliado y clasificado un inventario de 40 activos criticos relacionados con el proceso de Recursos Humanos. La clasificacion considera el tipo de activo, si es interno o externo, la triada CIA y la justificacion del riesgo.</p>
                 <table class="metrics-table">
-                    <thead><tr><th>ID</th><th>Activo</th><th>Triada CIA</th><th>Justificacion del riesgo</th></tr></thead>
+                    <thead><tr><th>ID / Activo</th><th>Tipo / Propietario</th><th>Triada CIA</th><th>Justificacion del riesgo</th></tr></thead>
                     <tbody>
-                        <tr><td>ACT-03</td><td>Servidores escuela</td><td>C-Alta, I-Alta, D-Alta</td><td>Fuga de informacion de alumnos y maestros.</td></tr>
-                        <tr><td>ACT-05</td><td>Gestor base de datos</td><td>C-Alta, I-Alta, D-Alta</td><td>Corrupcion de registros academicos.</td></tr>
-                        <tr><td>ACT-06</td><td>Datos alumnos/maestros</td><td>C-Alta, I-Alta, D-Media</td><td>Robo de identidad y afectacion a la privacidad.</td></tr>
-                        <tr><td>ACT-08</td><td>Empleados administrativos</td><td>C-Alta, I-Alta, D-Media</td><td>Vector de ingenieria social.</td></tr>
-                        <tr><td>ACT-16</td><td>Software institucional</td><td>C-Alta, I-Alta, D-Alta</td><td>Compromiso de procesos criticos.</td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Activos externos principales</h3>
-                <table class="metrics-table">
-                    <thead><tr><th>ID</th><th>Activo</th><th>Triada CIA</th><th>Justificacion del riesgo</th></tr></thead>
-                    <tbody>
-                        <tr><td>ACT-21</td><td>Licencia Office 365</td><td>C-Alta, I-Alta, D-Alta</td><td>Secuestro de sesion y exposicion de informacion personal.</td></tr>
-                        <tr><td>ACT-25</td><td>Infraestructura ISP</td><td>C-Baja, I-Baja, D-Alta</td><td>Interrupcion del servicio escolar.</td></tr>
-                        <tr><td>ACT-26</td><td>API autenticacion terceros</td><td>C-Alta, I-Alta, D-Alta</td><td>Suplantacion de identidad.</td></tr>
-                        <tr><td>ACT-37</td><td>Plataformas SEP/SIGED</td><td>C-Alta, I-Alta, D-Alta</td><td>Integridad del expediente del alumno.</td></tr>
-                        <tr><td>ACT-40</td><td>Sistemas federales escolar</td><td>C-Alta, I-Alta, D-Alta</td><td>Compromiso de bases de datos SEP.</td></tr>
+                        <tr><td>ACT-01</td><td>Escuelas del S.E.E.R (Int)</td><td>C-Baja, I-Baja, D-Alta</td><td>Disponibilidad de servicios educativos.</td></tr>
+                        <tr><td>ACT-02</td><td>Computadoras en salones (Int)</td><td>C-Media, I-Media, D-Alta</td><td>Punto de acceso a red y malware.</td></tr>
+                        <tr><td>ACT-03</td><td>Servidores escuela (Int)</td><td>C-Alta, I-Alta, D-Alta</td><td>Fuga de PII de alumnos y maestros.</td></tr>
+                        <tr><td>ACT-04</td><td>Impresoras empresariales (Int)</td><td>C-Media, I-Baja, D-Media</td><td>Fuga de informacion impresa.</td></tr>
+                        <tr><td>ACT-05</td><td>Gestor base de datos (Int)</td><td>C-Alta, I-Alta, D-Alta</td><td>Corrupcion de registros academicos.</td></tr>
+                        <tr><td>ACT-06</td><td>Datos alumnos/maestros (Int)</td><td>C-Alta, I-Alta, D-Media</td><td>Robo de identidad y privacidad.</td></tr>
+                        <tr><td>ACT-07</td><td>Licencia Windows (Int)</td><td>C-Baja, I-Baja, D-Media</td><td>Vulnerabilidades sin parches.</td></tr>
+                        <tr><td>ACT-08</td><td>Empleados administrativos (Int)</td><td>C-Alta, I-Alta, D-Media</td><td>Vector de ingenieria social.</td></tr>
+                        <tr><td>ACT-09</td><td>Software computadoras clase (Int)</td><td>C-Baja, I-Media, D-Media</td><td>Inestabilidad del sistema escolar.</td></tr>
+                        <tr><td>ACT-10</td><td>Libros escolares (Int)</td><td>C-Baja, I-Baja, D-Baja</td><td>Perdida de material didactico.</td></tr>
+                        <tr><td>ACT-11</td><td>Equipos de red (Int)</td><td>C-Baja, I-Baja, D-Alta</td><td>Caida de conectividad global.</td></tr>
+                        <tr><td>ACT-12</td><td>Material de oficina (Int)</td><td>C-Baja, I-Media, D-Baja</td><td>Falsificacion de documentos.</td></tr>
+                        <tr><td>ACT-13</td><td>Libros/Manuales proc. (Int)</td><td>C-Media, I-Media, D-Baja</td><td>Perdida de know-how operativo.</td></tr>
+                        <tr><td>ACT-14</td><td>Infraestructura fisica (Int)</td><td>C-Baja, I-Baja, D-Alta</td><td>Acceso fisico no autorizado.</td></tr>
+                        <tr><td>ACT-15</td><td>Politicas control escolar (Int)</td><td>C-Baja, I-Alta, D-Baja</td><td>Incumplimiento normativo.</td></tr>
+                        <tr><td>ACT-16</td><td>Software institucional (Int)</td><td>C-Alta, I-Alta, D-Alta</td><td>Compromiso de procesos criticos.</td></tr>
+                        <tr><td>ACT-17</td><td>Protocolos de seguridad (Int)</td><td>C-Alta, I-Alta, D-Media</td><td>Incumplimiento de controles.</td></tr>
+                        <tr><td>ACT-18</td><td>Manuales normatividad (Int)</td><td>C-Baja, I-Media, D-Baja</td><td>Falta de alineacion operativa.</td></tr>
+                        <tr><td>ACT-19</td><td>Capacitacion personal (Int)</td><td>C-Baja, I-Media, D-Baja</td><td>Error humano por desconocimiento.</td></tr>
+                        <tr><td>ACT-20</td><td>Conocimiento administrativo (Int)</td><td>C-Media, I-Baja, D-Media</td><td>Fuga de conocimiento critico.</td></tr>
+                        <tr><td>ACT-21</td><td>Licencia Office 365 (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Secuestro de sesion y PII.</td></tr>
+                        <tr><td>ACT-22</td><td>Certificaciones (Ext)</td><td>C-Baja, I-Alta, D-Baja</td><td>Falsificacion de validez oficial.</td></tr>
+                        <tr><td>ACT-23</td><td>Plataformas Normativa Fed. (Ext)</td><td>C-Baja, I-Alta, D-Alta</td><td>Perdida de vinculo administrativo.</td></tr>
+                        <tr><td>ACT-24</td><td>Regulaciones Est/Fed (Ext)</td><td>C-Baja, I-Media, D-Baja</td><td>Incumplimiento legal.</td></tr>
+                        <tr><td>ACT-25</td><td>Infraestructura ISP (Ext)</td><td>C-Baja, I-Baja, D-Alta</td><td>Interrupcion del servicio escolar.</td></tr>
+                        <tr><td>ACT-26</td><td>API Autenticacion Terceros (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Suplantacion de identidad.</td></tr>
+                        <tr><td>ACT-27</td><td>Equipos arrendados (Ext)</td><td>C-Media, I-Media, D-Media</td><td>Fuga de datos en equipos ajenos.</td></tr>
+                        <tr><td>ACT-28</td><td>Instalaciones externas (Ext)</td><td>C-Media, I-Baja, D-Media</td><td>Robo de equipo en eventos.</td></tr>
+                        <tr><td>ACT-29</td><td>Centros computo apoyo (Ext)</td><td>C-Media, I-Media, D-Alta</td><td>Vulnerabilidad de terceros.</td></tr>
+                        <tr><td>ACT-30</td><td>Material editoriales (Ext)</td><td>C-Baja, I-Media, D-Baja</td><td>Alteracion de contenido educativo.</td></tr>
+                        <tr><td>ACT-31</td><td>Servidores validacion federal (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Integridad de datos oficiales.</td></tr>
+                        <tr><td>ACT-32</td><td>Equipos de respaldo sedes (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Perdida de informacion historica.</td></tr>
+                        <tr><td>ACT-33</td><td>Espacios archivo fisico (Ext)</td><td>C-Alta, I-Alta, D-Baja</td><td>Acceso fisico no autorizado.</td></tr>
+                        <tr><td>ACT-34</td><td>Vehiculos oficiales comp. (Ext)</td><td>C-Baja, I-Baja, D-Media</td><td>Dano o perdida de activos.</td></tr>
+                        <tr><td>ACT-35</td><td>Centros atencion tramites (Ext)</td><td>C-Media, I-Media, D-Media</td><td>Filtracion de datos de alumnos.</td></tr>
+                        <tr><td>ACT-36</td><td>Certificaciones Fed/Est (Ext)</td><td>C-Media, I-Alta, D-Baja</td><td>Falsificacion de documentos.</td></tr>
+                        <tr><td>ACT-37</td><td>Plataformas SEP/SIGED (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Integridad de expediente alumno.</td></tr>
+                        <tr><td>ACT-38</td><td>Convenios instituciones (Ext)</td><td>C-Media, I-Media, D-Media</td><td>Incumplimiento de confidencialidad.</td></tr>
+                        <tr><td>ACT-39</td><td>Contratos proveedores SW (Ext)</td><td>C-Media, I-Media, D-Media</td><td>Riesgo de cadena de suministro.</td></tr>
+                        <tr><td>ACT-40</td><td>Sistemas federales escolar (Ext)</td><td>C-Alta, I-Alta, D-Alta</td><td>Compromiso de base de datos SEP.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
         <div class="scenario-card">
             <div class="scenario-header">
                 <h2>SECCION V: Liderazgo</h2>
@@ -184,60 +210,77 @@
             </div>
         </div>
 
-        <div class="scenario-card">
-            <div class="scenario-header">
-                <h2>SECCION VI: Planificacion de riesgos</h2>
-                <div class="scenario-tag">Matriz de riesgo</div>
+         <h2>SECCION VI: Planificacion de riesgos</h2>
+                <div class="scenario-tag">Matriz de riesgo y tratamiento</div>
             </div>
             <div class="scenario-body">
-                <h3>Politicas internas</h3>
-                <ol>
-                    <li>P-I1: Acceso no autorizado a BD de nomina.</li>
-                    <li>P-I2: Infeccion por malware en PCs de clase.</li>
-                    <li>P-I3: Perdida de datos por falla de servidor.</li>
-                    <li>P-I4: Robo de sellos o papeleria oficial.</li>
-                    <li>P-I5: Exfiltracion de datos via redes sociales.</li>
-                    <li>P-I6: Alteracion de expedientes fisicos.</li>
-                    <li>P-I7: Contratacion de personal no calificado.</li>
-                    <li>P-I8: Incendio o falla electrica en el rack.</li>
-                    <li>P-I9: Explotacion de vulnerabilidades.</li>
-                    <li>P-I10: Error humano por falta de capacitacion.</li>
-                </ol>
+                <p>La matriz de riesgo se organiza con impacto horizontal de izquierda a derecha: 01 Insignificante, 02 Menor, 03 Significativo, 04 Mayor y 05 Severo. En el eje vertical se ubica la probabilidad: 01 Raro, 02 Poco probable, 03 Moderado, 04 Probable y 05 Casi seguro.</p>
 
-                <div class="img-placeholder">
-                    <p class="img-caption">Espacio para imagen: Matriz de riesgo de politicas internas</p>
-                </div>
-
-                <h3>Politicas externas</h3>
-                <ol>
-                    <li>P-E1: Secuestro de sesion en Office 365.</li>
-                    <li>P-E2: Sanciones por incumplimiento SEP.</li>
-                    <li>P-E3: Interrupcion del servicio de Internet.</li>
-                    <li>P-E4: Intercepcion de datos en transito.</li>
-                    <li>P-E5: Falla de hardware en equipos rentados.</li>
-                    <li>P-E6: Acceso malintencionado de terceros.</li>
-                    <li>P-E7: Desastre natural en sede de respaldo.</li>
-                    <li>P-E8: Compromiso de claves de API externas.</li>
-                    <li>P-E9: Ataque tabnabbing en eventos externos.</li>
-                    <li>P-E10: Malware en archivos de editoriales.</li>
-                </ol>
-
-                <div class="img-placeholder">
-                    <p class="img-caption">Espacio para imagen: Matriz de riesgo de politicas externas</p>
-                </div>
-
+                <h3>6.1 Politicas internas</h3>
+                <p>Ubicacion de politicas internas de acuerdo con su riesgo.</p>
                 <table class="metrics-table">
-                    <thead><tr><th>Activo</th><th>Medida</th><th>Clasificacion</th><th>Justificacion</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Politica interna</th><th>Ubicacion en matriz</th></tr></thead>
                     <tbody>
-                        <tr><td>Uso de servicios en la nube</td><td>Cuenta institucional O365 + 2FA obligatorio</td><td>Mitigar</td><td>Reduce accesos no autorizados, aunque no elimina totalmente el riesgo.</td></tr>
-                        <tr><td>Cumplimiento normativo</td><td>Alineacion con SEP/SIGED</td><td>Aceptar</td><td>El riesgo se acepta y se monitorea activamente.</td></tr>
-                        <tr><td>Proveedores de internet</td><td>SLA 99.9% + reporte inmediato</td><td>Transferir</td><td>Parte de la disponibilidad se transfiere al ISP.</td></tr>
-                        <tr><td>Intercambio seguro de datos</td><td>SSL/TLS + bloqueo HTTP</td><td>Mitigar</td><td>Reduce interceptacion o manipulacion de datos.</td></tr>
-                        <tr><td>Acceso de terceros</td><td>NDA + revision legal</td><td>Transferir</td><td>El riesgo de incumplimiento se transfiere legalmente al proveedor.</td></tr>
+                        <tr><td>P-I1</td><td>Acceso no autorizado a BD de nomina.</td><td>Impacto 05 Severo / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-I2</td><td>Infeccion por Malware en PCs de clase.</td><td>Impacto 03 Significativo / Probabilidad 05 Casi seguro.</td></tr>
+                        <tr><td>P-I3</td><td>Perdida de datos por falla de servidor.</td><td>Impacto 05 Severo / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-I4</td><td>Robo de sellos o papeleria oficial.</td><td>Impacto 02 Menor / Probabilidad 04 Probable.</td></tr>
+                        <tr><td>P-I5</td><td>Exfiltracion de datos via redes sociales.</td><td>Impacto 04 Mayor / Probabilidad 04 Probable.</td></tr>
+                        <tr><td>P-I6</td><td>Alteracion de expedientes fisicos.</td><td>Impacto 04 Mayor / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-I7</td><td>Contratacion de personal no calificado.</td><td>Impacto 05 Severo / Probabilidad 02 Poco probable.</td></tr>
+                        <tr><td>P-I8</td><td>Incendio/Falla electrica en el Rack.</td><td>Impacto 05 Severo / Probabilidad 02 Poco probable.</td></tr>
+                        <tr><td>P-I9</td><td>Explotacion de vulnerabilidades (SUID).</td><td>Impacto 05 Severo / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-I10</td><td>Error humano por falta de capacitacion.</td><td>Impacto 04 Mayor / Probabilidad 05 Casi seguro.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="img-placeholder">
+                    <p class="img-caption">Espacio para imagen: Matriz de riesgo de politicas internas.</p>
+                </div>
+
+                <h3>6.2 Politicas externas</h3>
+                <p>Ubicacion de politicas externas de acuerdo con su riesgo.</p>
+                <table class="metrics-table">
+                    <thead><tr><th>ID</th><th>Politica externa</th><th>Ubicacion en matriz</th></tr></thead>
+                    <tbody>
+                        <tr><td>P-E1</td><td>Secuestro de sesion en Office 365.</td><td>Impacto 05 Severo / Probabilidad 04 Probable.</td></tr>
+                        <tr><td>P-E2</td><td>Sanciones por incumplimiento (SEP).</td><td>Impacto 05 Severo / Probabilidad 02 Poco probable.</td></tr>
+                        <tr><td>P-E3</td><td>Interrupcion del servicio de Internet.</td><td>Impacto 03 Significativo / Probabilidad 05 Casi seguro.</td></tr>
+                        <tr><td>P-E4</td><td>Intercepcion de datos en transito.</td><td>Impacto 04 Mayor / Probabilidad 04 Probable.</td></tr>
+                        <tr><td>P-E5</td><td>Falla de hardware en equipos rentados.</td><td>Impacto 03 Significativo / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-E6</td><td>Acceso malintencionado de terceros.</td><td>Impacto 04 Mayor / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-E7</td><td>Desastre natural en sede de respaldo.</td><td>Impacto 05 Severo / Probabilidad 02 Poco probable.</td></tr>
+                        <tr><td>P-E8</td><td>Compromiso de claves de API externas.</td><td>Impacto 04 Mayor / Probabilidad 03 Moderado.</td></tr>
+                        <tr><td>P-E9</td><td>Ataque Tabnabbing en eventos externos.</td><td>Impacto 04 Mayor / Probabilidad 04 Probable.</td></tr>
+                        <tr><td>P-E10</td><td>Malware en archivos de editoriales.</td><td>Impacto 03 Significativo / Probabilidad 04 Probable.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="img-placeholder">
+                    <p class="img-caption">Espacio para imagen: Matriz de riesgo de politicas externas.</p>
+                </div>
+
+                <h3>Tratamiento de riesgos para politicas externas</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>Activo</th><th>Medida descrita</th><th>Clasificacion</th><th>Justificacion</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. Uso de Servicios en la Nube</td><td>Cuenta institucional O365 + 2FA obligatoria.</td><td>Mitigar</td><td>Reduce la probabilidad de accesos no autorizados, pero no elimina el riesgo de la nube.</td></tr>
+                        <tr><td>17. Cumplimiento Normativo</td><td>Alineacion con SEP/SIGED + revisiones trimestrales.</td><td>Aceptar</td><td>El riesgo normativo no se elimina ni transfiere; se acepta y se monitorea activamente.</td></tr>
+                        <tr><td>5. Gestion de Proveedores de Internet</td><td>SLA 99.9% + reporte inmediato de caida.</td><td>Transferir</td><td>La disponibilidad se transfiere parcialmente al ISP mediante SLA; el reporte mitiga el impacto.</td></tr>
+                        <tr><td>11. Intercambio Seguro de Datos</td><td>Validacion SSL/TLS + bloqueo de HTTP.</td><td>Mitigar</td><td>Reduce el riesgo de interceptacion o manipulacion de datos en transito.</td></tr>
+                        <tr><td>7. Equipos Arrendados</td><td>Mismos estandares + borrado seguro.</td><td>Mitigar</td><td>Disminuye el riesgo de fuga de datos por equipos externos, pero no lo elimina.</td></tr>
+                        <tr><td>19. Acceso de Terceros</td><td>Clausulas NDA + revision legal de contratos.</td><td>Transferir</td><td>El riesgo de incumplimiento de confidencialidad se transfiere legalmente al proveedor.</td></tr>
+                        <tr><td>12. Respaldo en Sedes Alternas</td><td>Copias fuera de instalaciones + transferencia cifrada semanal.</td><td>Mitigar</td><td>Reduce el riesgo de perdida de datos ante desastre local.</td></tr>
+                        <tr><td>6. Autenticacion via APIs</td><td>Monitoreo de seguridad + auditoria semestral de tokens.</td><td>Mitigar</td><td>Control continuo sobre riesgos de autenticacion delegada.</td></tr>
+                        <tr><td>8. Gestion de Eventos Externos</td><td>VPN obligatoria en Wi-Fi publica para activos moviles.</td><td>Mitigar</td><td>Reduce exposicion en redes no confiables; no elimina todos los riesgos.</td></tr>
+                        <tr><td>10. Validacion de Material Externo</td><td>Antivirus + sandboxing antes de usar.</td><td>Mitigar (casi eliminar)</td><td>Si se hace sandboxing riguroso, se elimina el riesgo de ejecucion directa. Como hay analisis previo, se clasifica como mitigacion fuerte.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <div class="scenario-card">
+            <div class="scenario-header">
 
         <div class="scenario-card">
             <div class="scenario-header">
