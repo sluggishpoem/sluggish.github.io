@@ -505,3 +505,56 @@ th {
     font-size: 0.8rem;
     color: #94a3b8;
 }
+/* Estilos para tablas de metricas CVSS */
+.metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.metrics-table th, .metrics-table td {
+    border: 1px solid #334155;
+    padding: 10px;
+    text-align: left;
+}
+
+.metrics-table th {
+    background-color: #1e293b;
+    color: #38bdf8;
+}
+
+.vector-box {
+    background-color: #020617;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1rem;
+    text-align: center;
+    margin: 15px 0;
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+.img-placeholder {
+    margin: 25px 0;
+    text-align: center;
+}
+
+.img-caption {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.placeholder-space {
+    background-color: #1e293b;
+    border: 2px dashed #38bdf8;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.placeholder-space p {
+    margin: 0;
+}
