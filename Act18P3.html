@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis de Intrusion | Modelo Diamante y Cyber Kill Chain</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Analisis de Intrusion</h1>
+        <p class="alias">Modelo Diamante y Cyber Kill Chain</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="pf03.html">Parcial 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+  
+        <div class="highlight-box">
+            <h3>Introduccion</h3>
+            <p>En esta actividad se analiza un escenario de malware utilizando dos modelos complementarios de analisis de intrusiones. Primero se identifican los elementos principales del ataque mediante el Modelo Diamante: adversario, capacidad, infraestructura y victima. Posteriormente, los eventos detectados se relacionan con las fases de la Cyber Kill Chain para comprender como se desarrollo la intrusion y como pudo propagarse dentro de la red.</p>
+            <p>El analisis de intrusiones es una parte fundamental de la ciberseguridad, ya que permite identificar como actuan los atacantes dentro de una red o sistema. Para comprender mejor estos incidentes, existen modelos como el Modelo Diamante y la Cyber Kill Chain, los cuales ayudan a organizar la informacion del ataque y relacionar sus diferentes etapas. Estos marcos de trabajo permiten a los equipos de seguridad no solo reaccionar ante incidentes, sino tambien anticiparse a futuros ataques mediante la comprension profunda de las tacticas, tecnicas y procedimientos (TTP) de los adversarios.</p>
+            <p>El Modelo Diamante, desarrollado por el Centro de Analisis de Intrusiones (CIA), establece que cualquier evento de intrusion puede describirse mediante cuatro elementos fundamentales: el adversario (quien realiza el ataque), la capacidad (las herramientas y tecnicas empleadas), la infraestructura (los recursos tecnologicos utilizados) y la victima (el objetivo afectado). Estos cuatro componentes se conectan formando una estructura en forma de diamante que permite visualizar las relaciones entre cada elemento.</p>
+            <p>Por otro lado, la Cyber Kill Chain, propuesta por Lockheed Martin, descompone el ciclo de vida de un ataque en siete fases secuenciales: reconocimiento, weaponizacion, entrega, explotacion, instalacion, comando y control (C2), y accion sobre el objetivo. Este enfoque ayuda a identificar en que etapa del ataque se encuentra el adversario y cuales son las medidas de defensa mas adecuadas para interrumpir la cadena de compromiso.</p>
+            <p>A continuacion, se presenta un escenario de infeccion por malware en una organizacion, donde se aplican ambos modelos para analizar los eventos detectados, responder preguntas clave sobre el incidente y comprender como el atacante logro moverse lateralmente dentro de la red comprometiendo multiples equipos.</p>
+        </div>
+
+     
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Parte 01. Comprension del modelo</h2>
+                <div class="scenario-tag">Elementos fundamentales del Modelo Diamante</div>
+            </div>
+            <div class="scenario-body">
+                <p>El Modelo Diamante organiza cualquier evento de intrusion en cuatro elementos principales:</p>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Elemento</th><th>Descripcion</th><th>Ejemplo practico</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Adversario</td><td>Actor que realiza el ataque o la intrusion.</td><td>Grupo de ciberdelincuentes que distribuye malware.</td></tr>
+                        <tr><td>Capacidad</td><td>Herramientas, tecnicas y conocimientos utilizados en el ataque.</td><td>Malware con conexion a servidores C2.</td></tr>
+                        <tr><td>Infraestructura</td><td>Recursos utilizados para ejecutar el ataque.</td><td>Dominios maliciosos, IP externas y servidores C2.</td></tr>
+                        <tr><td>Victima</td><td>Sistema, usuario u organizacion afectada.</td><td>Equipo de la empresa infectado con malware.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+      
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Parte 02. Analisis de evento (Modelo Diamante)</h2>
+                <div class="scenario-tag">Aplicacion del modelo al escenario</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Escenario</h3>
+                <p>Una organizacion detecta comportamiento anomalo en un equipo. El analisis revela:</p>
+                <ul>
+                    <li>La victima detecta malware.</li>
+                    <li>El malware contiene dominios de Comando y Control (C2).</li>
+                    <li>Los dominios resuelven a direcciones IP externas.</li>
+                    <li>Los logs muestran multiples hosts conectandose a esas IP.</li>
+                    <li>WHOIS/IP revela posible origen del atacante.</li>
+                </ul>
+
+                <h3>Estructura por evento</h3>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Metacaracteristica</th><th>Descripcion del evento</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Marca de tiempo</td><td>Momento en que el SOC detecta actividad anomala en la red.</td></tr>
+                        <tr><td>Fase</td><td>Compromiso e instalacion del malware.</td></tr>
+                        <tr><td>Resultado</td><td>Equipo infectado y conexion establecida con C2.</td></tr>
+                        <tr><td>Direccion</td><td>Comunicacion saliente desde la red interna hacia IP externas.</td></tr>
+                        <tr><td>Metodologia</td><td>Phishing, ejecucion de malware y comunicacion remota.</td></tr>
+                        <tr><td>Recursos</td><td>Malware, dominios C2, IP externas y herramientas de acceso remoto.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Preguntas</h3>
+                <div class="ethics-grid">
+                    <div class="ethics-item"><strong>¿Quien es el adversario en este escenario?</strong><br>El adversario es un atacante externo o grupo APT que distribuye malware y controla equipos comprometidos mediante servidores C2.</div>
+                    <div class="ethics-item"><strong>¿Cual es la capacidad utilizada?</strong><br>La capacidad utilizada incluye phishing, ejecucion de malware, conexion remota con C2 y movimiento lateral dentro de la red.</div>
+                    <div class="ethics-item"><strong>¿Que tipo de infraestructura se emplea?</strong><br>Se emplean dominios maliciosos, direcciones IP externas, servidores de Comando y Control (C2) y hosts comprometidos.</div>
+                    <div class="ethics-item"><strong>¿Quien es la victima primaria?</strong><br>La victima primaria es el equipo inicial de la organizacion donde se detecto el malware.</div>
+                    <div class="ethics-item"><strong>¿Existe evidencia de movimiento lateral?</strong><br>Si. Los logs muestran multiples hosts conectandose a las mismas IP externas, indicando posible propagacion interna y pivoting.</div>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Parte 03. Relacion con la Kill Chain</h2>
+                <div class="scenario-tag">Correspondencia con las fases del ataque</div>
+            </div>
+            <div class="scenario-body">
+                <p>Lista de eventos detectados durante el incidente:</p>
+                <ol>
+                    <li>El atacante envia un correo phishing al administrador.</li>
+                    <li>El administrador ejecuta el archivo malicioso.</li>
+                    <li>El malware se instala en el equipo.</li>
+                    <li>El host establece conexion con el servidor C2.</li>
+                    <li>El atacante obtiene acceso remoto al sistema comprometido.</li>
+                </ol>
+
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Evento</th><th>Fase Kill Chain (version clasica)</th><th>Justificacion</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Deteccion de malware</td><td>No es una fase de la Kill Chain, es una deteccion.</td><td>La Kill Chain describe el ataque, no la defensa. La deteccion ocurre despues de la ejecucion. Nos indica que el atacante ya supero fases previas.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+     
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Parte 04. Hilos de actividad</h2>
+                <div class="scenario-tag">Secuencia de eventos por victima</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Hilo 1 (Victima 1)</h3>
+                <ol>
+                    <li>El atacante envia un correo phishing al administrador.</li>
+                    <li>El administrador ejecuta el archivo malicioso.</li>
+                    <li>El malware se instala en el equipo.</li>
+                    <li>El host establece conexion con el servidor C2.</li>
+                    <li>El atacante obtiene acceso remoto al sistema comprometido.</li>
+                </ol>
+
+                <h3>Hilo 2 (Victima 2)</h3>
+                <ol>
+                    <li>El atacante utiliza el equipo comprometido como proxy o pivote.</li>
+                    <li>Se realizan conexiones internas hacia otros hosts.</li>
+                    <li>Una segunda maquina recibe o descarga el malware.</li>
+                    <li>El segundo host tambien establece conexion con el C2.</li>
+                </ol>
+
+                <h3>Relacion entre ambos (Pivoting)</h3>
+                <p>El atacante utiliza el primer equipo comprometido para desplazarse lateralmente dentro de la red y comprometer otros dispositivos. El host inicial funciona como puente entre el atacante externo y la segunda victima. Esta tecnica, conocida como pivoting, permite al adversario expandir su control sobre la infraestructura de la organizacion sin necesidad de establecer nuevos vectores de ataque externos.</p>
+            </div>
+        </div>
+
+    
+        <div class="img-placeholder">
+            <p class="img-caption">Imagen 1. Diagrama del Modelo Diamante aplicado al escenario</p>
+            <div class="placeholder-space">
+                <p>[Espacio reservado para imagen: modelo_diamante.png]</p>
+            </div>
+        </div>
+
+    
+        <div class="img-placeholder">
+            <p class="img-caption">Imagen 2. Mapeo de eventos en la Cyber Kill Chain</p>
+            <div class="placeholder-space">
+                <p>[Espacio reservado para imagen: kill_chain.png]</p>
+            </div>
+        </div>
+
+      
+        <div class="conclusion-box">
+            <h3>Conclusion</h3>
+            <p>El escenario representa un ataque tipo APT basado en phishing y malware con infraestructura C2. El Modelo Diamante permite identificar la relacion entre adversario, capacidades, infraestructura y victimas, mientras que la Cyber Kill Chain ayuda a clasificar cada fase del ataque y comprender la progresion de la intrusion.</p>
+            <p>El analisis conjunto de ambos modelos revela que el atacante logro superar exitosamente las fases iniciales de la Kill Chain (reconocimiento, entrega y explotacion) para luego establecer persistencia mediante la conexion C2 y finalmente expandir su control mediante movimiento lateral. La deteccion tardia del incidente permitio que el adversario comprometiera multiples equipos, lo que subraya la importancia de implementar controles de seguridad que permitan interrumpir la cadena de ataque en sus etapas tempranas.</p>
+            <p>La combinacion del Modelo Diamante y la Cyber Kill Chain proporciona a los analistas de seguridad una vision integral del incidente: el primero ofrece una perspectiva estatica de los componentes del ataque, mientras que el segundo aporta una dimension temporal que describe la evolucion del compromiso. Esta sinergia resulta fundamental para el desarrollo de capacidades de deteccion, respuesta y resiliencia organizacional.</p>
+        </div>
+
+      <section>
+        <h2>Material Audiovisual</h2>
+
+        <h3>Modelo Diamante de Analisis de Intrusiones</h3>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/b3ahSKAj70g"></iframe>
+        </div>
+      </section>
+
+        <div class="bibliografia">
+            <h3>Bibliografia</h3>
+            <ul>
+                <li>Calderon, P. (2020). Threat Hunting: Como detectar adversarios en entornos digitales. CyberEdge Press.</li>
+                <li>Hutchins, E. M., Cloppert, M. J., & Amin, R. M. (2011). Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains. Lockheed Martin.</li>
+                <li>Mandiant. (2022). M-Trends 2022: Perspectivas sobre la amenaza cibernetica global. Mandiant/FireEye.</li>
+                <li>Rogers, M. (2019). Cyber Threat Intelligence: Analisis y aplicacion practica. SANS Institute.</li>
+                <li>Sergio Caltagirone, A. P. (2013). The Diamond Model of Intrusion Analysis. Center for Cyber Intelligence Analysis and Threat Research.</li>
+                <li>Stallings, W., & Brown, L. (2018). Computer Security: Principles and Practice (4th ed.). Pearson.</li>
+                <li>Whitman, M. E., & Mattord, H. J. (2022). Principles of Information Security (7th ed.). Cengage Learning.</li>
+            </ul>
+        </div>
+    </section>
+
+  <section id="documento">
+        <h2>Documento completo Actividad 08</h2>
+        <p>Puedes descargar el documento original en formato PDF con todos los laboratorios detallados, incluyendo procedimientos, capturas y explicaciones técnicas.</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="act18-Equipo1.pdf" class="btn-blog" style="font-size: 1.2rem; padding: 12px 30px; background-color: #10b981;" download> DESCARGAR PDF</a>
+        </div>
+        <p class="nota">* El documento contiene la evidencia técnica de los 18 laboratorios resueltos.</p>
+    </section>
+    <footer>
+        <p>Portafolio - Analisis de Intrusion con Modelo Diamante y Cyber Kill Chain | Seguridad Informatica</p>
+    </footer>
+</body>
+</html>
