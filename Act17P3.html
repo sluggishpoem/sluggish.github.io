@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluacion de Vulnerabilidades | CVSS v3.1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Evaluacion de Vulnerabilidades</h1>
+        <p class="alias">Uso del modelo CVSS v3.1</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="pf03.html">Parcial 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+      <div class="highlight-box">
+    <h3>Introduccion al modelo CVSS v3.1</h3>
+    <p>El Common Vulnerability Scoring System (CVSS) es un marco de trabajo internacional mantenido por FIRST (Forum of Incident Response and Security Teams) que proporciona una forma estructurada de capturar las caracteristicas principales de una vulnerabilidad y traducirlas en una puntuacion numerica que refleja su severidad. La version 3.1, publicada en 2019, introduce mejoras en la claridad de las metricas, especialmente en el concepto de alcance (Scope), y refina la forma en que se evaluan los requisitos de privilegios y la interaccion del usuario.</p>
+    <p>El modelo CVSS v3.1 se organiza en tres grupos de metricas: las metricas base, que representan las propiedades intrinsicas de una vulnerabilidad que no cambian con el tiempo ni dependen del entorno; las metricas temporales, que reflejan factores como la disponibilidad de parches o la existencia de codigo de explotacion publico; y las metricas ambientales, que permiten personalizar el riesgo segun el contexto especifico de una organizacion. Para efectos de este analisis, nos centraremos exclusivamente en las metricas base, ya que constituyen el punto de partida estandarizado para cualquier evaluacion de vulnerabilidades.</p>
+    <p>Cada vulnerabilidad evaluada mediante CVSS v3.1 genera una cadena vector legible por maquinas y por humanos, ademas de una puntuacion base que puede ir desde 0.0 hasta 10.0. Esta puntuacion se clasifica en rangos que van desde Ninguno (0.0), Bajo (0.1 a 3.9), Medio (4.0 a 6.9), Alto (7.0 a 8.9) y Critico (9.0 a 10.0). La correcta interpretacion de estas puntuaciones permite a los equipos de seguridad priorizar sus esfuerzos de parchado, implementar controles compensatorios y comunicar el riesgo a las areas de negocio de manera efectiva.</p>
+    <p>A continuacion, se aplica el modelo CVSS v3.1 a un escenario concreto de vulnerabilidad en un sistema web interno, identificando las metricas base correspondientes, construyendo el vector de ataque, calculando la puntuacion mediante la calculadora oficial de FIRST e interpretando los resultados obtenidos.</p>
+</div>
+        <!-- Resumen Ejecutivo -->
+        <div class="highlight-box">
+            <h3>Resumen Ejecutivo</h3>
+            <p>La presente actividad tiene como proposito aplicar el modelo CVSS v3.1 (Common Vulnerability Scoring System) para evaluar la gravedad de una vulnerabilidad detectada en un sistema web interno. A partir del escenario proporcionado, se identifican las metricas base correspondientes, se construye correctamente el vector CVSS y se obtiene una puntuacion de riesgo utilizando la calculadora oficial de FIRST. Asimismo, se realiza un analisis tecnico orientado a interpretar el impacto de la vulnerabilidad dentro de un contexto organizacional, considerando factores como privilegios requeridos, complejidad de explotacion y efectos sobre la confidencialidad, integridad y disponibilidad.</p>
+        </div>
+
+        <!-- Objetivos -->
+        <div class="highlight-box">
+            <h3>Objetivos</h3>
+            <p>Objetivo General: Aplicar el modelo CVSS v3.1 para evaluar la gravedad de una vulnerabilidad informatica, interpretando correctamente sus metricas base y justificando la priorizacion del riesgo dentro de un entorno organizacional.</p>
+            <p>Objetivos Especificos:</p>
+            <ul>
+                <li>Identificar correctamente las metricas base del modelo CVSS v3.1.</li>
+                <li>Construir una cadena vector CVSS a partir de un escenario tecnico.</li>
+                <li>Utilizar la calculadora oficial de FIRST para obtener la puntuacion base.</li>
+                <li>Interpretar tecnicamente el nivel de riesgo asociado a la vulnerabilidad.</li>
+                <li>Comprender la importancia de la priorizacion de vulnerabilidades en ciberseguridad.</li>
+            </ul>
+        </div>
+
+        <!-- Descripcion del escenario -->
+        <div class="highlight-box">
+            <h3>Descripcion del escenario</h3>
+            <p>Una organizacion detecta una vulnerabilidad en un sistema web interno con las siguientes caracteristicas:</p>
+            <ul>
+                <li>Puede explotarse a traves de la red.</li>
+                <li>La explotacion requiere baja complejidad.</li>
+                <li>Se necesitan privilegios elevados.</li>
+                <li>No requiere interaccion del usuario.</li>
+                <li>No cambia el alcance.</li>
+                <li>El impacto en: Confidencialidad: Bajo, Integridad: Bajo, Disponibilidad: Bajo.</li>
+            </ul>
+        </div>
+
+        <!-- Identificacion de metricas CVSS v3.1 -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Identificacion de metricas CVSS v3.1</h2>
+                <div class="scenario-tag">Base Score Metrics · Common Vulnerability Scoring System</div>
+            </div>
+            <div class="scenario-body">
+                <p>A partir del escenario proporcionado, se identificaron las siguientes metricas base:</p>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Metrica</th><th>Valor</th><th>Justificacion</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Attack Vector (AV)</td><td>Network (N)</td><td>La vulnerabilidad puede explotarse a traves de la red.</td></tr>
+                        <tr><td>Attack Complexity (AC)</td><td>Low (L)</td><td>No existen condiciones especiales complejas para la explotacion.</td></tr>
+                        <tr><td>Privileges Required (PR)</td><td>High (H)</td><td>Se requieren privilegios elevados para ejecutar el ataque.</td></tr>
+                        <tr><td>User Interaction (UI)</td><td>None (N)</td><td>El usuario no necesita realizar ninguna accion.</td></tr>
+                        <tr><td>Scope (S)</td><td>Unchanged (U)</td><td>La vulnerabilidad no cambia el alcance de seguridad.</td></tr>
+                        <tr><td>Confidentiality (C)</td><td>Low (L)</td><td>El impacto sobre la confidencialidad es limitado.</td></tr>
+                        <tr><td>Integrity (I)</td><td>Low (L)</td><td>Existe una afectacion limitada sobre la integridad.</td></tr>
+                        <tr><td>Availability (A)</td><td>Low (L)</td><td>El impacto sobre la disponibilidad es bajo.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Construccion del vector CVSS -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Construccion del vector CVSS</h2>
+                <div class="scenario-tag">Vector String · Cadena de ataque</div>
+            </div>
+            <div class="scenario-body">
+                <p>Con base en las metricas identificadas, la cadena vector correspondiente es la siguiente:</p>
+                <div class="vector-box">CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:L/A:L</div>
+                
+                <!-- Espacio para la imagen 1.1 -->
+                <div class="img-placeholder">
+                    <p class="img-caption">Imagen 1.1. Insercion de los valores en las metricas de CVSS V3.1</p>
+                    <div class="placeholder-space">
+                        <p>[Espacio reservado para imagen: metricas_cvss.png]</p>
+                    </div>
+                </div>
+
+                <!-- Espacio para la imagen 1.2 -->
+                <div class="img-placeholder">
+                    <p class="img-caption">Imagen 1.2. Cadena vector resultante de las metricas evaluadas</p>
+                    <div class="placeholder-space">
+                        <p>[Espacio reservado para imagen: vector_cvss.png]</p>
+                    </div>
+                </div>
+
+                <p>Desglose tecnico del vector:</p>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Elemento</th><th>Significado</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>AV:N</td><td>Ataque remoto a traves de la red</td></tr>
+                        <tr><td>AC:L</td><td>Baja complejidad de explotacion</td></tr>
+                        <tr><td>PR:H</td><td>Requiere privilegios elevados</td></tr>
+                        <tr><td>UI:N</td><td>No requiere interaccion del usuario</td></tr>
+                        <tr><td>S:U</td><td>El alcance permanece sin cambios</td></tr>
+                        <tr><td>C:L</td><td>Impacto bajo en confidencialidad</td></tr>
+                        <tr><td>I:L</td><td>Impacto bajo en integridad</td></tr>
+                        <tr><td>A:L</td><td>Impacto bajo en disponibilidad</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Interpretacion tecnica -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Interpretacion tecnica</h2>
+                <div class="scenario-tag">Analisis contextual del riesgo</div>
+            </div>
+            <div class="scenario-body">
+                <h3>¿Por que, a pesar de requerir privilegios elevados, la vulnerabilidad sigue siendo relevante?</h3>
+                <p>La vulnerabilidad continúa siendo relevante debido a que un atacante con acceso privilegiado podria aprovecharla para comprometer parcialmente la seguridad del sistema. Aunque el requisito de privilegios elevados reduce la probabilidad de explotacion por parte de atacantes externos no autenticados, sigue representando un riesgo importante ante amenazas internas, cuentas comprometidas o escalacion previa de privilegios. Ademas, el hecho de que pueda explotarse remotamente y con baja complejidad incrementa su peligrosidad dentro de entornos corporativos.</p>
+
+                <h3>¿Que tipo de atacante podria explotarla?</h3>
+                <p>La vulnerabilidad podria ser explotada por: administradores maliciosos, usuarios internos con altos privilegios, atacantes que previamente comprometieron credenciales administrativas, o amenazas persistentes avanzadas (APT) con acceso interno. Este tipo de escenarios son comunes en ataques de insider threat o movimientos laterales dentro de redes corporativas.</p>
+
+                <h3>¿Que significa que el impacto sea bajo en las tres dimensiones?</h3>
+                <p>Significa que la vulnerabilidad produce afectaciones limitadas sobre la confidencialidad (exposicion parcial de informacion), la integridad (modificaciones limitadas sobre datos o procesos) y la disponibilidad (interrupcion del servicio no es total ni critica). Aunque el impacto individual es bajo, la vulnerabilidad no debe ignorarse, ya que podria combinarse con otras debilidades para generar ataques de mayor severidad.</p>
+            </div>
+        </div>
+
+        <!-- Calculo de puntuacion CVSS -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Calculo de puntuacion CVSS</h2>
+                <div class="scenario-tag">Base Score · Severidad</div>
+            </div>
+            <div class="scenario-body">
+                <p>La puntuacion fue obtenida utilizando la calculadora oficial de FIRST para CVSS v3.1.</p>
+                
+                <h3>Vector utilizado</h3>
+                <div class="vector-box">CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:L/A:L</div>
+
+                <h3>Resultado obtenido</h3>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>Elemento</th><th>Resultado</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Base Score</td><td>4.7</td></tr>
+                        <tr><td>Severidad</td><td>Media</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Interpretacion del resultado</h3>
+                <p>La vulnerabilidad se clasifica dentro de la categoria de severidad media debido a que: puede explotarse remotamente, la complejidad de ataque es baja, no requiere interaccion del usuario, el impacto general es limitado y requiere privilegios elevados, lo cual reduce parcialmente el riesgo. El resultado indica que la vulnerabilidad debe atenderse y mitigarse, especialmente en entornos corporativos donde existan multiples usuarios privilegiados o riesgos de compromiso interno.</p>
+            </div>
+        </div>
+
+        <!-- Importancia de la priorizacion de vulnerabilidades -->
+        <div class="importancia-box">
+            <h3>Importancia de la priorizacion de vulnerabilidades</h3>
+            <p>La utilizacion del modelo CVSS permite a las organizaciones evaluar vulnerabilidades de manera estandarizada, facilitando la toma de decisiones relacionadas con gestion de riesgos y priorizacion de remediaciones.</p>
+            <p>Algunas ventajas de utilizar CVSS incluyen:</p>
+            <ul>
+                <li>Estandarizacion internacional de vulnerabilidades.</li>
+                <li>Priorizacion objetiva de riesgos.</li>
+                <li>Mejora en la gestion de incidentes.</li>
+                <li>Optimizacion de recursos de mitigacion.</li>
+                <li>Mayor comprension tecnica del impacto.</li>
+            </ul>
+            <p>Dentro de entornos organizacionales, el analisis CVSS ayuda a definir: prioridades de parchado, controles compensatorios, planes de respuesta, estrategias de hardening y gestion de riesgos corporativos.</p>
+        </div>
+
+        <!-- Conclusiones -->
+        <div class="conclusion-box">
+            <h3>Conclusiones</h3>
+            <p>A partir del escenario planteado, fue posible identificar correctamente las metricas base, construir el vector CVSS correspondiente y obtener una puntuacion de riesgo utilizando la calculadora oficial.</p>
+            <p>El analisis demuestra que incluso vulnerabilidades con impactos bajos pueden representar riesgos relevantes cuando existen condiciones favorables como explotacion remota, baja complejidad o acceso privilegiados comprometidos.</p>
+            <p>Asimismo, se concluye que el modelo CVSS constituye una herramienta fundamental dentro de los procesos de gestion de vulnerabilidades, ya que facilita la priorizacion de acciones de mitigacion y fortalece la toma de decisiones en ciberseguridad.</p>
+        </div>
+        <section>
+        <h2>Material Audiovisual</h2>
+
+        <h3>Tutorial Basico iptables</h3>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/gkALH_iuaeI"></iframe>
+          </div>
+        </section>
+        <!-- Bibliografia -->
+        <div class="bibliografia">
+            <h3>Bibliografia</h3>
+            <ul>
+                <li>FIRST. (s. f.). Common Vulnerability Scoring System v3.1 Calculator. https://www.first.org/cvss/calculator/3.1</li>
+                <li>FIRST. (2019). Common Vulnerability Scoring System Version 3.1: Specification Document. https://www.first.org/cvss/v3-1/specification-document</li>
+                <li>Mell, P., Scarfone, K., & Romanosky, S. (2007). A Complete Guide to the Common Vulnerability Scoring System Version 2.0. FIRST.org.</li>
+                <li>Scarfone, K., & Mell, P. (2009). Guide to the Vulnerability Management Process. National Institute of Standards and Technology (NIST).</li>
+                <li>Stallings, W., & Brown, L. (2018). Computer Security: Principles and Practice (4th ed.). Pearson.</li>
+                <li>Whitman, M. E., & Mattord, H. J. (2022). Principles of Information Security (7th ed.). Cengage Learning.</li>
+            </ul>
+        </div>
+    </section>
+    <section id="documento">
+        <h2>Documento completo Actividad 17</h2>
+        <p>Puedes descargar el documento original en formato PDF</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="act08-Equipo1.pdf" class="btn-blog" style="font-size: 1.2rem; padding: 12px 30px; background-color: #10b981;" download> DESCARGAR PDF</a>
+        </div>
+      
+    </section>
+    <footer>
+        <p>Portafolio - Evaluacion de Vulnerabilidades con CVSS v3.1 | Seguridad Informatica</p>
+    </footer>
+</body>
+</html>
