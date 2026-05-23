@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGSI | ISO 27001:2022 en el SEER</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestión de Seguridad de la Información</h1>
+        <p class="alias">ISO/IEC 27001:2022 en el SEER</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="pf03.html">Parcial 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <!-- Introduccion -->
+        <div class="highlight-box">
+            <h3>Introduccion</h3>
+            <p>La seguridad de la informacion se ha convertido en un pilar fundamental para las organizaciones gubernamentales y educativas, las cuales manejan grandes volumenes de datos sensibles correspondientes a docentes, alumnos y personal administrativo. La norma ISO/IEC 27001:2022 establece los requisitos para implementar, mantener y mejorar continuamente un Sistema de Gestion de Seguridad de la Informacion (SGSI), proporcionando un marco estructurado para proteger la confidencialidad, integridad y disponibilidad de los activos de informacion.</p>
+            <p>El presente documento describe la implementacion del SGSI en el Sistema Educativo Estatal Regular (SEER) de San Luis Potosi, con un alcance especifico en el Departamento de Recursos Humanos. Esta unidad administrativa es responsable de gestionar informacion critica relacionada con el ciclo de vida laboral de docentes y trabajadores administrativos, incluyendo remuneraciones, incidencias, tramites de seguridad social y procesos de seleccion y promocion.</p>
+            <p>La implementacion se fundamenta en cinco normas principales de la familia ISO/IEC 27000: la norma certificable 27001:2022 que establece los requisitos formales del SGSI; la 27002:2022 que proporciona un catalogo de controles de seguridad; la 27005:2018 que guia la gestion de riesgos; la 27017:2015 para regular el uso seguro de servicios en la nube como Office 365; y la 27018:2019 para garantizar la proteccion de datos personales en entornos de nube publica.</p>
+            <p>A continuacion, se presenta la estructura completa del SGSI, incluyendo el contexto organizacional, el inventario de activos, las politicas generales y funcionales, la matriz de riesgos, el plan de capacitacion, los procedimientos operativos para la implementacion de controles como la autenticacion multifactor, la evaluacion del desempeño y las acciones de mejora derivadas de un incidente real de phishing ocurrido en la institucion.</p>
+        </div>
+
+        <!-- Seccion I: Alcance -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion I: Alcance del SGSI</h2>
+                <div class="scenario-tag">Delimitacion del Sistema de Gestion</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Contexto de la Organizacion (SEER)</h3>
+                <p>El Sistema Educativo Estatal Regular (SEER) en San Luis Potosi es una dependencia gubernamental encargada de gestionar, supervisar y elevar la calidad academica y administrativa de instituciones de educacion basica y media superior en el estado. Maneja un alto volumen de informacion sensible correspondiente a docentes, alumnos y personal administrativo.</p>
+                <p><strong>Vision:</strong> Consolidar una educacion integral, moderna y de calidad para formar personas competitivas que contribuyan al desarrollo de la nacion.</p>
+                <p><strong>Mision:</strong> Participar en la conduccion de politicas educativas orientadas a elevar la calidad academica y administrativa de los servicios que ofrece el Sistema Educativo Estatal Regular, contribuyendo con responsabilidad y profesionalismo en la formacion integral que requiere el ser humano en una sociedad de cambio.</p>
+                <p>La SEER busca instaurar los valores de Integridad, Transparencia, Confidencialidad y Compromiso a la educacion del estado de San Luis Potosi.</p>
+
+                <h3>Delimitacion del Alcance</h3>
+                <p>El Sistema de Gestion de Seguridad de la Informacion (SGSI) se aplica de manera especifica al Departamento de Recursos Humanos, el cual es una unidad administrativa dependiente de la Direccion de Servicios Administrativos del Sistema Educativo Estatal Regular (SEER). Este siendo el departamento principal administrativo de la institucion, encargado de gestionar el ciclo de vida laboral de docentes y trabajadores administrativos. Siendo su labor principal: administracion de remuneraciones, control de incidencias, gestion de tramites de seguridad social (ISSSTE/FORTE), emision de constancias de servicio, operacion de los procesos de seleccion y promocion para la educacion basica.</p>
+
+                <h3>Justificacion</h3>
+                <p>La implementacion del Sistema de Gestion de Seguridad de la Informacion (SGSI) en el SEER tiene como objetivo establecer, implementar, mantener y mejorar continuamente un marco de seguridad que garantice la proteccion de los activos de informacion. El alcance se centra especificamente en el Departamento de Recursos Humanos, protegiendo la informacion critica de docentes y trabajadores administrativos. La norma busca mitigar riesgos mediante la preservacion de la Confidencialidad, Integridad y Disponibilidad (Triada CIA) de los datos personales y laborales gestionados por esta unidad administrativa.</p>
+
+                <!-- Espacio para imagen del organigrama -->
+                <div class="img-placeholder">
+                    <p class="img-caption">Imagen 1. Organigrama del SEER</p>
+                    <div class="placeholder-space">
+                        <p>[Espacio reservado para imagen: organigrama_seer.png]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seccion II: Referencias Normativas -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion II: Referencias Normativas</h2>
+                <div class="scenario-tag">Normas de la familia ISO/IEC 27000</div>
+            </div>
+            <div class="scenario-body">
+                <p>Para la correcta implementacion del SGSI en el SEER, se aplican las siguientes normativas de la familia ISO/IEC 27000, utilizadas como guias rectoras y de cumplimiento obligatorio en el diseno de los controles:</p>
+                <ul>
+                    <li><strong>ISO/IEC 27001:2022</strong> - Information security, cybersecurity and privacy protection - Information security management systems - Requirements. Norma base certificable. Se utiliza para establecer los requisitos formales del SGSI en el SEER, delimitar el alcance y definir el ciclo de mejora continua.</li>
+                    <li><strong>ISO/IEC 27002:2022</strong> - Information security controls. Catalogo de controles de seguridad. Se utiliza para seleccionar las buenas practicas (controles preventivos, detectivos y correctivos) aplicables a los activos de Recursos Humanos.</li>
+                    <li><strong>ISO/IEC 27005:2018</strong> - Information security risk management. Se emplea como metodologia estructurada para identificar, evaluar y tratar los riesgos (amenazas y vulnerabilidades) especificos del departamento de Recursos Humanos.</li>
+                    <li><strong>ISO/IEC 27017:2015</strong> - Code of practice for information security controls based on ISO/IEC 27002 for cloud services. Aplicada especificamente para regular el uso seguro de Microsoft Office 365 y OneDrive por parte de los administrativos.</li>
+                    <li><strong>ISO/IEC 27018:2019</strong> - Code of practice for protection of personally identifiable information (PII) in public clouds. Esencial para garantizar que los datos personales de los docentes subidos a la nube cumplan con parametros de privacidad.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Seccion III: Terminos y Definiciones -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion III: Terminos y Definiciones</h2>
+                <div class="scenario-tag">Conceptos clave del SGSI</div>
+            </div>
+            <div class="scenario-body">
+                <p>Para los fines de este documento y de acuerdo con la norma ISO/IEC 27001:2022, se aplican los terminos definidos en la norma ISO/IEC 27000:</p>
+                <ul>
+                    <li><strong>Activo:</strong> En relacion con la seguridad de la informacion, se refiere a cualquier informacion o elemento relacionado con el tratamiento de la misma (sistemas, soportes, edificios, personas) que tenga valor para la organizacion.</li>
+                    <li><strong>Amenaza:</strong> Causa potencial de un incidente no deseado, que puede provocar daños a un sistema o a la organizacion.</li>
+                    <li><strong>Analisis de riesgos:</strong> Proceso para comprender la naturaleza del riesgo y determinar el nivel de riesgo.</li>
+                    <li><strong>Confidencialidad:</strong> Propiedad de la informacion de no ponerse a disposicion o ser revelada a individuos, entidades o procesos no autorizados.</li>
+                    <li><strong>Control de acceso:</strong> Garantizar que el acceso a los activos este autorizado y restringido segun los requisitos comerciales y de seguridad.</li>
+                    <li><strong>Declaracion de aplicabilidad (SOA):</strong> Documento que enumera los controles aplicados por el SGSI de la organizacion tras el resultado de los procesos de evaluacion y tratamiento de riesgos y su justificacion.</li>
+                    <li><strong>Inventario de activos:</strong> Lista de todos aquellos recursos (fisicos, de informacion, software, documentos, servicios, personas, intangibles) dentro del alcance del SGSI, que tengan valor para la organizacion y necesiten por tanto ser protegidos de potenciales riesgos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Seccion IV: Contexto de la Organizacion - Inventario de Activos -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion IV: Contexto de la Organizacion</h2>
+                <div class="scenario-tag">Inventario de activos criticos</div>
+            </div>
+            <div class="scenario-body">
+                <p>Se ha ampliado y clasificado un inventario de 40 activos criticos relacionados con el proceso de Recursos Humanos.</p>
+                <table class="metrics-table">
+                    <thead>
+                        <tr><th>ID</th><th>Activo</th><th>Tipo / Propietario</th><th>Triada CIA</th><th>Justificacion del Riesgo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ACT-01</td><td>Escuelas del S.E.E.R</td><td>Int</td><td>C-Baja, I-Baja, D-Alta</td><td>Disponibilidad de servicios educativos</td></tr>
+                        <tr><td>ACT-02</td><td>Computadoras en salones</td><td>Int</td><td>C-Media, I-Media, D-Alta</td><td>Punto de acceso a red y malware</td></tr>
+                        <tr><td>ACT-03</td><td>Servidores escuela</td><td>Int</td><td>C-Alta, I-Alta, D-Alta</td><td>Fuga de PII (Alumnos/Maestros)</td></tr>
+                        <tr><td>ACT-04</td><td>Impresoras Empresariales</td><td>Int</td><td>C-Media, I-Baja, D-Media</td><td>Fuga de informacion impresa</td></tr>
+                        <tr><td>ACT-05</td><td>Gestor base de datos</td><td>Int</td><td>C-Alta, I-Alta, D-Alta</td><td>Corrupcion de registros academicos</td></tr>
+                        <tr><td>ACT-06</td><td>Datos alumnos/maestros</td><td>Int</td><td>C-Alta, I-Alta, D-Media</td><td>Robo de identidad y privacidad</td></tr>
+                        <tr><td>ACT-21</td><td>Licencia Office 365</td><td>Ext</td><td>C-Alta, I-Alta, D-Alta</td><td>Secuestro de sesion y PII</td></tr>
+                        <tr><td>ACT-37</td><td>Plataformas SEP/SIGED</td><td>Ext</td><td>C-Alta, I-Alta, D-Alta</td><td>Integridad de expediente alumno</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Seccion V: Liderazgo - Politicas -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion V: Liderazgo</h2>
+                <div class="scenario-tag">Politicas generales y funcionales</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Politicas Generales</h3>
+                <p><strong>Politica General Interna:</strong> Garantizar la integridad y disponibilidad de la base de datos del personal mediante controles de acceso estrictos y respaldos periodicos.</p>
+                <p><strong>Politica General Externa:</strong> Asegurar que los proveedores de servicios en la nube (Office 365) y plataformas federales cumplan con estandares de proteccion de datos personales.</p>
+
+                <h3>Politicas Funcionales Internas</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>ID</th><th>Politica Funcional</th><th>Estandar / Directriz</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Control de Acceso a Bases de Datos (Activo 5)</td><td>Uso obligatorio de contraseñas de alta complejidad (12+ caracteres). Procedimiento de cambio de contraseña cada 90 dias naturales.</td></tr>
+                        <tr><td>2</td><td>Seguridad en Equipos de Computo (Activo 2)</td><td>Prohibicion de instalacion de software no autorizado. Bloqueo de puertos USB.</td></tr>
+                        <tr><td>3</td><td>Gestion de Respaldos (Activo 3)</td><td>Ejecucion automatica de backups diarios a las 23:00 hrs en servidores locales.</td></tr>
+                        <tr><td>4</td><td>Seguridad Fisica de Oficinas (Activo 14)</td><td>Politica de Escritorio Limpio al finalizar la jornada laboral.</td></tr>
+                        <tr><td>10</td><td>Capacitacion en Seguridad (Activo 19)</td><td>100% de asistencia del personal administrativo a talleres de phishing.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Politicas Funcionales Externas</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>ID</th><th>Politica Funcional</th><th>Estandar / Directriz</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Uso de Servicios en la Nube (Activo 1)</td><td>Uso estricto de la cuenta institucional de Office 365. Habilitacion obligatoria de Autenticacion de Dos Factores (2FA).</td></tr>
+                        <tr><td>2</td><td>Cumplimiento Normativo (Activo 17)</td><td>Alineacion total con las directrices de la SEP y el SIGED. Revision trimestral de actualizaciones.</td></tr>
+                        <tr><td>3</td><td>Gestion de Proveedores de Internet (Activo 5)</td><td>Asegurar disponibilidad del 99.9% (SLA). Procedimiento de reporte inmediato ante caida.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Seccion VI: Planificacion de Riesgos -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion VI: Planificacion de Riesgos</h2>
+                <div class="scenario-tag">Matriz de riesgos y tratamiento</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Politicas internas con su ID</h3>
+                <ul>
+                    <li>P-I1 -> Acceso no autorizado a BD de nomina</li>
+                    <li>P-I2 -> Infeccion por Malware en PCs de clase</li>
+                    <li>P-I3 -> Perdida de datos por falla de servidor</li>
+                    <li>P-I4 -> Robo de sellos o papelería oficial</li>
+                    <li>P-I5 -> Exfiltracion de datos via redes sociales</li>
+                </ul>
+
+                <h3>Politicas externas con su ID</h3>
+                <ul>
+                    <li>P-E1 -> Secuestro de sesion en Office 365</li>
+                    <li>P-E2 -> Sanciones por incumplimiento (SEP)</li>
+                    <li>P-E3 -> Interrupcion del servicio de Internet</li>
+                    <li>P-E4 -> Intercepcion de datos en transito</li>
+                    <li>P-E5 -> Falla de hardware en equipos rentados</li>
+                </ul>
+
+                <h3>Clasificacion del tratamiento de riesgos</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>Activo</th><th>Medida</th><th>Clasificacion</th><th>Justificacion</th></tr></thead>
+                    <tbody>
+                        <tr><td>Uso de Servicios en la Nube</td><td>Cuenta institucional O365 + 2FA obligatoria</td><td>Mitigar</td><td>Reduce la probabilidad de accesos no autorizados</td></tr>
+                        <tr><td>Cumplimiento Normativo</td><td>Alineacion con SEP/SIGED + revisiones trimestrales</td><td>Aceptar</td><td>Se acepta y se monitorea activamente</td></tr>
+                        <tr><td>Gestion de Proveedores de Internet</td><td>SLA 99.9% + reporte inmediato de caida</td><td>Transferir</td><td>La disponibilidad se transfiere al ISP mediante SLA</td></tr>
+                        <tr><td>Acceso de Terceros</td><td>Clausulas NDA + revision legal de contratos</td><td>Transferir</td><td>El riesgo se transfiere legalmente al proveedor</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Espacio para imagen de la matriz de riesgos -->
+        <div class="img-placeholder">
+            <p class="img-caption">Imagen 2. Matriz de riesgos - Politica Externa 1: Uso de Servicios en la Nube</p>
+            <div class="placeholder-space">
+                <p>[Espacio reservado para imagen: matriz_riesgos.png]</p>
+            </div>
+        </div>
+
+        <!-- Seccion VII: Soporte - Capacitacion -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion VII: Soporte</h2>
+                <div class="scenario-tag">Minuta de Capacitacion y Sensibilizacion</div>
+            </div>
+            <div class="scenario-body">
+                <p><strong>Codigo de documento:</strong> SEER-SGSI-MIN-2026-001</p>
+                <p><strong>Proyecto:</strong> Implementacion de ISO/IEC 27001:2022 en el Departamento de Recursos Humanos</p>
+                <p><strong>Fecha:</strong> 11 de mayo de 2026</p>
+                <p><strong>Hora:</strong> 09:00 AM - 12:30 PM</p>
+                <p><strong>Ubicacion:</strong> Sala de Juntas B, Edificio Central SEER, San Luis Potosi</p>
+
+                <h3>Objetivos de la sesion</h3>
+                <ul>
+                    <li>Asegurar que el personal administrativo comprenda su rol dentro del SGSI</li>
+                    <li>Instruir sobre los vectores de ataque identificados (Phishing y Reverse Tabnabbing)</li>
+                    <li>Reforzar el uso correcto de licencias de Office 365 y manejo de datos</li>
+                </ul>
+
+                <h3>Orden del dia</h3>
+                <ul>
+                    <li>Introduccion al Marco Normativo (45 min) - Explicacion de la Triada CIA</li>
+                    <li>Taller Practico de Ingenieria Social (60 min) - Simulacro de Phishing</li>
+                    <li>Control de Acceso y Gestion de Identidad (45 min) - Instalacion y configuracion de 2FA</li>
+                    <li>Seguridad Fisica y Documental (30 min) - Politica de Escritorio Limpio</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Seccion VIII: Operacion - Procedimiento 2FA -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion VIII: Operacion</h2>
+                <div class="scenario-tag">Procedimiento de Autenticacion Multifactor (2FA)</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Paso 1. Acceso unicamente con cuenta institucional</h3>
+                <p>Todo el personal administrativo debera utilizar exclusivamente la cuenta institucional con dominio @seer.gob.mx para acceder a servicios en la nube.</p>
+
+                <h3>Paso 2. Activacion obligatoria de 2FA</h3>
+                <p>Objetivo: Agregar una segunda capa de seguridad para evitar accesos no autorizados. Despues del primer inicio de sesion, Office 365 solicitara configurar la autenticacion multifactor.</p>
+
+                <h3>Paso 3. Instalacion de Microsoft Authenticator</h3>
+                <p>Procedimiento: Abrir Play Store o App Store, buscar Microsoft Authenticator e instalar la aplicacion oficial.</p>
+
+                <h3>Paso 4. Vinculacion de cuenta</h3>
+                <p>En la pantalla de Office 365 aparecera un codigo QR. Abrir Microsoft Authenticator, seleccionar Agregar cuenta y escanear el codigo QR.</p>
+
+                <h3>Paso 5. Validacion del acceso</h3>
+                <p>El sistema enviara una notificacion al celular. El usuario debe aprobar el acceso. Office 365 mostrara confirmacion de configuracion exitosa.</p>
+
+                <!-- Espacio para imagenes del procedimiento 2FA -->
+                <div class="img-placeholder">
+                    <p class="img-caption">Imagen 3. Configuracion de Autenticacion Multifactor en Office 365</p>
+                    <div class="placeholder-space">
+                        <p>[Espacio reservado para imagen: configuracion_2fa.png]</p>
+                    </div>
+                </div>
+
+                <p>Con esta politica: se protege el acceso a Office 365, se reduce el riesgo de secuestro de sesion, se evita el uso de cuentas personales y se mejora la trazabilidad institucional.</p>
+            </div>
+        </div>
+
+        <!-- Seccion IX: Evaluacion del Desempeño -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion IX: Evaluacion del Desempeño</h2>
+                <div class="scenario-tag">Checklist de controles y resultados</div>
+            </div>
+            <div class="scenario-body">
+                <p><strong>Objetivo:</strong> Evaluar la eficacia y el nivel de cumplimiento del SGSI en el Departamento de Recursos Humanos del SEER.</p>
+                <p><strong>Metodologia:</strong> Checklist de controles (18 items verificados), entrevistas con personal de TI y Recursos Humanos, revision documental de politicas, bitacoras, contratos y registros, evidencia fisica y digital.</p>
+
+                <h3>Resultados de cumplimiento</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>ID Control</th><th>Control a Evaluar</th><th>Cumple</th></tr></thead>
+                    <tbody>
+                        <tr><td>C-01</td><td>Existe un alcance formal del SGSI documentado</td><td>Si</td></tr>
+                        <tr><td>C-05</td><td>Esta habilitado el doble factor de autenticacion (2FA)</td><td>Parcial</td></tr>
+                        <tr><td>C-09</td><td>Se realizan respaldos automaticos de informacion</td><td>Parcial</td></tr>
+                        <tr><td>C-13</td><td>Existe procedimiento para reportar incidentes</td><td>No</td></tr>
+                        <tr><td>C-16</td><td>Se cuenta con plan de continuidad de negocio</td><td>No</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Resultado ejecutivo</h3>
+                <ul>
+                    <li>Controles evaluados: 18</li>
+                    <li>Cumplimiento total: 12 (67%)</li>
+                    <li>Cumplimiento parcial: 4 (22%)</li>
+                    <li>No conformidades: 2 (11%)</li>
+                    <li>Nivel de madurez: Intermedio</li>
+                    <li>Estado general: Cumplimiento del 75% de los controles</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Seccion X: Mejora - Incidente de phishing -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h2>Seccion X: Mejora</h2>
+                <div class="scenario-tag">Incidente de acceso no autorizado en Office 365</div>
+            </div>
+            <div class="scenario-body">
+                <h3>Que ocurrio</h3>
+                <p>El 18 de mayo de 2026, un usuario administrativo del Departamento de Recursos Humanos del SEER recibio un correo electronico aparentemente enviado por el area de soporte institucional de Office 365. El mensaje indicaba que era necesario verificar urgentemente la cuenta institucional debido a una supuesta anomalia en el buzon corporativo. El empleado ingreso sus credenciales institucionales dentro del sitio fraudulento y aprobo una notificacion de autenticacion multifactor (2FA) enviada a su dispositivo movil.</p>
+
+                <h3>Consecuencias identificadas</h3>
+                <ul>
+                    <li>Riesgo de exposicion de informacion confidencial</li>
+                    <li>Posible filtracion de documentos administrativos</li>
+                    <li>Accesos no autorizados desde direcciones IP externas</li>
+                    <li>Compromiso temporal de la cuenta institucional</li>
+                    <li>Riesgo de propagacion del ataque mediante correos internos</li>
+                </ul>
+
+                <h3>Causa raiz del incidente</h3>
+                <p>Falta de concientizacion del usuario ante ataques de ingenieria social. Aunque existia una politica de uso obligatorio de 2FA, el personal no contaba con suficiente capacitacion para identificar correos de phishing, URLs fraudulentas, solicitudes falsas de autenticacion y tecnicas de MFA Fatigue.</p>
+
+                <h3>Medidas adoptadas</h3>
+                <p><strong>Medidas tecnicas:</strong> Implementacion de acceso condicional en Microsoft 365, proteccion avanzada contra phishing con Safe Links y Safe Attachments, fortalecimiento del monitoreo con logs de autenticacion y alertas SIEM.</p>
+                <p><strong>Medidas administrativas:</strong> Programa de concientizacion permanente (trimestral), simulacros controlados de phishing, actualizacion de politicas del SGSI.</p>
+
+                <h3>Evaluacion de la eficacia (30 dias)</h3>
+                <table class="metrics-table">
+                    <thead><tr><th>Indicador</th><th>Resultado</th></tr></thead>
+                    <tbody>
+                        <tr><td>Usuarios capacitados</td><td>100%</td></tr>
+                        <tr><td>Simulacros de phishing detectados correctamente</td><td>87%</td></tr>
+                        <tr><td>Reduccion de clics en enlaces sospechosos</td><td>75%</td></tr>
+                        <tr><td>Incidentes posteriores registrados</td><td>0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Conclusiones -->
+        <div class="conclusion-box">
+            <h3>Conclusiones</h3>
+            <p>La implementacion del SGSI en el Departamento de Recursos Humanos del SEER ha demostrado ser fundamental para proteger la informacion sensible de docentes y personal administrativo. El uso de la familia de normas ISO/IEC 27000 proporciona un marco estructurado y reconocido internacionalmente para gestionar los riesgos de seguridad de la informacion.</p>
+            <p>El incidente de phishing ocurrido evidencia que la autenticacion multifactor por si sola no es suficiente para garantizar la seguridad. La combinacion de controles tecnicos (2FA, acceso condicional, monitoreo) con controles administrativos (capacitacion continua, simulacros, politicas actualizadas) es esencial para reducir significativamente la probabilidad de compromiso.</p>
+            <p>El SGSI se encuentra en un nivel de madurez intermedio con un cumplimiento del 75% de los controles evaluados. Se recomienda fortalecer la continuidad de negocio, ampliar la cobertura de doble factor de autenticacion y asegurar la capacitacion total del personal para alcanzar un estado de cumplimiento robusto y alineado con los estandares internacionales de seguridad de la informacion.</p>
+        </div>
+
+        <!-- Bibliografia -->
+        <div class="bibliografia">
+            <h3>Bibliografia</h3>
+            <ul>
+                <li>International Organization for Standardization (ISO). (2022). ISO/IEC 27001:2022 Information security, cybersecurity and privacy protection — Information security management systems — Requirements. ISO.</li>
+                <li>International Organization for Standardization (ISO). (2022). ISO/IEC 27002:2022 Information security, cybersecurity and privacy protection — Information security controls. ISO.</li>
+                <li>International Organization for Standardization (ISO). (2018). ISO/IEC 27005:2018 Information security risk management. ISO.</li>
+                <li>International Organization for Standardization (ISO). (2015). ISO/IEC 27017:2015 Code of practice for information security controls for cloud services. ISO.</li>
+                <li>International Organization for Standardization (ISO). (2019). ISO/IEC 27018:2019 Protection of personally identifiable information in public clouds. ISO.</li>
+                <li>Whitman, M. E., & Mattord, H. J. (2022). Principles of Information Security (7th ed.). Cengage Learning.</li>
+                <li>Stallings, W., & Brown, L. (2018). Computer Security: Principles and Practice (4th ed.). Pearson.</li>
+                <li>Calder, A. (2023). ISO 27001/ISO 27002: A Pocket Guide (10th ed.). IT Governance Publishing.</li>
+                <li>Humphreys, E. (2021). Implementing the ISO/IEC 27001 Information Security Management System Standard (3rd ed.). Artech House.</li>
+                <li>Microsoft Learn. (s. f.). Microsoft 365 security documentation. Microsoft.</li>
+                <li>National Institute of Standards and Technology (NIST). (2020). Zero Trust Architecture (SP 800-207). U.S. Department of Commerce.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>Portafolio - Sistema de Gestion de Seguridad de la Informacion (SGSI) | ISO/IEC 27001:2022 | SEER</p>
+    </footer>
+</body>
+</html>
